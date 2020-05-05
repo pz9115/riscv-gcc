@@ -1,3 +1,14 @@
+2021-09-08  SiYu Wu  <siyu@isrc.iscas.ac.cn>
+
+	Backported from master:
+	2020-05-05  Jakub Jelinek  <jakub@redhat.com>
+
+	PR tree-optimization/94800
+	* gcc.dg/tree-ssa/pr94800.c: New test.
+	* gcc.dg/tree-ssa/popcount5.c: New test.
+	* gcc.dg/tree-ssa/popcount5l.c: New test.
+	* gcc.dg/tree-ssa/popcount5ll.c: New test.
+
 2020-07-23  Release Manager
 
 	* GCC 10.2.0 released.
