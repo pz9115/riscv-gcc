@@ -741,7 +741,10 @@ riscv_subset_list::parse_std_ext (const char *p)
       p++;
       subset[0] = std_ext;
 
-      add (subset, major_version, minor_version, explicit_version_p);
+      p = parsing_subset_version (subset, p, &major_version, &minor_version,
+				  /* std_ext_p= */ true, &explicit_version_p);
+
+      add (subset, major_version, minor_version, explicit_version_p, false);
     }
   return p;
 }
@@ -919,11 +922,7 @@ riscv_subset_list::parse (const char *arch, location_t loc)
 
   for (itr = subset_list->m_head; itr != NULL; itr = itr->next)
     {
-      subset_list->handle_implied_ext (
-	itr->name.c_str (),
-	itr->major_version,
-	itr->minor_version,
-	itr->explicit_version_p);
+      subset_list->handle_implied_ext (itr);
     }
 
   return subset_list;
