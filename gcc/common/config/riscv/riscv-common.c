@@ -647,6 +647,10 @@ riscv_parse_arch_string (const char *isa, int *flags, location_t loc)
   if (subset_list->lookup ("c"))
     *flags |= MASK_RVC;
 
+  *flags &= ~MASK_ZFINX;
+  if (subset_list->lookup ("zfinx"))
+    *flags |= MASK_ZFINX;
+
   if (current_subset_list)
     delete current_subset_list;
 

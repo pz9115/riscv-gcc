@@ -3734,7 +3734,7 @@ riscv_compute_frame_info (void)
 
       /* Find out which FPRs we need to save.  This loop must iterate over
 	 the same space as its companion in riscv_for_each_saved_reg.  */
-      if (TARGET_HARD_FLOAT)
+      if (TARGET_HARD_FLOAT && !TARGET_ZFINX)
 	for (regno = FP_REG_FIRST; regno <= FP_REG_LAST; regno++)
 	  if (riscv_save_reg_p (regno))
 	    frame->fmask |= 1 << (regno - FP_REG_FIRST), num_f_saved++;
@@ -4702,7 +4702,7 @@ riscv_option_override (void)
     error ("%<-mdiv%> requires %<-march%> to subsume the %<M%> extension");
 
   /* Likewise floating-point division and square root.  */
-  if (TARGET_HARD_FLOAT && (target_flags_explicit & MASK_FDIV) == 0)
+  if (TARGET_HARD_FLOAT && !TARGET_ZFINX && (target_flags_explicit & MASK_FDIV) == 0)
     target_flags |= MASK_FDIV;
 
   /* Handle -mtune.  */
@@ -4745,6 +4745,10 @@ riscv_option_override (void)
 
   if (TARGET_RVE && riscv_abi != ABI_ILP32E)
     error ("rv32e requires ilp32e ABI");
+
+  /* Zfinx only supports floating-point arguments in X-registers.  */
+  if (TARGET_ZFINX && riscv_abi != ABI_ILP32 && riscv_abi != ABI_LP64 && riscv_abi != ABI_ILP32E)
+    error ("zfinx requires ilp32e ABI or ilp32, ilp64");  
 
   /* We do not yet support ILP32 on RV64.  */
   if (BITS_PER_WORD != POINTER_SIZE)
@@ -4795,7 +4799,7 @@ riscv_conditional_register_usage (void)
 	call_used_regs[r] = 1;
     }
 
-  if (!TARGET_HARD_FLOAT)
+  if (!TARGET_HARD_FLOAT || TARGET_ZFINX)
     {
       for (int regno = FP_REG_FIRST; regno <= FP_REG_LAST; regno++)
 	fixed_regs[regno] = call_used_regs[regno] = 1;

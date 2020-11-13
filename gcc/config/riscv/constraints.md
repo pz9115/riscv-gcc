@@ -21,7 +21,10 @@
 
 ;; Register constraints
 
-(define_register_constraint "f" "TARGET_HARD_FLOAT ? FP_REGS : NO_REGS"
+;; Zfinx support need refuse FP regs
+
+(define_register_constraint "f"
+  "TARGET_HARD_FLOAT ? (TARGET_ZFINX ? GR_REGS : FP_REGS) : NO_REGS"
   "A floating-point register (if available).")
 
 (define_register_constraint "j" "SIBCALL_REGS"
