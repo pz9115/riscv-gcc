@@ -4753,9 +4753,9 @@ riscv_option_override (void)
   if (TARGET_RVE && riscv_abi != ABI_ILP32E)
     error ("rv32e requires ilp32e ABI");
 
-  /* Zfinx only supports floating-point arguments in X-registers.  */
-  if (TARGET_ZFINX && riscv_abi != ABI_ILP32 && riscv_abi != ABI_LP64 && riscv_abi != ABI_ILP32E)
-    error ("zfinx requires ilp32e ABI or ilp32, lp64");  
+  // Zfinx only supports floating-point arguments in X-registers.  
+  //if (TARGET_ZFINX && riscv_abi != ABI_ILP32 && riscv_abi != ABI_LP64 && riscv_abi != ABI_ILP32E)
+  //  error ("zfinx requires ilp32e ABI or ilp32, lp64");  
 
   /* We do not yet support ILP32 on RV64.  */
   if (BITS_PER_WORD != POINTER_SIZE)
