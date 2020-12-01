@@ -27,6 +27,10 @@
   "TARGET_HARD_FLOAT ? (TARGET_ZFINX ? GR_REGS : FP_REGS) : NO_REGS"
   "A floating-point register (if available).")
 
+(define_register_constraint "zfinx"
+  "TARGET_ZFINX ? GR_REGS : NO_REGS"
+  "Zfinx use X regs"
+)
 (define_register_constraint "j" "SIBCALL_REGS"
   "@internal")
 

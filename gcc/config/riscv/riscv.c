@@ -4754,8 +4754,8 @@ riscv_option_override (void)
     error ("rv32e requires ilp32e ABI");
 
   // Zfinx only supports floating-point arguments in X-registers.  
-  //if (TARGET_ZFINX && riscv_abi != ABI_ILP32 && riscv_abi != ABI_LP64 && riscv_abi != ABI_ILP32E)
-  //  error ("zfinx requires ilp32e ABI or ilp32, lp64");  
+  if (TARGET_ZFINX && riscv_abi != ABI_ILP32 && riscv_abi != ABI_LP64 && riscv_abi != ABI_ILP32E)
+    error ("zfinx requires ilp32e ABI or ilp32, lp64");  
 
   /* We do not yet support ILP32 on RV64.  */
   if (BITS_PER_WORD != POINTER_SIZE)
@@ -4806,7 +4806,7 @@ riscv_conditional_register_usage (void)
 	call_used_regs[r] = 1;
     }
 
-  if (!TARGET_HARD_FLOAT || TARGET_ZFINX)
+  if (!TARGET_HARD_FLOAT)
     {
       for (int regno = FP_REG_FIRST; regno <= FP_REG_LAST; regno++)
 	fixed_regs[regno] = call_used_regs[regno] = 1;
