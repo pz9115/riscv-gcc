@@ -4808,8 +4808,10 @@ riscv_conditional_register_usage (void)
 
   if (!TARGET_HARD_FLOAT)
     {
-      for (int regno = FP_REG_FIRST; regno <= FP_REG_LAST; regno++)
-	fixed_regs[regno] = call_used_regs[regno] = 1;
+      if(!TARGET_ZFINX){
+         for (int regno = FP_REG_FIRST; regno <= FP_REG_LAST; regno++)
+	   fixed_regs[regno] = call_used_regs[regno] = 1;
+      }
     }
 
   /* In the soft-float ABI, there are no callee-saved FP registers.  */
