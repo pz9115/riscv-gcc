@@ -57,6 +57,7 @@ struct riscv_implied_info_t
 riscv_implied_info_t riscv_implied_info[] =
 {
   {"d", "f"},
+  {"zdinx", "zfinx"},
   {NULL, NULL}
 };
 
@@ -646,6 +647,7 @@ static const riscv_ext_flag_table_t riscv_ext_flag_table[] =
   {"d", &gcc_options::x_target_flags, MASK_DOUBLE_FLOAT},
   {"c", &gcc_options::x_target_flags, MASK_RVC},
   {"zfinx", &gcc_options::x_target_flags, MASK_ZFINX},
+  {"zdinx", &gcc_options::x_target_flags, MASK_ZDINX},
   {NULL, NULL, 0}
 };
 
