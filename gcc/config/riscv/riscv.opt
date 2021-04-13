@@ -138,6 +138,8 @@ Mask(RVC)
 
 Mask(RVE)
 
+Mask(RVP)
+
 mriscv-attribute
 Target Report Var(riscv_emit_attribute_p) Init(-1)
 Emit RISC-V ELF attribute.
@@ -155,3 +157,6 @@ Enum(riscv_align_data) String(xlen) Value(riscv_align_data_type_xlen)
 
 EnumValue
 Enum(riscv_align_data) String(natural) Value(riscv_align_data_type_natural)
+
+TargetVariable
+int riscv_rvp_subext

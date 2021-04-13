@@ -51,4 +51,10 @@ enum riscv_align_data {
   riscv_align_data_type_natural
 };
 
+#define MASK_ZPN (1 << 0)
+#define MASK_ZP64 (1 << 1)
+
+#define TARGET_ZPN ((riscv_rvp_subext & MASK_ZPN) != 0)
+#define TARGET_ZP64 ((riscv_rvp_subext & MASK_ZP64) != 0)
+
 #endif /* ! GCC_RISCV_OPTS_H */

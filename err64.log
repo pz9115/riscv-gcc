@@ -1,0 +1,631 @@
+configure: WARNING: neither ld nor gold are enabled
+*** This configuration is not supported in the following subdirectories:
+     gdbserver readline libdecnumber sim gdb
+    (Any other directories should still work fine.)
+*** This configuration is not supported in the following subdirectories:
+     gdbserver binutils gas gprof
+    (Any other directories should still work fine.)
+configure: WARNING: decimal float is not supported for this target, ignored
+ar: `u' modifier ignored since `D' is the default (see `U')
+ar: `u' modifier ignored since `D' is the default (see `U')
+ar: `u' modifier ignored since `D' is the default (see `U')
+configure: WARNING: libdebuginfod is missing or unusable; some features may be unavailable.
+configure: WARNING: libipt is missing or unusable; some features may be unavailable.
+ar: `u' modifier ignored since `D' is the default (see `U')
+configure: WARNING: libdebuginfod is missing or unusable; some features may be unavailable.
+libtool: link: warning: `-version-info/-version-number' is ignored for convenience libraries
+libtool: link: warning: `-version-info/-version-number' is ignored for convenience libraries
+configure: WARNING: no enhanced curses library found; disabling TUI
+libtool: link: warning: `-version-info/-version-number' is ignored for convenience libraries
+libtool: link: warning: `-version-info/-version-number' is ignored for convenience libraries
+/home/sinan/plct/origin-toochain/riscv-binutils/binutils/sysinfo.y: warning: 1 shift/reduce conflict [-Wconflicts-sr]
+/home/sinan/plct/origin-toochain/riscv-binutils/binutils/mcparse.y: warning: 1 shift/reduce conflict [-Wconflicts-sr]
+/home/sinan/plct/origin-toochain/riscv-binutils/binutils/defparse.y: warning: 27 shift/reduce conflicts [-Wconflicts-sr]
+/home/sinan/plct/origin-toochain/riscv-binutils/binutils/rcparse.y: warning: 58 shift/reduce conflicts [-Wconflicts-sr]
+/home/sinan/plct/origin-toochain/riscv-binutils/binutils/rcparse.y: warning: 10 reduce/reduce conflicts [-Wconflicts-rr]
+/home/sinan/plct/origin-toochain/riscv-binutils/binutils/doc/binutils.texi:856: warning: @ref node name should not contain `.'
+/home/sinan/plct/origin-toochain/riscv-binutils/binutils/doc/binutils.texi:1300: warning: @xref node name should not contain `.'
+configure: WARNING: libipt is missing or unusable; some features may be unavailable.
+/home/sinan/plct/origin-toochain/riscv-binutils/ld/deffilep.y: warning: 76 shift/reduce conflicts [-Wconflicts-sr]
+libtool: link: warning: ignoring multiple `-rpath's for a libtool library
+configure: WARNING: babeltrace is missing or unusable; GDB is unable to read CTF data.
+/home/sinan/plct/origin-toochain/riscv-binutils/ld/ld.texi:903: warning: @pxref node name should not contain `.'
+/home/sinan/plct/origin-toochain/riscv-binutils/ld/ld.texi:8870: warning: @pxref node name should not contain `.'
+/home/sinan/plct/origin-toochain/riscv-gdb/sim/riscv/../common/sim-profile.c: In function ‘profile_pc_init’:
+/home/sinan/plct/origin-toochain/riscv-gdb/sim/riscv/../common/sim-profile.c:566:8: warning: left shift count >= width of type [-Wshift-count-overflow]
+    ((1 << sizeof (sim_cia) * (8 - 1))
+        ^~
+/home/sinan/plct/origin-toochain/riscv-gdb/sim/riscv/../common/sim-profile.c:585:21: warning: left shift count >= width of type [-Wshift-count-overflow]
+   bucket_size = ((1 << ((sizeof (sim_cia) * 8) - 1))
+                     ^~
+libtool: install: warning: remember to run `libtool --finish /nowhere'
+*** This configuration is not supported in the following subdirectories:
+     zlib target-libquadmath target-libatomic target-libitm target-libsanitizer target-libvtv target-libphobos gnattools gotools target-libada target-libhsail-rt target-zlib target-libbacktrace target-libgfortran target-libgo target-libffi target-libobjc target-libgomp target-liboffloadmic target-libssp
+    (Any other directories should still work fine.)
+configure: WARNING: decimal float is not supported for this target, ignored
+ar: `u' modifier ignored since `D' is the default (see `U')
+objcopy: /tmp/ls6999: debuglink section already exists
+ar: `u' modifier ignored since `D' is the default (see `U')
+/home/sinan/plct/origin-toochain/riscv-gdb/gdb/c-exp.y: warning: 153 shift/reduce conflicts [-Wconflicts-sr]
+/home/sinan/plct/origin-toochain/riscv-gdb/gdb/c-exp.y: warning: 70 reduce/reduce conflicts [-Wconflicts-rr]
+../../.././riscv-gcc/libcpp/expr.c: In function ‘unsigned int cpp_classify_number(cpp_reader*, const cpp_token*, const char**, location_t)’:
+../../.././riscv-gcc/libcpp/expr.c:802:18: warning: format not a string literal and no format arguments [-Wformat-security]
+        0, message);
+                  ^
+../../.././riscv-gcc/libcpp/expr.c:805:39: warning: format not a string literal and no format arguments [-Wformat-security]
+           virtual_location, 0, message);
+                                       ^
+../../.././riscv-gcc/libcpp/macro.c: In member function ‘vaopt_state::update_type vaopt_state::update(const cpp_token*)’:
+../../.././riscv-gcc/libcpp/macro.c:184:23: warning: format not a string literal and no format arguments [-Wformat-security]
+      vaopt_paste_error);
+                       ^
+../../.././riscv-gcc/libcpp/macro.c:213:24: warning: format not a string literal and no format arguments [-Wformat-security]
+       vaopt_paste_error);
+                        ^
+../../.././riscv-gcc/libcpp/macro.c: In function ‘cpp_macro* create_iso_definition(cpp_reader*)’:
+../../.././riscv-gcc/libcpp/macro.c:3490:58: warning: format not a string literal and no format arguments [-Wformat-security]
+        cpp_error (pfile, CPP_DL_ERROR, paste_op_error_msg);
+                                                          ^
+../../.././riscv-gcc/libcpp/macro.c:3505:58: warning: format not a string literal and no format arguments [-Wformat-security]
+        cpp_error (pfile, CPP_DL_ERROR, paste_op_error_msg);
+                                                          ^
+ar: `u' modifier ignored since `D' is the default (see `U')
+libtool: install: warning: remember to run `libtool --finish /home/sinan/plct/origin-toochain/obj-rv64ifdp/libexec/gcc/riscv64-unknown-elf/10.2.0'
+../.././riscv-gcc/libcpp/expr.c: In function ‘unsigned int cpp_classify_number(cpp_reader*, const cpp_token*, const char**, location_t)’:
+../.././riscv-gcc/libcpp/expr.c:802:18: warning: format not a string literal and no format arguments [-Wformat-security]
+        0, message);
+                  ^
+../.././riscv-gcc/libcpp/expr.c:805:39: warning: format not a string literal and no format arguments [-Wformat-security]
+           virtual_location, 0, message);
+                                       ^
+../.././riscv-gcc/libcpp/macro.c: In member function ‘vaopt_state::update_type vaopt_state::update(const cpp_token*)’:
+../.././riscv-gcc/libcpp/macro.c:184:23: warning: format not a string literal and no format arguments [-Wformat-security]
+      vaopt_paste_error);
+                       ^
+../.././riscv-gcc/libcpp/macro.c:213:24: warning: format not a string literal and no format arguments [-Wformat-security]
+       vaopt_paste_error);
+                        ^
+../.././riscv-gcc/libcpp/macro.c: In function ‘cpp_macro* create_iso_definition(cpp_reader*)’:
+../.././riscv-gcc/libcpp/macro.c:3490:58: warning: format not a string literal and no format arguments [-Wformat-security]
+        cpp_error (pfile, CPP_DL_ERROR, paste_op_error_msg);
+                                                          ^
+../.././riscv-gcc/libcpp/macro.c:3505:58: warning: format not a string literal and no format arguments [-Wformat-security]
+        cpp_error (pfile, CPP_DL_ERROR, paste_op_error_msg);
+                                                          ^
+ar: `u' modifier ignored since `D' is the default (see `U')
+configure: WARNING: decimal float is not supported for this target, ignored
+configure: WARNING: fixed-point is not supported for this target, ignored
+Links are now set up to build a cross-compiler
+ from x86_64-pc-linux-gnu to riscv64-unknown-elf.
+../.././riscv-gcc/gcc/genhooks.c: In function ‘void emit_documentation(const char*)’:
+../.././riscv-gcc/gcc/genhooks.c:131:45: warning: ignoring return value of ‘int fscanf(FILE*, const char*, ...)’, declared with attribute warn_unused_result [-Wunused-result]
+   while (fscanf (f, "%*[^@]"), buf[0] = '\0',
+                                             ^
+../.././riscv-gcc/gcc/genhooks.c:140:14: warning: ignoring return value of ‘int fscanf(FILE*, const char*, ...)’, declared with attribute warn_unused_result [-Wunused-result]
+       fscanf (f, "%999s", buf);
+       ~~~~~~~^~~~~~~~~~~~~~~~~
+../.././riscv-gcc/gcc/genhooks.c:193:14: warning: ignoring return value of ‘int fscanf(FILE*, const char*, ...)’, declared with attribute warn_unused_result [-Wunused-result]
+       fscanf (f, "%5[^ \n]", buf);
+       ~~~~~~~^~~~~~~~~~~~~~~~~~~~
+../.././riscv-gcc/gcc/genhooks.c:199:14: warning: ignoring return value of ‘int fscanf(FILE*, const char*, ...)’, declared with attribute warn_unused_result [-Wunused-result]
+       fscanf (f, "%999s", buf);
+       ~~~~~~~^~~~~~~~~~~~~~~~~
+../.././riscv-gcc/gcc/gengtype-lex.l: In function ‘int yylex(const char**)’:
+gengtype-lex.c:357:15: warning: this statement may fall through [-Wimplicit-fallthrough=]
+ #define YY_DO_BEFORE_ACTION \
+  ~~~~~~~~~~~~~^~~
+../.././riscv-gcc/gcc/gengtype-lex.l:119:1: note: in expansion of macro ‘YY_DO_BEFORE_ACTION’
+ "GTY"/{EOID}   { return GTY_TOKEN; }
+ ^~~~~~~~~~~~~~~~~~~
+../.././riscv-gcc/gcc/gengtype-lex.l:114:1: note: here
+ "^"     |
+ ^~~~
+gengtype-lex.c:357:15: warning: this statement may fall through [-Wimplicit-fallthrough=]
+ #define YY_DO_BEFORE_ACTION \
+  ~~~~~~~~~~~~~^~~
+../.././riscv-gcc/gcc/gengtype-lex.l:136:1: note: in expansion of macro ‘YY_DO_BEFORE_ACTION’
+ 
+ ^                  
+../.././riscv-gcc/gcc/gengtype-lex.l:132:1: note: here
+   size_t len;
+ ^ ~~
+../.././riscv-gcc/gcc/config/riscv/riscv.md:2325:1: warning: operand 0 missing mode?
+../.././riscv-gcc/gcc/config/riscv/riscv.md:2347:1: warning: operand 1 missing mode?
+../.././riscv-gcc/gcc/config/riscv/riscv.md:2370:1: warning: operand 0 missing mode?
+../.././riscv-gcc/gcc/config/riscv/riscv.md:2393:1: warning: operand 1 missing mode?
+../.././riscv-gcc/gcc/config/riscv/riscv.md:2463:1: warning: source missing a mode?
+Statistics for recog:
+  Number of decisions:   8866
+  longest path:           181 (code:    881)
+  longest backtrack:       13 (code:    337)
+Statistics for split_insns:
+  Number of decisions:    400
+  longest path:            44 (code:     47)
+  longest backtrack:        3 (code:     41)
+Statistics for peephole2_insns:
+  Number of decisions:     22
+  longest path:            22 (code:      1)
+  longest backtrack:        0 (code:      1)
+Shared 6715 out of 12151 states by creating 1928 new states, saving 4787
+../.././riscv-gcc/gcc/tree-diagnostic-path.cc: In member function ‘virtual label_text {anonymous}::path_label::get_text(unsigned int) const’:
+../.././riscv-gcc/gcc/tree-diagnostic-path.cc:68:60: warning: unknown conversion type character ‘@’ in format [-Wformat=]
+     pp_printf (&pp, "%@ %s", &event_id, event_text.m_buffer);
+                                                            ^
+../.././riscv-gcc/gcc/tree-diagnostic-path.cc:68:60: warning: format ‘%s’ expects argument of type ‘char*’, but argument 3 has type ‘diagnostic_event_id_t*’ [-Wformat=]
+../.././riscv-gcc/gcc/tree-diagnostic-path.cc:68:60: warning: too many arguments for format [-Wformat-extra-args]
+../.././riscv-gcc/gcc/tree-diagnostic-path.cc: In member function ‘void {anonymous}::path_summary::event_range::print(diagnostic_context*)’:
+../.././riscv-gcc/gcc/tree-diagnostic-path.cc:183:64: warning: unknown conversion type character ‘@’ in format [-Wformat=]
+        pp_printf (pp, " %@: %s", &event_id, event_text.m_buffer);
+                                                                ^
+../.././riscv-gcc/gcc/tree-diagnostic-path.cc:183:64: warning: format ‘%s’ expects argument of type ‘char*’, but argument 3 has type ‘diagnostic_event_id_t*’ [-Wformat=]
+../.././riscv-gcc/gcc/tree-diagnostic-path.cc:183:64: warning: too many arguments for format [-Wformat-extra-args]
+../.././riscv-gcc/gcc/../libgcc/libgcov-util.c: In function ‘gcov_info* gcov_read_profile_dir(const char*, int)’:
+../.././riscv-gcc/gcc/../libgcc/libgcov-util.c:463:9: warning: ignoring return value of ‘int chdir(const char*)’, declared with attribute warn_unused_result [-Wunused-result]
+   chdir (pwd);
+   ~~~~~~^~~~~
+../.././riscv-gcc/gcc/lto-wrapper.c: In function ‘bool find_and_merge_options(int, off_t, const char*, cl_decoded_option**, unsigned int*, const char*)’:
+../.././riscv-gcc/gcc/lto-wrapper.c:1026:8: warning: ignoring return value of ‘ssize_t read(int, void*, size_t)’, declared with attribute warn_unused_result [-Wunused-result]
+   read (fd, data, length);
+   ~~~~~^~~~~~~~~~~~~~~~~~
+../.././riscv-gcc/gcc/gengtype-lex.l: In function ‘int yylex(const char**)’:
+gengtype-lex.c:357:15: warning: this statement may fall through [-Wimplicit-fallthrough=]
+ #define YY_DO_BEFORE_ACTION \
+  ~~~~~~~~~~~~~^~~
+../.././riscv-gcc/gcc/gengtype-lex.l:119:1: note: in expansion of macro ‘YY_DO_BEFORE_ACTION’
+ "GTY"/{EOID}   { return GTY_TOKEN; }
+ ^~~~~~~~~~~~~~~~~~~
+../.././riscv-gcc/gcc/gengtype-lex.l:114:1: note: here
+ "^"     |
+ ^~~~
+gengtype-lex.c:357:15: warning: this statement may fall through [-Wimplicit-fallthrough=]
+ #define YY_DO_BEFORE_ACTION \
+  ~~~~~~~~~~~~~^~~
+../.././riscv-gcc/gcc/gengtype-lex.l:136:1: note: in expansion of macro ‘YY_DO_BEFORE_ACTION’
+ 
+ ^                  
+../.././riscv-gcc/gcc/gengtype-lex.l:132:1: note: here
+   size_t len;
+ ^ ~~
+../.././riscv-gcc/gcc/gcc.c: In function ‘long unsigned int get_random_number()’:
+../.././riscv-gcc/gcc/gcc.c:9717:12: warning: ignoring return value of ‘ssize_t read(int, void*, size_t)’, declared with attribute warn_unused_result [-Wunused-result]
+       read (fd, &ret, sizeof (HOST_WIDE_INT));
+       ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../.././riscv-gcc/gcc/gcc.c: In function ‘void do_report_bug(const char**, int, char**, char**)’:
+../.././riscv-gcc/gcc/gcc.c:7035:9: warning: ignoring return value of ‘ssize_t write(int, const void*, size_t)’, declared with attribute warn_unused_result [-Wunused-result]
+   write (fd, "\n//", 3);
+   ~~~~~~^~~~~~~~~~~~~~~
+../.././riscv-gcc/gcc/gcc.c:7038:13: warning: ignoring return value of ‘ssize_t write(int, const void*, size_t)’, declared with attribute warn_unused_result [-Wunused-result]
+       write (fd, " ", 1);
+       ~~~~~~^~~~~~~~~~~~
+../.././riscv-gcc/gcc/gcc.c:7039:13: warning: ignoring return value of ‘ssize_t write(int, const void*, size_t)’, declared with attribute warn_unused_result [-Wunused-result]
+       write (fd, new_argv[i], strlen (new_argv[i]));
+       ~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../.././riscv-gcc/gcc/gcc.c:7041:9: warning: ignoring return value of ‘ssize_t write(int, const void*, size_t)’, declared with attribute warn_unused_result [-Wunused-result]
+   write (fd, "\n\n", 2);
+   ~~~~~~^~~~~~~~~~~~~~~
+GIMPLE decision tree has 3291 leafs, maximum depth 28 and a total number of 13720 nodes
+removed 2179 duplicate tails
+GENERIC decision tree has 3162 leafs, maximum depth 13 and a total number of 13042 nodes
+removed 2119 duplicate tails
+../.././riscv-gcc/gcc/lto/lto-common.c: In function ‘void lto_resolution_read(splay_tree, FILE*, lto_file*)’:
+../.././riscv-gcc/gcc/lto/lto-common.c:2033:10: warning: ignoring return value of ‘int fscanf(FILE*, const char*, ...)’, declared with attribute warn_unused_result [-Wunused-result]
+   fscanf (resolution, " ");   /* Read white space.  */
+   ~~~~~~~^~~~~~~~~~~~~~~~~
+../.././riscv-gcc/gcc/lto/lto-common.c:2035:9: warning: ignoring return value of ‘size_t fread(void*, size_t, size_t, FILE*)’, declared with attribute warn_unused_result [-Wunused-result]
+   fread (obj_name, sizeof (char), name_len, resolution);
+   ~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../.././riscv-gcc/gcc/lto/lto-common.c:2055:10: warning: ignoring return value of ‘int fscanf(FILE*, const char*, ...)’, declared with attribute warn_unused_result [-Wunused-result]
+   fscanf (resolution, "%u", &num_symbols);
+   ~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+cc1: note: self-tests are not enabled in this build
+cc1plus: note: self-tests are not enabled in this build
+/tmp/ccdb2q28.s: Assembler messages:
+/tmp/ccdb2q28.s:12: Error: unrecognized opcode `maxw a0,a5,a0'
+make[6]: *** [lib_a-abs.o] Error 1
+make[6]: *** Waiting for unfinished jobs....
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/stdlib/__call_atexit.c:46:1: warning: constructor priorities from 0 to 100 are reserved for the implementation [-Wprio-ctor-dtor]
+   46 | register_fini(void) __attribute__((constructor (0)));
+      | ^~~~~~~~~~~~~
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/stdlib/aligned_alloc.c: In function 'aligned_alloc':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/stdlib/aligned_alloc.c:35:10: warning: implicit declaration of function '_memalign_r' [-Wimplicit-function-declaration]
+   35 |   return _memalign_r (_REENT, align, size);
+      |          ^~~~~~~~~~~
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/stdlib/aligned_alloc.c:35:10: warning: returning 'int' from a function with return type 'void *' makes pointer from integer without a cast [-Wint-conversion]
+   35 |   return _memalign_r (_REENT, align, size);
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/cc1jyY4G.s: Assembler messages:
+/tmp/cc1jyY4G.s:284: Error: unrecognized opcode `maxw a5,a4,a5'
+make[6]: *** [lib_a-hash_buf.o] Error 1
+make[6]: *** Waiting for unfinished jobs....
+/tmp/cc83nJrH.s: Assembler messages:
+/tmp/cc83nJrH.s:162: Error: unrecognized opcode `minw a4,a4,s10'
+/tmp/cc83nJrH.s:233: Error: unrecognized opcode `minw s4,a4,s8'
+/tmp/cc83nJrH.s:311: Error: unrecognized opcode `minw a4,a4,s8'
+make[6]: *** [lib_a-hash_bigkey.o] Error 1
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/stdlib/aligned_alloc.c: In function 'aligned_alloc':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/stdlib/aligned_alloc.c:35:10: warning: implicit declaration of function '_memalign_r' [-Wimplicit-function-declaration]
+   35 |   return _memalign_r (_REENT, align, size);
+      |          ^~~~~~~~~~~
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/stdlib/aligned_alloc.c:35:10: warning: returning 'int' from a function with return type 'void *' makes pointer from integer without a cast [-Wint-conversion]
+   35 |   return _memalign_r (_REENT, align, size);
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/tmp/cc3jz3wB.s: Assembler messages:
+/tmp/cc3jz3wB.s:1434: Error: unrecognized opcode `maxw a0,a0,a5'
+make[6]: *** [lib_a-hash.o] Error 1
+/tmp/cciEn9vS.s: Assembler messages:
+/tmp/cciEn9vS.s:13: Error: unrecognized opcode `maxw a0,a5,a0'
+make[6]: *** [lib_a-abs.o] Error 1
+make[6]: *** Waiting for unfinished jobs....
+/tmp/cc9b8ncH.s: Assembler messages:
+/tmp/cc9b8ncH.s:749: Error: unrecognized opcode `maddr32 a5,a4,s6'
+make[6]: *** [lib_a-hash_page.o] Error 1
+/tmp/ccQkVSxY.s: Assembler messages:
+/tmp/ccQkVSxY.s:47: Error: unrecognized opcode `maddr32 a5,a6,s1'
+/tmp/ccQkVSxY.s:50: Error: unrecognized opcode `maddr32 a6,a4,s1'
+/tmp/ccQkVSxY.s:453: Error: unrecognized opcode `maxw a5,a5,s7'
+/tmp/ccQkVSxY.s:784: Error: unrecognized opcode `minw a5,s9,s10'
+make[6]: *** [lib_a-dtoa.o] Error 1
+/tmp/ccBnrFb3.s: Assembler messages:
+/tmp/ccBnrFb3.s:852: Error: unrecognized opcode `maxw s2,s7,s2'
+/tmp/ccBnrFb3.s:1092: Error: unrecognized opcode `maxw s2,s6,s2'
+/tmp/ccBnrFb3.s:1309: Error: unrecognized opcode `maxw s2,a3,s6'
+/tmp/ccBnrFb3.s:1360: Error: unrecognized opcode `maxw a5,a2,a3'
+/tmp/ccBnrFb3.s:1443: Error: unrecognized opcode `maxw s2,a3,s6'
+/tmp/ccBnrFb3.s:1604: Error: unrecognized opcode `maxw s2,a3,s6'
+/tmp/ccBnrFb3.s:1637: Error: unrecognized opcode `maxw s2,a3,s6'
+/tmp/ccBnrFb3.s:1867: Error: unrecognized opcode `maxw s2,a3,s6'
+/tmp/ccBnrFb3.s:1933: Error: unrecognized opcode `minw s6,s6,a5'
+/tmp/ccBnrFb3.s:1950: Error: unrecognized opcode `maxw s6,s6,a4'
+/tmp/ccBnrFb3.s:1973: Error: unrecognized opcode `minw s6,a5,a4'
+/tmp/ccBnrFb3.s:1989: Error: unrecognized opcode `maxw s6,s6,a4'
+/tmp/ccBnrFb3.s:2166: Error: unrecognized opcode `minw a3,a3,a2'
+/tmp/ccBnrFb3.s:2184: Error: unrecognized opcode `maxw a3,a3,a1'
+/tmp/ccBnrFb3.s:2282: Error: unrecognized opcode `minw a3,s6,a3'
+/tmp/ccBnrFb3.s:2284: Error: unrecognized opcode `maxw s2,a3,s2'
+/tmp/ccBnrFb3.s:2674: Error: unrecognized opcode `maxw s2,s2,a0'
+/tmp/ccBnrFb3.s:2852: Error: unrecognized opcode `maxw s2,s6,s2'
+/tmp/ccBnrFb3.s:3160: Error: unrecognized opcode `maxw s2,s6,s2'
+/tmp/ccBnrFb3.s:3191: Error: unrecognized opcode `maxw a3,a3,a5'
+make[6]: *** [lib_a-vfwprintf.o] Error 1
+make[6]: *** Waiting for unfinished jobs....
+/tmp/ccSUWrb3.s: Assembler messages:
+/tmp/ccSUWrb3.s:375: Error: unrecognized opcode `maxw s2,s6,s2'
+/tmp/ccSUWrb3.s:467: Error: unrecognized opcode `maxw s2,s7,s8'
+/tmp/ccSUWrb3.s:508: Error: unrecognized opcode `maxw s2,s7,s8'
+/tmp/ccSUWrb3.s:680: Error: unrecognized opcode `maxw s2,s7,s2'
+/tmp/ccSUWrb3.s:836: Error: unrecognized opcode `maxw s2,s7,s8'
+/tmp/ccSUWrb3.s:875: Error: unrecognized opcode `maxw s2,s7,s2'
+/tmp/ccSUWrb3.s:1059: Error: unrecognized opcode `maxw s2,s7,s8'
+/tmp/ccSUWrb3.s:1278: Error: unrecognized opcode `maxw s2,s7,s8'
+/tmp/ccSUWrb3.s:1410: Error: unrecognized opcode `minw s7,a4,a3'
+/tmp/ccSUWrb3.s:1425: Error: unrecognized opcode `maxw s7,s7,a4'
+/tmp/ccSUWrb3.s:1459: Error: unrecognized opcode `minw a4,s7,a4'
+/tmp/ccSUWrb3.s:1474: Error: unrecognized opcode `maxw a4,s8,a3'
+/tmp/ccSUWrb3.s:1889: Error: unrecognized opcode `maxw s2,s2,a0'
+/tmp/ccSUWrb3.s:2013: Error: unrecognized opcode `minw a4,a3,a4'
+/tmp/ccSUWrb3.s:2031: Error: unrecognized opcode `maxw a4,a4,a2'
+/tmp/ccSUWrb3.s:2147: Error: unrecognized opcode `minw a4,s7,a4'
+/tmp/ccSUWrb3.s:2372: Error: unrecognized opcode `maxw s2,s7,s2'
+/tmp/ccSUWrb3.s:2509: Error: unrecognized opcode `maxw s2,s7,s2'
+/tmp/ccSUWrb3.s:2685: Error: unrecognized opcode `maddr32 s7,a5,a4'
+/tmp/ccSUWrb3.s:2686: Error: unrecognized opcode `maxw s2,s7,s2'
+/tmp/ccSUWrb3.s:2748: Error: unrecognized opcode `maxw s2,s7,s2'
+/tmp/ccSUWrb3.s:2773: Error: unrecognized opcode `maxw s2,s7,s2'
+/tmp/ccSUWrb3.s:2783: Error: unrecognized opcode `maxw a3,a3,t4'
+make[6]: *** [lib_a-vfprintf.o] Error 1
+/tmp/ccqUEiDT.s: Assembler messages:
+/tmp/ccqUEiDT.s:272: Error: unrecognized opcode `maxw a5,a4,a5'
+make[6]: *** [lib_a-hash_buf.o] Error 1
+make[6]: *** Waiting for unfinished jobs....
+/tmp/ccHaUvtT.s: Assembler messages:
+/tmp/ccHaUvtT.s:175: Error: unrecognized opcode `minw s7,a5,s11'
+/tmp/ccHaUvtT.s:248: Error: unrecognized opcode `minw s2,s2,s8'
+/tmp/ccHaUvtT.s:325: Error: unrecognized opcode `minw a2,a2,s11'
+make[6]: *** [lib_a-hash_bigkey.o] Error 1
+/tmp/ccYHIA1P.s: Assembler messages:
+/tmp/ccYHIA1P.s:992: Error: unrecognized opcode `maxw a5,a5,a4'
+make[6]: *** [lib_a-hash.o] Error 1
+/tmp/ccwVcsTY.s: Assembler messages:
+/tmp/ccwVcsTY.s:761: Error: unrecognized opcode `maddr32 a4,a5,s3'
+make[6]: *** [lib_a-hash_page.o] Error 1
+/tmp/ccBQOV7R.s: Assembler messages:
+/tmp/ccBQOV7R.s:71: Error: unrecognized opcode `msubr32 a3,a5,a4'
+/tmp/ccBQOV7R.s:97: Error: unrecognized opcode `maddr32 a3,t1,a2'
+make[6]: *** [lib_a-gmtime_r.o] Error 1
+make[6]: *** Waiting for unfinished jobs....
+/tmp/ccCtbVyR.s: Assembler messages:
+/tmp/ccCtbVyR.s:321: Error: unrecognized opcode `minw s5,s5,s6'
+make[6]: *** [lib_a-mktime.o] Error 1
+/tmp/ccH75XSV.s: Assembler messages:
+/tmp/ccH75XSV.s:31: Error: unrecognized opcode `maddr32 a2,a0,a3'
+make[6]: *** [lib_a-tzcalc_limits.o] Error 1
+/tmp/cckbxcaQ.s: Assembler messages:
+/tmp/cckbxcaQ.s:696: Error: unrecognized opcode `maddr32 a5,a2,a4'
+/tmp/cckbxcaQ.s:1225: Error: unrecognized opcode `maddr32 a5,a2,a4'
+make[6]: *** [lib_a-strftime.o] Error 1
+/tmp/cc1lild8.s: Assembler messages:
+/tmp/cc1lild8.s:331: Error: unrecognized opcode `maddr32 a5,a6,a4'
+/tmp/cc1lild8.s:356: Error: unrecognized opcode `maddr32 a5,a6,a4'
+make[6]: *** [lib_a-nano-vfprintf.o] Error 1
+make[6]: *** Waiting for unfinished jobs....
+/tmp/ccGBqFlg.s: Assembler messages:
+/tmp/ccGBqFlg.s:428: Error: unrecognized opcode `maxw a0,a0,a5'
+/tmp/ccGBqFlg.s:528: Error: unrecognized opcode `minw s5,s5,a3'
+/tmp/ccGBqFlg.s:536: Error: unrecognized opcode `maxw s5,s5,a3'
+/tmp/ccGBqFlg.s:552: Error: unrecognized opcode `minw s5,s5,a5'
+/tmp/ccGBqFlg.s:560: Error: unrecognized opcode `maxw s5,s5,a3'
+make[6]: *** [lib_a-nano-vfprintf_float.o] Error 1
+/tmp/cc3tjwS7.s: Assembler messages:
+/tmp/cc3tjwS7.s:474: Error: unrecognized opcode `maddr32 a5,a6,a4'
+/tmp/cc3tjwS7.s:499: Error: unrecognized opcode `maddr32 a5,a6,a4'
+make[6]: *** [lib_a-nano-svfprintf.o] Error 1
+/tmp/ccoQZqA7.s: Assembler messages:
+/tmp/ccoQZqA7.s:25: Error: unrecognized opcode `maxw a5,a5,a4'
+/tmp/ccoQZqA7.s:76: Error: unrecognized opcode `maxw a5,a5,a4'
+/tmp/ccoQZqA7.s:441: Error: unrecognized opcode `maxw a0,a0,a5'
+make[6]: *** [lib_a-nano-vfprintf_i.o] Error 1
+/tmp/ccRiIYE8.s: Assembler messages:
+/tmp/ccRiIYE8.s:366: Error: unrecognized opcode `maxw a6,t3,a6'
+/tmp/ccRiIYE8.s:372: Error: unrecognized opcode `maddr32 a0,a7,a6'
+/tmp/ccRiIYE8.s:378: Error: unrecognized opcode `maxw a6,t3,a6'
+/tmp/ccRiIYE8.s:391: Error: unrecognized opcode `maddr32 a3,a7,s6'
+/tmp/ccRiIYE8.s:590: Error: unrecognized opcode `maxw a4,s4,s9'
+/tmp/ccRiIYE8.s:665: Error: unrecognized opcode `maxw s6,s6,s10'
+/tmp/ccRiIYE8.s:691: Error: unrecognized opcode `minw a6,s2,s9'
+make[6]: *** [lib_a-svfiwprintf.o] Error 1
+/tmp/cceQQVca.s: Assembler messages:
+/tmp/cceQQVca.s:580: Error: unrecognized opcode `maxw t1,a6,t1'
+/tmp/cceQQVca.s:586: Error: unrecognized opcode `maddr32 a0,a2,t1'
+/tmp/cceQQVca.s:592: Error: unrecognized opcode `maxw t1,a6,t1'
+/tmp/cceQQVca.s:605: Error: unrecognized opcode `maddr32 s4,a2,s7'
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/closer.c: In function '_close_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/closer.c:47:14: warning: implicit declaration of function '_close'; did you mean 'close'? [-Wimplicit-function-declaration]
+   47 |   if ((ret = _close (fd)) == -1 && errno != 0)
+      |              ^~~~~~
+      |              close
+/tmp/cceQQVca.s:903: Error: unrecognized opcode `maxw a3,s11,s9'
+/tmp/cceQQVca.s:989: Error: unrecognized opcode `maxw s7,s7,a5'
+/tmp/cceQQVca.s:1173: Error: unrecognized opcode `minw t1,s5,s9'
+/tmp/cceQQVca.s:1420: Error: unrecognized opcode `minw s4,s10,s4'
+/tmp/cceQQVca.s:1425: Error: unrecognized opcode `maxw s4,s4,a4'
+/tmp/cceQQVca.s:1483: Error: unrecognized opcode `minw s4,a4,s4'
+/tmp/cceQQVca.s:1495: Error: unrecognized opcode `maxw s4,s4,s1'
+make[6]: *** [lib_a-svfwprintf.o] Error 1
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/isattyr.c: In function '_isatty_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/isattyr.c:52:14: warning: implicit declaration of function '_isatty'; did you mean 'isatty'? [-Wimplicit-function-declaration]
+   52 |   if ((ret = _isatty (fd)) == -1 && errno != 0)
+      |              ^~~~~~~
+      |              isatty
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/gettimeofdayr.c: In function '_gettimeofday_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/gettimeofdayr.c:62:14: warning: implicit declaration of function '_gettimeofday'; did you mean 'gettimeofday'? [-Wimplicit-function-declaration]
+   62 |   if ((ret = _gettimeofday (ptimeval, ptimezone)) == -1 && errno != 0)
+      |              ^~~~~~~~~~~~~
+      |              gettimeofday
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/lseekr.c: In function '_lseek_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/lseekr.c:49:14: warning: implicit declaration of function '_lseek'; did you mean 'lseek'? [-Wimplicit-function-declaration]
+   49 |   if ((ret = _lseek (fd, pos, whence)) == (_off_t) -1 && errno != 0)
+      |              ^~~~~~
+      |              lseek
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/fcntlr.c: In function '_fcntl_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/fcntlr.c:51:14: warning: implicit declaration of function '_fcntl'; did you mean 'fcntl'? [-Wimplicit-function-declaration]
+   51 |   if ((ret = _fcntl (fd, cmd, arg)) == -1 && errno != 0)
+      |              ^~~~~~
+      |              fcntl
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/linkr.c: In function '_link_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/linkr.c:53:14: warning: implicit declaration of function '_link'; did you mean 'link'? [-Wimplicit-function-declaration]
+   53 |   if ((ret = _link (old, new)) == -1 && errno != 0)
+      |              ^~~~~
+      |              link
+/tmp/ccOr6fUb.s: Assembler messages:
+/tmp/ccOr6fUb.s:378: Error: unrecognized opcode `maxw a6,t3,a6'
+/tmp/ccOr6fUb.s:384: Error: unrecognized opcode `maddr32 a0,a7,a6'
+/tmp/ccOr6fUb.s:390: Error: unrecognized opcode `maxw a6,t3,a6'
+/tmp/ccOr6fUb.s:403: Error: unrecognized opcode `maddr32 a3,a7,s6'
+/tmp/ccOr6fUb.s:604: Error: unrecognized opcode `maxw a4,s4,s8'
+/tmp/ccOr6fUb.s:680: Error: unrecognized opcode `maxw s6,s6,s10'
+/tmp/ccOr6fUb.s:707: Error: unrecognized opcode `minw a6,s3,s8'
+make[6]: *** [lib_a-vfiwprintf.o] Error 1
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/openr.c: In function '_open_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/openr.c:50:14: warning: implicit declaration of function '_open'; did you mean 'open'? [-Wimplicit-function-declaration]
+   50 |   if ((ret = _open (file, flags, mode)) == -1 && errno != 0)
+      |              ^~~~~
+      |              open
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/readr.c: In function '_read_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/readr.c:49:24: warning: implicit declaration of function '_read'; did you mean 'read'? [-Wimplicit-function-declaration]
+   49 |   if ((ret = (_ssize_t)_read (fd, buf, cnt)) == -1 && errno != 0)
+      |                        ^~~~~
+      |                        read
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/fstatr.c: In function '_fstat_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/fstatr.c:55:14: warning: implicit declaration of function '_fstat'; did you mean 'fstat'? [-Wimplicit-function-declaration]
+   55 |   if ((ret = _fstat (fd, pstat)) == -1 && errno != 0)
+      |              ^~~~~~
+      |              fstat
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/signalr.c: In function '_kill_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/signalr.c:53:14: warning: implicit declaration of function '_kill'; did you mean 'kill'? [-Wimplicit-function-declaration]
+   53 |   if ((ret = _kill (pid, sig)) == -1 && errno != 0)
+      |              ^~~~~
+      |              kill
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/signalr.c: In function '_getpid_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/signalr.c:83:9: warning: implicit declaration of function '_getpid'; did you mean 'getpid'? [-Wimplicit-function-declaration]
+   83 |   ret = _getpid ();
+      |         ^~~~~~~
+      |         getpid
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/mkdirr.c: In function '_mkdir_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/mkdirr.c:50:14: warning: implicit declaration of function '_mkdir'; did you mean 'mkdir'? [-Wimplicit-function-declaration]
+   50 |   if ((ret = _mkdir (path, mode)) == -1 && errno != 0)
+      |              ^~~~~~
+      |              mkdir
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/statr.c: In function '_stat_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/statr.c:55:14: warning: implicit declaration of function '_stat'; did you mean 'stat'? [-Wimplicit-function-declaration]
+   55 |   if ((ret = _stat (file, pstat)) == -1 && errno != 0)
+      |              ^~~~~
+      |              stat
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/writer.c: In function '_write_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/writer.c:49:24: warning: implicit declaration of function '_write'; did you mean 'write'? [-Wimplicit-function-declaration]
+   49 |   if ((ret = (_ssize_t)_write (fd, buf, cnt)) == -1 && errno != 0)
+      |                        ^~~~~~
+      |                        write
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/unlinkr.c: In function '_unlink_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/unlinkr.c:47:14: warning: implicit declaration of function '_unlink'; did you mean 'unlink'? [-Wimplicit-function-declaration]
+   47 |   if ((ret = _unlink (file)) == -1 && errno != 0)
+      |              ^~~~~~~
+      |              unlink
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/execr.c: In function '_execve_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/execr.c:56:14: warning: implicit declaration of function '_execve'; did you mean 'fexecve'? [-Wimplicit-function-declaration]
+   56 |   if ((ret = _execve (name, argv, env)) == -1 && errno != 0)
+      |              ^~~~~~~
+      |              fexecve
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/execr.c: In function '_fork_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/execr.c:88:14: warning: implicit declaration of function '_fork'; did you mean 'vfork'? [-Wimplicit-function-declaration]
+   88 |   if ((ret = _fork ()) == -1 && errno != 0)
+      |              ^~~~~
+      |              vfork
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/timesr.c: In function '_times_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/timesr.c:52:9: warning: implicit declaration of function '_times'; did you mean 'times'? [-Wimplicit-function-declaration]
+   52 |   ret = _times (ptms);
+      |         ^~~~~~
+      |         times
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/syscalls/sysisatty.c: In function 'isatty':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/syscalls/sysisatty.c:12:10: warning: implicit declaration of function '_isatty'; did you mean 'isatty'? [-Wimplicit-function-declaration]
+   12 |   return _isatty (fd);
+      |          ^~~~~~~
+      |          isatty
+/tmp/ccHMaqBa.s: Assembler messages:
+/tmp/ccHMaqBa.s:72: Error: unrecognized opcode `msubr32 a3,a5,a4'
+/tmp/ccHMaqBa.s:93: Error: unrecognized opcode `maddr32 a6,t3,a2'
+make[6]: *** [lib_a-gmtime_r.o] Error 1
+make[6]: *** Waiting for unfinished jobs....
+/tmp/ccb7ac2c.s: Assembler messages:
+/tmp/ccb7ac2c.s:29: Error: unrecognized opcode `maddr32 a4,a3,a5'
+/tmp/ccb7ac2c.s:125: Error: unrecognized opcode `maddr32 a2,a1,t4'
+make[6]: *** [lib_a-tzcalc_limits.o] Error 1
+/tmp/ccQPC5Mh.s: Assembler messages:
+/tmp/ccQPC5Mh.s:284: Error: unrecognized opcode `minw s5,s5,s7'
+make[6]: *** [lib_a-mktime.o] Error 1
+riscv64-unknown-elf-ar: ../stdlib/lib.a: No such file or directory
+riscv64-unknown-elf-ar: ../search/lib.a: No such file or directory
+riscv64-unknown-elf-ar: ../stdio/lib.a: No such file or directory
+riscv64-unknown-elf-ar: ../time/lib.a: No such file or directory
+/tmp/cclfPLZb.s: Assembler messages:
+/tmp/cclfPLZb.s:278: Error: unrecognized opcode `maddr32 a5,a4,s4'
+make[6]: *** [lib_a-tzset_r.o] Error 1
+/tmp/ccg9ylC9.s: Assembler messages:
+/tmp/ccg9ylC9.s:653: Error: unrecognized opcode `maddr32 a5,a4,s9'
+/tmp/ccg9ylC9.s:687: Error: unrecognized opcode `maddr32 a5,s9,a3'
+/tmp/ccg9ylC9.s:714: Error: unrecognized opcode `maddr32 a4,a3,s9'
+make[6]: *** [lib_a-strptime.o] Error 1
+make[5]: *** [all-recursive] Error 1
+make[4]: *** [all-recursive] Error 1
+make[3]: *** [all] Error 2
+make[2]: *** [all-target-newlib] Error 2
+make[1]: *** [all] Error 2
+make: *** [stamps/build-newlib] Error 2
+make: *** Waiting for unfinished jobs....
+/tmp/cc0tKmHa.s: Assembler messages:
+/tmp/cc0tKmHa.s:620: Error: unrecognized opcode `maddr32 s10,a4,a5'
+make[6]: *** [lib_a-strftime.o] Error 1
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/linkr.c: In function '_link_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/linkr.c:53:14: warning: implicit declaration of function '_link'; did you mean 'link'? [-Wimplicit-function-declaration]
+   53 |   if ((ret = _link (old, new)) == -1 && errno != 0)
+      |              ^~~~~
+      |              link
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/mkdirr.c: In function '_mkdir_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/mkdirr.c:50:14: warning: implicit declaration of function '_mkdir'; did you mean 'mkdir'? [-Wimplicit-function-declaration]
+   50 |   if ((ret = _mkdir (path, mode)) == -1 && errno != 0)
+      |              ^~~~~~
+      |              mkdir
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/gettimeofdayr.c: In function '_gettimeofday_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/gettimeofdayr.c:62:14: warning: implicit declaration of function '_gettimeofday'; did you mean 'gettimeofday'? [-Wimplicit-function-declaration]
+   62 |   if ((ret = _gettimeofday (ptimeval, ptimezone)) == -1 && errno != 0)
+      |              ^~~~~~~~~~~~~
+      |              gettimeofday
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/fstatr.c: In function '_fstat_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/fstatr.c:55:14: warning: implicit declaration of function '_fstat'; did you mean 'fstat'? [-Wimplicit-function-declaration]
+   55 |   if ((ret = _fstat (fd, pstat)) == -1 && errno != 0)
+      |              ^~~~~~
+      |              fstat
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/closer.c: In function '_close_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/closer.c:47:14: warning: implicit declaration of function '_close'; did you mean 'close'? [-Wimplicit-function-declaration]
+   47 |   if ((ret = _close (fd)) == -1 && errno != 0)
+      |              ^~~~~~
+      |              close
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/openr.c: In function '_open_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/openr.c:50:14: warning: implicit declaration of function '_open'; did you mean 'open'? [-Wimplicit-function-declaration]
+   50 |   if ((ret = _open (file, flags, mode)) == -1 && errno != 0)
+      |              ^~~~~
+      |              open
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/lseekr.c: In function '_lseek_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/lseekr.c:49:14: warning: implicit declaration of function '_lseek'; did you mean 'lseek'? [-Wimplicit-function-declaration]
+   49 |   if ((ret = _lseek (fd, pos, whence)) == (_off_t) -1 && errno != 0)
+      |              ^~~~~~
+      |              lseek
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/isattyr.c: In function '_isatty_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/isattyr.c:52:14: warning: implicit declaration of function '_isatty'; did you mean 'isatty'? [-Wimplicit-function-declaration]
+   52 |   if ((ret = _isatty (fd)) == -1 && errno != 0)
+      |              ^~~~~~~
+      |              isatty
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/fcntlr.c: In function '_fcntl_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/fcntlr.c:51:14: warning: implicit declaration of function '_fcntl'; did you mean 'fcntl'? [-Wimplicit-function-declaration]
+   51 |   if ((ret = _fcntl (fd, cmd, arg)) == -1 && errno != 0)
+      |              ^~~~~~
+      |              fcntl
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/readr.c: In function '_read_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/readr.c:49:24: warning: implicit declaration of function '_read'; did you mean 'read'? [-Wimplicit-function-declaration]
+   49 |   if ((ret = (_ssize_t)_read (fd, buf, cnt)) == -1 && errno != 0)
+      |                        ^~~~~
+      |                        read
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/timesr.c: In function '_times_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/timesr.c:52:9: warning: implicit declaration of function '_times'; did you mean 'times'? [-Wimplicit-function-declaration]
+   52 |   ret = _times (ptms);
+      |         ^~~~~~
+      |         times
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/unlinkr.c: In function '_unlink_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/unlinkr.c:47:14: warning: implicit declaration of function '_unlink'; did you mean 'unlink'? [-Wimplicit-function-declaration]
+   47 |   if ((ret = _unlink (file)) == -1 && errno != 0)
+      |              ^~~~~~~
+      |              unlink
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/signalr.c: In function '_kill_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/signalr.c:53:14: warning: implicit declaration of function '_kill'; did you mean 'kill'? [-Wimplicit-function-declaration]
+   53 |   if ((ret = _kill (pid, sig)) == -1 && errno != 0)
+      |              ^~~~~
+      |              kill
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/signalr.c: In function '_getpid_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/signalr.c:83:9: warning: implicit declaration of function '_getpid'; did you mean 'getpid'? [-Wimplicit-function-declaration]
+   83 |   ret = _getpid ();
+      |         ^~~~~~~
+      |         getpid
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/writer.c: In function '_write_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/writer.c:49:24: warning: implicit declaration of function '_write'; did you mean 'write'? [-Wimplicit-function-declaration]
+   49 |   if ((ret = (_ssize_t)_write (fd, buf, cnt)) == -1 && errno != 0)
+      |                        ^~~~~~
+      |                        write
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/statr.c: In function '_stat_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/statr.c:55:14: warning: implicit declaration of function '_stat'; did you mean 'stat'? [-Wimplicit-function-declaration]
+   55 |   if ((ret = _stat (file, pstat)) == -1 && errno != 0)
+      |              ^~~~~
+      |              stat
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/execr.c: In function '_execve_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/execr.c:56:14: warning: implicit declaration of function '_execve'; did you mean 'fexecve'? [-Wimplicit-function-declaration]
+   56 |   if ((ret = _execve (name, argv, env)) == -1 && errno != 0)
+      |              ^~~~~~~
+      |              fexecve
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/execr.c: In function '_fork_r':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/reent/execr.c:88:14: warning: implicit declaration of function '_fork'; did you mean 'vfork'? [-Wimplicit-function-declaration]
+   88 |   if ((ret = _fork ()) == -1 && errno != 0)
+      |              ^~~~~
+      |              vfork
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/syscalls/sysisatty.c: In function 'isatty':
+/home/sinan/plct/origin-toochain/riscv-newlib/newlib/libc/syscalls/sysisatty.c:12:10: warning: implicit declaration of function '_isatty'; did you mean 'isatty'? [-Wimplicit-function-declaration]
+   12 |   return _isatty (fd);
+      |          ^~~~~~~
+      |          isatty
+riscv64-unknown-elf-ar: ../stdlib/lib.a: No such file or directory
+riscv64-unknown-elf-ar: ../search/lib.a: No such file or directory
+riscv64-unknown-elf-ar: ../stdio/lib.a: No such file or directory
+riscv64-unknown-elf-ar: ../time/lib.a: No such file or directory
+make[5]: *** [all-recursive] Error 1
+make[4]: *** [all-recursive] Error 1
+make[3]: *** [all] Error 2
+make[2]: *** [all-target-newlib] Error 2
+make[1]: *** [all] Error 2
+make: *** [stamps/build-newlib-nano] Error 2
