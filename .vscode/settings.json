@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "cfg1.C": "cpp",
+        "*.inc": "c"
+    }
+}
