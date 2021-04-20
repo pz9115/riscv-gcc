@@ -37,5 +37,6 @@ dg-init
 dg-runtest [lsort [glob -nocomplain $srcdir/$subdir/*.\[cS\]]] \
 	"" $DEFAULT_CFLAGS
 
+
 # All done.
 dg-finish

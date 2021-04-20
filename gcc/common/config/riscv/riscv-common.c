@@ -648,7 +648,8 @@ static const riscv_ext_flag_table_t riscv_ext_flag_table[] =
 
   {"p", &gcc_options::x_target_flags, MASK_RVP},
   {"zpn", &gcc_options::x_riscv_rvp_subext, MASK_ZPN},
-  {"zp64", &gcc_options::x_riscv_rvp_subext, MASK_ZP64},
+  {"zprv", &gcc_options::x_riscv_rvp_subext, MASK_ZPRV},
+  {"zpsf", &gcc_options::x_riscv_rvp_subext, MASK_ZPSF},
   {NULL, NULL, 0}
 };
 

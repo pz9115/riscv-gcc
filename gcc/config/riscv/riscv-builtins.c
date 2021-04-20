@@ -36,6 +36,9 @@ along with GCC; see the file COPYING3.  If not see
 #include "stor-layout.h"
 #include "expr.h"
 #include "langhooks.h"
+#include "function.h"
+#include "emit-rtl.h"
+#include "explow.h"
 
 /* Macros to create an enumeration identifier for a function prototype.  */
 #define RISCV_FTYPE_NAME0(A) RISCV_##A##_FTYPE
@@ -151,9 +154,6 @@ AVAIL (rvp_32, TARGET_RVP && !TARGET_64BIT)
    arguments intxlen_t */
 tree uint_xlen_node;
 tree int_xlen_node;
-
-/* In explow.c */
-extern rtx copy_to_mode_reg (machine_mode, rtx);
 
 /* Argument types.  */
 #define RISCV_ATYPE_VOID void_type_node
@@ -1862,77 +1862,52 @@ riscv_rvp_prepare_builtin_arg (struct expand_operand *op, tree exp, unsigned arg
 			   enum insn_code icode, bool has_target_p)
 {
   enum machine_mode mode = insn_data[icode].operand[argno + has_target_p].mode;
-  tree arg_tree = CALL_EXPR_ARG (exp, argno);
-  rtx arg = expand_normal (arg_tree);
+  rtx arg = expand_normal (CALL_EXPR_ARG (exp, argno));
   rtx tmp_rtx = gen_reg_rtx (mode);
 
-  // arg ==> scalar int mode
-
-  if (mode == GET_MODE (arg))
+  if (!(*insn_data[icode].operand[argno + has_target_p].predicate) (arg, mode))
     {
-    }
-  else if (!(*insn_data[icode].operand[argno + has_target_p].predicate) (arg, mode))
-    {
-      fprintf(stderr, "GET_MODE_SIZE (mode) = %u, GET_MODE_SIZE (GET_MODE (arg)) = %u\n", (unsigned) GET_MODE_SIZE (mode), (unsigned) GET_MODE_SIZE (GET_MODE (arg)));
       if (GET_MODE_SIZE (mode) < GET_MODE_SIZE (GET_MODE (arg)))
 	{
-    fprintf(stderr, "GET_MODE_SIZE (mode) < GET_MODE_SIZE (GET_MODE (arg))\n");
 	  tmp_rtx = simplify_gen_subreg (mode, arg, GET_MODE (arg), 0);
 	  arg = tmp_rtx;
 	}
-      else if (VECTOR_MODE_P (mode) && CONST_INT_P (arg))
+      else if (VECTOR_MODE_P (mode) && SCALAR_INT_MODE_P (GET_MODE(arg)))
 	{
-    fprintf(stderr, "VECTOR_MODE_P (mode) && CONST_INT_P (arg)!\n");
+    fprintf(stderr, "I AM HERE! \n");
 	  /* Handle CONST_INT covert to CONST_VECTOR.  */
 	  int nunits = GET_MODE_NUNITS (mode);
+    fprintf(stderr, "nunits : %d\n", nunits);
 	  int i, shift = 0;
 	  rtvec v = rtvec_alloc (nunits);
 	  HOST_WIDE_INT val = INTVAL (arg);
+    fprintf(stderr, "HOST_WIDE_INT val = INTVAL (arg) =  %u\n", val);
 	  enum machine_mode val_mode = GET_MODE_INNER (mode);
 	  int shift_acc = GET_MODE_BITSIZE (val_mode);
+    fprintf(stderr, "int shift_acc = GET_MODE_BITSIZE (val_mode) = %d\n", shift_acc);
 	  unsigned HOST_WIDE_INT mask = GET_MODE_MASK (val_mode);
+    fprintf(stderr, "unsigned HOST_WIDE_INT mask = GET_MODE_MASK (val_mode) = %u\n",  mask);
 	  HOST_WIDE_INT tmp_val = val;
+    fprintf(stderr, "HOST_WIDE_INT tmp_val = val = %u\n",  tmp_val);
 	  for (i = 0; i < nunits; i++)
 	    {
 	      tmp_val = (val >> shift) & mask;
-	      RTVEC_ELT (v, i) = GEN_INT (trunc_int_for_mode (tmp_val, val_mode));
+        fprintf(stderr, "Iter %d\ntmp_val = (val >> shift) & mask = %u\n",  i, tmp_val);
+	      RTVEC_ELT (v, i) = gen_int_mode (tmp_val, val_mode);
 	      shift += shift_acc;
+        fprintf(stderr, "shift += shift_acc = %d\n",  shift);
 	    }
 
 	  arg = copy_to_mode_reg (mode, gen_rtx_CONST_VECTOR (mode, v));
 	}
-  // if mode == scalar ?
-      else if ((GET_MODE_SIZE (mode) == GET_MODE_SIZE (GET_MODE (arg)))) 
-  {
-    // TODO: scalar int => gen_int_mode
-    // BUG: HOW TO convert a register holding a long integer to v8qi
-    // How to achieve 'HOST_WIDE_INT val = INTVAL (arg);' for a register ???
-    int nunits = GET_MODE_NUNITS (mode);
-	  int i, shift = 0;
-	  rtvec v = rtvec_alloc (nunits);
-	  HOST_WIDE_INT val = INTVAL (arg);
-	  enum machine_mode val_mode = GET_MODE_INNER (mode);
-	  int shift_acc = GET_MODE_BITSIZE (val_mode);
-	  unsigned HOST_WIDE_INT mask = GET_MODE_MASK (val_mode);
-	  HOST_WIDE_INT tmp_val = val;
-    fprintf(stderr, "tmp_val = %u)!\n", tmp_val);
-	  for (i = 0; i < nunits; i++)
-	    {
-	      tmp_val = (val >> shift) & mask;
-	      RTVEC_ELT (v, i) = GEN_INT (trunc_int_for_mode (tmp_val, val_mode));
-	      shift += shift_acc;
-	    }
-
-	  arg = copy_to_mode_reg (mode, gen_rtx_CONST_VECTOR (mode, v));
-  }
       else
 	{
-    fprintf(stderr, "else\n");
 	  convert_move (tmp_rtx, arg, false);
 	  arg = tmp_rtx;
 	}
     }
-  create_input_operand (op, arg, TYPE_MODE (TREE_TYPE (arg_tree)));
+
+  create_input_operand (op, arg, mode);
 }
 
 /* Take argument ARGNO from EXP's argument list and convert it into
