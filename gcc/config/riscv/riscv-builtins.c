@@ -1874,11 +1874,12 @@ riscv_rvp_prepare_builtin_arg (struct expand_operand *op, tree exp, unsigned arg
 	}
       else if (VECTOR_MODE_P (mode) && SCALAR_INT_MODE_P (GET_MODE(arg)))
 	{
-    fprintf(stderr, "I AM HERE! \n");
+    printf("GET_CODE %d\n", GET_CODE(arg));
 	  /* Handle CONST_INT covert to CONST_VECTOR.  */
 	  int nunits = GET_MODE_NUNITS (mode);
     fprintf(stderr, "nunits : %d\n", nunits);
 	  int i, shift = 0;
+    
 	  rtvec v = rtvec_alloc (nunits);
 	  HOST_WIDE_INT val = INTVAL (arg);
     fprintf(stderr, "HOST_WIDE_INT val = INTVAL (arg) =  %u\n", val);
