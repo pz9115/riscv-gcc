@@ -256,6 +256,15 @@
   [(set_attr "move_type" "move,const,load,store,mtc,fpload,mfc,fmove,fpstore")
    (set_attr "mode" "V2SI")])
 
+(define_insn "riscv_<uk>add<X:mode>3"
+  [(set (match_operand:X 0 "register_operand"                "=r")
+	(all_plus:X (match_operand:X 1 "register_operand" " r")
+		       (match_operand:X 2 "register_operand" " r")))]
+  "TARGET_RVP"
+  "<uk>add<bits>\t%0, %1, %2"
+  [(set_attr "type" "dalu")
+   (set_attr "mode" "<MODE>")])
+
 (define_insn "<uk>add<mode>3"
   [(set (match_operand:VECI 0 "register_operand"                "=r")
 	(all_plus:VECI (match_operand:VECI 1 "register_operand" " r")
@@ -6050,15 +6059,15 @@
   [(set_attr "type"   "dmac")
    (set_attr "mode" "DI")])
 
-(define_insn "riscv_bpick<GPR:mode>"
-  [(set (match_operand:GPR 0 "register_operand"       "=r")
-	  (ior:GPR
-	    (and:GPR
-	      (match_operand:GPR 1 "register_operand" " r")
-	      (match_operand:GPR 3 "register_operand" " r"))
-	    (and:GPR
-	      (match_operand:GPR 2 "register_operand" " r")
-	      (not:GPR (match_dup 3)))))]
+(define_insn "riscv_bpick<X:mode>"
+  [(set (match_operand:X 0 "register_operand"       "=r")
+	  (ior:X
+	    (and:X
+	      (match_operand:X 1 "register_operand" " r")
+	      (match_operand:X 3 "register_operand" " r"))
+	    (and:X
+	      (match_operand:X 2 "register_operand" " r")
+	      (not:X (match_dup 3)))))]
   "TARGET_RVP"
   "bpick\t%0, %1, %2, %3"
   [(set_attr "type"   "dbpick")
@@ -6960,17 +6969,17 @@
   [(set_attr "type"  "dalu")
    (set_attr "mode"  "V4HI")])
 
-(define_insn "riscv_rdov<GPR:mode>"
-  [(set (match_operand:GPR 0 "register_operand" "=r")
-	(unspec_volatile:GPR [(const_int 0)] UNSPEC_RDOV))]
+(define_insn "riscv_rdov<X:mode>"
+  [(set (match_operand:X 0 "register_operand" "=r")
+	(unspec_volatile:X [(const_int 0)] UNSPEC_RDOV))]
   "TARGET_RVP"
-  "csrrs\t%0, ucode, zero"
+  "csrrs\t%0, vxsat, zero"
   [(set_attr "mode" "<MODE>")])
 
-(define_insn "riscv_clrov<GPR:mode>"
-  [(unspec_volatile:GPR [(const_int 0)] UNSPEC_CLROV)]
+(define_insn "riscv_clrov<X:mode>"
+  [(unspec_volatile:X [(const_int 0)] UNSPEC_CLROV)]
   "TARGET_RVP"
-  "csrrci zero, ucode, 1"
+  "csrrci zero, vxsat, 1"
   [(set_attr "mode" "<MODE>")])
 
 (define_expand "kdmabb"
