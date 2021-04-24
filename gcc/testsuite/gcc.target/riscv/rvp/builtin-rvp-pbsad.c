@@ -1,7 +1,6 @@
 /* This is a test program for pbsad instruction.  */
-/* { dg-do run } */
+/* { dg-do run { target { riscv32*-*-* } }} */
 /* { dg-options "-O1" } */
-/* { dg-require-effective-target riscv32 } */
 
 #include <rvp_intrinsic.h>
 #include <stdlib.h>

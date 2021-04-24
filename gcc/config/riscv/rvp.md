@@ -222,7 +222,7 @@
 (define_expand "mov<mode>"
   [(set (match_operand:VQIHI 0 "")
 	(match_operand:VQIHI 1 ""))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
 {
   if (riscv_legitimize_move (<MODE>mode, operands[0], operands[1]))
     DONE;
@@ -233,7 +233,7 @@
 	(match_operand:VQIHI 1 "move_operand"         " r,T,m,rJ,*r*J,*m,*f,*f"))]
   "(register_operand (operands[0], <MODE>mode)
     || reg_or_0_operand (operands[1], <MODE>mode))
-   && (TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) "
+   && TARGET_ZPN "
   { return riscv_output_move (operands[0], operands[1]); }
   [(set_attr "move_type" "move,const,load,store,mtc,fpload,mfc,fpstore")
    (set_attr "mode" "<MODE>")])
@@ -241,7 +241,7 @@
 (define_expand "movv2si"
   [(set (match_operand:V2SI 0 "")
 	(match_operand:V2SI 1 ""))]
-  "TARGET_64BIT && (TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) "
+  "TARGET_64BIT && TARGET_ZPN "
 {
   if (riscv_legitimize_move (V2SImode, operands[0], operands[1]))
     DONE;
@@ -250,7 +250,7 @@
 (define_insn "*movv2si_64bit"
   [(set (match_operand:V2SI 0 "nonimmediate_operand" "=r,r,r, m,  *f,*f,*r,*f,*m")
 	(match_operand:V2SI 1 "move_operand"         " r,T,m,rJ,*r*J,*m,*f,*f,*f"))]
-  "TARGET_64BIT && (TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) 
+  "TARGET_64BIT && TARGET_ZPN 
    && (register_operand (operands[0], V2SImode)
        || reg_or_0_operand (operands[1], V2SImode))"
   { return riscv_output_move (operands[0], operands[1]); }
@@ -261,9 +261,9 @@
   [(set (match_operand:VECI 0 "register_operand"                "=r")
 	(all_plus:VECI (match_operand:VECI 1 "register_operand" " r")
 		       (match_operand:VECI 2 "register_operand" " r")))]
-  "TARGET_ZPN || TARGET_ZPRV"
+  "TARGET_ZPN"
   "<uk>add<bits>\t%0, %1, %2"
-  [(set_attr "type" "simd")
+  [(set_attr "type" "dalu")
    (set_attr "mode" "<MODE>")])
 
 (define_insn "dsp_<uk>adddi3"
@@ -282,7 +282,7 @@
 	    (plus:<VEXT> (sign_extend:<VEXT> (match_operand:VECI 1 "register_operand" " r"))
 			 (sign_extend:<VEXT> (match_operand:VECI 2 "register_operand" " r")))
 	    (const_int 1))))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "radd<bits>\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "<MODE>")])
@@ -294,7 +294,7 @@
 	    (plus:<VEXT> (zero_extend:<VEXT> (match_operand:VECI 1 "register_operand" " r"))
 			 (zero_extend:<VEXT> (match_operand:VECI 2 "register_operand" " r")))
 	    (const_int 1))))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "uradd<bits>\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "<MODE>")])
@@ -306,7 +306,7 @@
 	    (plus:TI (sign_extend:TI (match_operand:DI 1 "register_even_operand" " r"))
 		     (sign_extend:TI (match_operand:DI 2 "register_even_operand" " r")))
 	  (const_int 1))))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "radd64\t%0, %1, %2"
   [(set_attr "type" "dalu64")
    (set_attr "mode" "DI")])
@@ -318,7 +318,7 @@
 	    (plus:TI (zero_extend:TI (match_operand:DI 1 "register_even_operand" " r"))
 		     (zero_extend:TI (match_operand:DI 2 "register_even_operand" " r")))
 	  (const_int 1))))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "uradd64\t%0, %1, %2"
   [(set_attr "type" "dalu64")
    (set_attr "mode" "DI")])
@@ -327,7 +327,7 @@
   [(set (match_operand:VECI 0 "register_operand"                  "=r")
 	(all_minus:VECI (match_operand:VECI 1 "register_operand" " r")
 			(match_operand:VECI 2 "register_operand" " r")))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "<uk>sub<bits> %0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "<MODE>")])
@@ -336,7 +336,7 @@
   [(set (match_operand:DI 0 "register_even_operand"               "=r")
 	(all_minus:DI (match_operand:DI 1 "register_even_operand" " r")
 		      (match_operand:DI 2 "register_even_operand" " r")))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "<uk>sub64 %0, %1, %2"
   [(set_attr "type" "dalu64")
    (set_attr "mode" "DI")])
@@ -348,7 +348,7 @@
 	    (minus:<VEXT> (sign_extend:<VEXT> (match_operand:VECI 1 "register_operand" " r"))
 			  (sign_extend:<VEXT> (match_operand:VECI 2 "register_operand" " r")))
 	    (const_int 1))))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "rsub<bits>\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "<MODE>")])
@@ -360,7 +360,7 @@
 	    (minus:<VEXT> (zero_extend:<VEXT> (match_operand:VECI 1 "register_operand" " r"))
 			  (zero_extend:<VEXT> (match_operand:VECI 2 "register_operand" " r")))
 	    (const_int 1))))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "ursub<bits>\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "<MODE>")])
@@ -372,7 +372,7 @@
 	    (minus:TI (sign_extend:TI (match_operand:DI 1 "register_even_operand" " r"))
 		      (sign_extend:TI (match_operand:DI 2 "register_even_operand" " r")))
 	  (const_int 1))))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "rsub64\t%0, %1, %2"
   [(set_attr "type" "dalu64")
    (set_attr "mode" "DI")])
@@ -384,7 +384,7 @@
 	    (minus:TI (zero_extend:TI (match_operand:DI 1 "register_even_operand" " r"))
 		      (zero_extend:TI (match_operand:DI 2 "register_even_operand" " r")))
 	  (const_int 1))))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "ursub64\t%0, %1, %2"
   [(set_attr "type" "dalu64")
    (set_attr "mode" "DI")])
@@ -393,7 +393,7 @@
   [(match_operand:VSHI 0 "register_operand" "")
    (match_operand:VSHI 1 "register_operand" "")
    (match_operand:VSHI 2 "register_operand" "")]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
 {
   emit_insn (gen_cras<mode>_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -420,7 +420,7 @@
 		(match_dup 1)
 		(parallel [(const_int 1)]))))
 	  (const_int 1)))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "cras<bits>\t%0, %1, %2"
   [(set_attr "type" "dalu")]
 )
@@ -429,7 +429,7 @@
   [(match_operand:VSHI 0 "register_operand" "")
    (match_operand:VSHI 1 "register_operand" "")
    (match_operand:VSHI 2 "register_operand" "")]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
 {
   emit_insn (gen_kcras<mode>_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -456,7 +456,7 @@
 		(match_dup 1)
 		(parallel [(const_int 1)]))))
 	  (const_int 1)))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "kcras<bits>\t%0, %1, %2"
   [(set_attr "type" "dalu")]
 )
@@ -465,7 +465,7 @@
   [(match_operand:VSHI 0 "register_operand" "")
    (match_operand:VSHI 1 "register_operand" "")
    (match_operand:VSHI 2 "register_operand" "")]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
 {
   emit_insn (gen_ukcras<mode>_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -492,7 +492,7 @@
 		(match_dup 1)
 		(parallel [(const_int 1)]))))
 	  (const_int 1)))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "ukcras<bits>\t%0, %1, %2"
   [(set_attr "type" "dalu")]
 )
@@ -501,7 +501,7 @@
   [(match_operand:VSHI 0 "register_operand" "")
    (match_operand:VSHI 1 "register_operand" "")
    (match_operand:VSHI 2 "register_operand" "")]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
 {
   emit_insn (gen_crsa<mode>_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -528,7 +528,7 @@
 		(match_dup 2)
 		(parallel [(const_int 1)]))))
 	  (const_int 2)))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "crsa<bits>\t%0, %1, %2"
   [(set_attr "type" "dalu")]
 )
@@ -537,7 +537,7 @@
   [(match_operand:VSHI 0 "register_operand" "")
    (match_operand:VSHI 1 "register_operand" "")
    (match_operand:VSHI 2 "register_operand" "")]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
 {
   emit_insn (gen_kcrsa<mode>_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -564,7 +564,7 @@
 		(match_dup 2)
 		(parallel [(const_int 1)]))))
 	  (const_int 2)))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "kcrsa<bits>\t%0, %1, %2"
   [(set_attr "type" "dalu")]
 )
@@ -573,7 +573,7 @@
   [(match_operand:VSHI 0 "register_operand" "")
    (match_operand:VSHI 1 "register_operand" "")
    (match_operand:VSHI 2 "register_operand" "")]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
 {
   emit_insn (gen_ukcrsa<mode>_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -600,7 +600,7 @@
 		(match_dup 2)
 		(parallel [(const_int 1)]))))
 	  (const_int 2)))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "ukcrsa<bits>\t%0, %1, %2"
   [(set_attr "type" "dalu")]
 )
@@ -609,7 +609,7 @@
   [(match_operand:VSHI 0 "register_operand" "")
    (match_operand:VSHI 1 "register_operand" "")
    (match_operand:VSHI 2 "register_operand" "")]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
 {
   emit_insn (gen_rcras<mode>_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -646,7 +646,7 @@
 		      (parallel [(const_int 1)]))))
 		(const_int 1))))
 	  (const_int 1)))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "rcras<bits>\t%0, %1, %2"
   [(set_attr "type" "dalu")]
 )
@@ -655,7 +655,7 @@
   [(match_operand:VSHI 0 "register_operand" "")
    (match_operand:VSHI 1 "register_operand" "")
    (match_operand:VSHI 2 "register_operand" "")]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
 {
   emit_insn (gen_urcras<mode>_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -692,7 +692,7 @@
 		      (parallel [(const_int 1)]))))
 		(const_int 1))))
 	  (const_int 1)))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "urcras<bits>\t%0, %1, %2"
   [(set_attr "type" "dalu")]
 )
@@ -701,7 +701,7 @@
   [(match_operand:VSHI 0 "register_operand" "")
    (match_operand:VSHI 1 "register_operand" "")
    (match_operand:VSHI 2 "register_operand" "")]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
 {
   emit_insn (gen_rcrsa<mode>_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -738,7 +738,7 @@
 		      (parallel [(const_int 1)]))))
 		(const_int 1))))
 	  (const_int 2)))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "rcrsa<bits>\t%0, %1, %2"
   [(set_attr "type" "dalu")]
 )
@@ -747,7 +747,7 @@
   [(match_operand:VSHI 0 "register_operand" "")
    (match_operand:VSHI 1 "register_operand" "")
    (match_operand:VSHI 2 "register_operand" "")]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
 {
   emit_insn (gen_urcrsa<mode>_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -784,7 +784,7 @@
 		      (parallel [(const_int 1)]))))
 		(const_int 1))))
 	  (const_int 2)))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "urcrsa<bits>\t%0, %1, %2"
   [(set_attr "type" "dalu")]
 )
@@ -793,7 +793,7 @@
   [(match_operand:V4HI 0 "register_operand" "")
    (match_operand:V4HI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_cras16_64_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -815,7 +815,7 @@
 		      (vec_select:HI (match_dup 2) (parallel [(const_int 3)])))
 	    (plus:HI  (vec_select:HI (match_dup 1) (parallel [(const_int 3)]))
 		      (vec_select:HI (match_dup 2) (parallel [(const_int 2)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "cras16\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "V4HI")])
@@ -824,7 +824,7 @@
   [(match_operand:V4HI 0 "register_operand" "")
    (match_operand:V4HI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_kcras16_64_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -846,7 +846,7 @@
 			 (vec_select:HI (match_dup 2) (parallel [(const_int 3)])))
 	    (ss_plus:HI  (vec_select:HI (match_dup 1) (parallel [(const_int 3)]))
 			 (vec_select:HI (match_dup 2) (parallel [(const_int 2)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kcras16\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "V4HI")])
@@ -855,7 +855,7 @@
   [(match_operand:V4HI 0 "register_operand" "")
    (match_operand:V4HI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
 {
   emit_insn (gen_ukcras16_64_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -877,7 +877,7 @@
 			 (vec_select:HI (match_dup 2) (parallel [(const_int 3)])))
 	    (us_plus:HI  (vec_select:HI (match_dup 1) (parallel [(const_int 3)]))
 			 (vec_select:HI (match_dup 2) (parallel [(const_int 2)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "ukcras16\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "V4HI")])
@@ -886,7 +886,7 @@
   [(match_operand:V4HI 0 "register_operand" "")
    (match_operand:V4HI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_crsa16_64_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -908,7 +908,7 @@
 		     (vec_select:HI (match_dup 2) (parallel [(const_int 3)])))
 	    (minus:HI  (vec_select:HI (match_dup 1) (parallel [(const_int 3)]))
 		       (vec_select:HI (match_dup 2) (parallel [(const_int 2)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "crsa16\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "V4HI")])
@@ -917,7 +917,7 @@
   [(match_operand:V4HI 0 "register_operand" "")
    (match_operand:V4HI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_kcrsa16_64_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -939,7 +939,7 @@
 			(vec_select:HI (match_dup 2) (parallel [(const_int 3)])))
 	    (ss_minus:HI  (vec_select:HI (match_dup 1) (parallel [(const_int 3)]))
 			  (vec_select:HI (match_dup 2) (parallel [(const_int 2)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kcrsa16\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "V4HI")])
@@ -948,7 +948,7 @@
   [(match_operand:V4HI 0 "register_operand" "")
    (match_operand:V4HI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_ukcrsa16_64_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -970,7 +970,7 @@
 			(vec_select:HI (match_dup 2) (parallel [(const_int 3)])))
 	    (us_minus:HI  (vec_select:HI (match_dup 1) (parallel [(const_int 3)]))
 			  (vec_select:HI (match_dup 2) (parallel [(const_int 2)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "ukcrsa16\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "V4HI")])
@@ -979,7 +979,7 @@
   [(match_operand:V4HI 0 "register_operand" "")
    (match_operand:V4HI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_rcras16_64_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -1017,7 +1017,7 @@
 		  (sign_extend:SI (vec_select:HI (match_dup 1) (parallel [(const_int 3)])))
 		  (sign_extend:SI (vec_select:HI (match_dup 2) (parallel [(const_int 2)]))))
 		(const_int 1))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "rcras16\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "V4HI")])
@@ -1026,7 +1026,7 @@
   [(match_operand:V4HI 0 "register_operand" "")
    (match_operand:V4HI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_urcras16_64_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -1064,7 +1064,7 @@
 		  (zero_extend:SI (vec_select:HI (match_dup 1) (parallel [(const_int 3)])))
 		  (zero_extend:SI (vec_select:HI (match_dup 2) (parallel [(const_int 2)]))))
 		(const_int 1))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "urcras16\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "V4HI")])
@@ -1073,7 +1073,7 @@
   [(match_operand:V4HI 0 "register_operand" "")
    (match_operand:V4HI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_rcrsa16_64_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -1111,7 +1111,7 @@
 		  (sign_extend:SI (vec_select:HI (match_dup 1) (parallel [(const_int 3)])))
 		  (sign_extend:SI (vec_select:HI (match_dup 2) (parallel [(const_int 2)]))))
 		(const_int 1))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "rcrsa16\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "V4HI")])
@@ -1120,7 +1120,7 @@
   [(match_operand:V4HI 0 "register_operand" "")
    (match_operand:V4HI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_urcrsa16_64_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -1158,7 +1158,7 @@
 		  (zero_extend:SI (vec_select:HI (match_dup 1) (parallel [(const_int 3)])))
 		  (zero_extend:SI (vec_select:HI (match_dup 2) (parallel [(const_int 2)]))))
 		(const_int 1))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "urcrsa16\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "V4HI")])
@@ -1167,7 +1167,7 @@
   [(set (match_operand:VHI 0 "register_operand"                "")
 	(any_shift:VHI (match_operand:VHI 1 "register_operand" "")
 		       (match_operand:SI   2 "rimm4u_operand"  "")))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
 {
   if (operands[2] == const0_rtx)
     {
@@ -1180,7 +1180,7 @@
   [(set (match_operand:VHI 0 "register_operand"             "=  r, r")
 	(ashift:VHI (match_operand:VHI 1 "register_operand" "   r, r")
 		    (match_operand:SI 2  "rimm4u_operand"   " u04, r")))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "@
    slli16\t%0, %1, %2
    sll16\t%0, %1, %2"
@@ -1191,7 +1191,7 @@
   [(set (match_operand:VHI 0 "register_operand"                "=  r, r")
 	(ss_ashift:VHI (match_operand:VHI 1 "register_operand" "   r, r")
 		       (match_operand:SI 2  "rimm4u_operand"   " u04, r")))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "@
    kslli16\t%0, %1, %2
    ksll16\t%0, %1, %2"
@@ -1202,7 +1202,7 @@
   [(set (match_operand:V2SI 0 "register_operand"                 "=  r, r")
 	(ss_ashift:V2SI (match_operand:V2SI 1 "register_operand" "   r, r")
 			(match_operand:SI 2   "rimm5u_operand"   " u05, r")))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "@
    kslli32\t%0, %1, %2
    ksll32\t%0, %1, %2"
@@ -1213,7 +1213,7 @@
   [(set (match_operand:VHI 0 "register_operand"               "=   r, r")
 	(ashiftrt:VHI (match_operand:VHI 1 "register_operand" "    r, r")
 		      (match_operand:SI 2  "rimm4u_operand"   " u04, r")))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "@
    srai16\t%0, %1, %2
    sra16\t%0, %1, %2"
@@ -1225,7 +1225,7 @@
 	(unspec:VHI [(ashiftrt:VHI (match_operand:VHI 1 "register_operand" "   r, r")
 				   (match_operand:SI 2  "rimm4u_operand"   " u04, r"))]
 		     UNSPEC_ROUND))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "@
    srai16.u\t%0, %1, %2
    sra16.u\t%0, %1, %2"
@@ -1237,7 +1237,7 @@
 	(unspec:V2SI [(ashiftrt:V2SI (match_operand:V2SI 1 "register_operand" "   r, r")
 				     (match_operand:SI 2   "rimm5u_operand"   " u05, r"))]
 		       UNSPEC_ROUND))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "@
    srai32.u\t%0, %1, %2
    sra32.u\t%0, %1, %2"
@@ -1248,7 +1248,7 @@
   [(set (match_operand:VHI 0 "register_operand"               "=  r, r")
 	(lshiftrt:VHI (match_operand:VHI 1 "register_operand" "   r, r")
 		      (match_operand:SI 2  "rimm4u_operand"   " u04, r")))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "@
    srli16\t%0, %1, %2
    srl16\t%0, %1, %2"
@@ -1260,7 +1260,7 @@
 	(unspec:VHI [(lshiftrt:VHI (match_operand:VHI 1 "register_operand" "   r, r")
 				   (match_operand:SI 2  "rimm4u_operand"   " u04, r"))]
 		     UNSPEC_ROUND))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "@
    srli16.u\t%0, %1, %2
    srl16.u\t%0, %1, %2"
@@ -1272,7 +1272,7 @@
 	(unspec:V2SI [(lshiftrt:V2SI (match_operand:V2SI 1 "register_operand" "   r, r")
 				     (match_operand:SI 2   "rimm5u_operand"   " u05, r"))]
 		       UNSPEC_ROUND))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "@
    srli32.u\t%0, %1, %2
    srl32.u\t%0, %1, %2"
@@ -1288,7 +1288,7 @@
 			 (neg:X (match_dup 2)))
 	  (ss_ashift:VECI (match_dup 1)
 			  (match_dup 2))))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "kslra<VECI:bits>\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "<VECI:MODE>")])
@@ -1303,7 +1303,7 @@
 		        UNSPEC_ROUND)
 	  (ss_ashift:VECI (match_dup 1)
 			  (match_dup 2))))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "kslra<VECI:bits>.u\t%0, %1, %2"
   [(set_attr "type" "daluround")
    (set_attr "mode" "<VECI:MODE>")])
@@ -1312,7 +1312,7 @@
   [(set (match_operand:V2SI 0 "register_operand"                 "=  r, r")
 	(any_shift:V2SI (match_operand:V2SI 1 "register_operand" "   r, r")
 			(match_operand:SI   2  "rimm5u_operand"  " u05, r")))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "@
    <rvp_insn>i32\t%0, %1, %2
    <rvp_insn>32\t%0, %1, %2"
@@ -1324,7 +1324,7 @@
 	(unspec:VQIHI [(eq:VQIHI (match_operand:VQIHI 1 "register_operand" " r")
 				 (match_operand:VQIHI 2 "register_operand" " r"))]
 		       UNSPEC_VEC_COMPARE))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "cmpeq<bits>\t%0, %1, %2"
   [(set_attr "type" "dcmp")
    (set_attr "mode" "<MODE>")])
@@ -1334,7 +1334,7 @@
 	(unspec:VQIHI [(lt:VQIHI (match_operand:VQIHI 1 "register_operand" " r")
 				 (match_operand:VQIHI 2 "register_operand" " r"))]
 		       UNSPEC_VEC_COMPARE))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "scmplt<bits>\t%0, %1, %2"
   [(set_attr "type" "dcmp")
    (set_attr "mode" "<MODE>")])
@@ -1344,7 +1344,7 @@
 	(unspec:VQIHI [(le:VQIHI (match_operand:VQIHI 1 "register_operand" " r")
 				 (match_operand:VQIHI 2 "register_operand" " r"))]
 		       UNSPEC_VEC_COMPARE))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "scmple<bits>\t%0, %1, %2"
   [(set_attr "type" "dcmp")
    (set_attr "mode" "<MODE>")])
@@ -1354,7 +1354,7 @@
 	(unspec:VQIHI [(ltu:VQIHI (match_operand:VQIHI 1 "register_operand" " r")
 				  (match_operand:VQIHI 2 "register_operand" " r"))]
 		       UNSPEC_VEC_COMPARE))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "ucmplt<bits>\t%0, %1, %2"
   [(set_attr "type" "dcmp")
    (set_attr "mode" "SI")])
@@ -1364,7 +1364,7 @@
 	(unspec:VQIHI [(leu:VQIHI (match_operand:VQIHI 1 "register_operand" " r")
 				  (match_operand:VQIHI 2 "register_operand" " r"))]
 		       UNSPEC_VEC_COMPARE))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "ucmple<bits>\t%0, %1, %2"
   [(set_attr "type" "dcmp")
    (set_attr "mode" "<MODE>")])
@@ -1374,7 +1374,7 @@
 	(unspec:VQI [(match_operand:VQI 1 "register_operand" "   r")
 		      (match_operand:SI 2 "imm3u_operand"    " u03")]
 		     UNSPEC_CLIPS))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "sclip8\t%0, %1, %2"
   [(set_attr "type" "dclip")
    (set_attr "mode" "<MODE>")])
@@ -1384,7 +1384,7 @@
 	(unspec:VQI [(match_operand:VQI 1 "register_operand"  "   r")
 		     (match_operand:SI 2 "imm3u_operand"      " u03")]
 		     UNSPEC_CLIP))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "uclip8\t%0, %1, %2"
   [(set_attr "type" "dclip")
    (set_attr "mode" "<MODE>")])
@@ -1394,7 +1394,7 @@
 	(unspec:VHI [(match_operand:VHI 1 "register_operand" "    r")
 		     (match_operand:SI 2 "imm4u_operand"     " u04")]
 		     UNSPEC_CLIPS))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "sclip16\t%0, %1, %2"
   [(set_attr "type" "dclip")
    (set_attr "mode" "<MODE>")])
@@ -1404,7 +1404,7 @@
 	(unspec:VHI [(match_operand:VHI 1 "register_operand"  "    r")
 		      (match_operand:SI 2 "imm4u_operand"     " u04")]
 		     UNSPEC_CLIP))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "uclip16\t%0, %1, %2"
   [(set_attr "type" "dclip")
    (set_attr "mode" "<MODE>")])
@@ -1414,7 +1414,7 @@
 	(unspec:VHI [(match_operand:VHI 1 "register_operand" " r")
 		     (match_operand:VHI 2 "register_operand" " r")]
 		     UNSPEC_KHM))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "khm16\t%0, %1, %2"
   [(set_attr "type"   "dmul")
    (set_attr "mode" "<MODE>")])
@@ -1424,7 +1424,7 @@
 	(unspec:VHI [(match_operand:VHI 1 "register_operand" " r")
 		     (match_operand:VHI 2 "register_operand" " r")]
 		     UNSPEC_KHMX))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "khmx16\t%0, %1, %2"
   [(set_attr "type"   "dmul")
    (set_attr "mode" "<MODE>")])
@@ -1434,7 +1434,7 @@
 	(unspec:VQI [(match_operand:VQI 1 "register_operand" " r")
 		     (match_operand:VQI 2 "register_operand" " r")]
 		     UNSPEC_KHM))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "khm8\t%0, %1, %2"
   [(set_attr "type"   "dmul")
    (set_attr "mode" "<MODE>")])
@@ -1444,7 +1444,7 @@
 	(unspec:VQI [(match_operand:VQI 1 "register_operand" " r")
 		     (match_operand:VQI 2 "register_operand" " r")]
 		     UNSPEC_KHMX))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "khmx8\t%0, %1, %2"
   [(set_attr "type"   "dmul")
    (set_attr "mode" "<MODE>")])
@@ -1453,7 +1453,7 @@
   [(match_operand:V4QI 0 "register_operand" "")
    (match_operand:QI 1 "register_operand" "")
    (match_operand:SI 2 "immediate_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   HOST_WIDE_INT pos = INTVAL (operands[2]);
   if (pos > 4)
@@ -1469,7 +1469,7 @@
    (match_operand:V4QI 1 "register_operand" "")
    (match_operand:SI 2 "register_operand" "")
    (match_operand:SI 3 "const_int_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   if (INTVAL (operands[3]) > 3 || INTVAL (operands[3]) < 0)
     gcc_unreachable ();
@@ -1492,7 +1492,7 @@
 			 (match_operand:SI 1 "const_int_operand" "")
 			 (match_operand:SI 2 "insv_operand" ""))
 	(match_operand:SI 3 "register_operand" ""))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   if (INTVAL (operands[1]) != 8)
     FAIL;
@@ -1503,7 +1503,7 @@
 			 (const_int 8)
 			 (match_operand:SI 1 "insv_operand"        "i"))
 	(match_operand:SI 2                  "register_operand"    "r"))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "insb\t%0, %2, %v1"
   [(set_attr "type"  "dinsb")
    (set_attr "mode"  "SI")])
@@ -1513,7 +1513,7 @@
 			 (const_int 8)
 			 (match_operand:SI 1 "insv64_operand"     "i"))
 	(zero_extend:SI (match_operand:QI 2 "register_operand"    "r")))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "insb\t%0, %2, %v1"
   [(set_attr "type"  "dinsb")
    (set_attr "mode"  "SI")])
@@ -1526,9 +1526,9 @@
 		(and:SI (ashift:SI (match_operand:SI 2 "register_operand" "r")
 				   (const_int 16))
 			(const_int 16711680))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT && !reload_completed"
+  "TARGET_ZPN && !TARGET_64BIT && !reload_completed"
   "#"
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT && !reload_completed"
+  "TARGET_ZPN && !TARGET_64BIT && !reload_completed"
   [(const_int 1)]
 {
   rtx tmp = gen_reg_rtx (SImode);
@@ -1545,7 +1545,7 @@
 	    (match_operand:QI 1 "register_operand"  "    r,    r,    r,    r"))
 	  (match_operand:V4QI 2 "register_operand"  "    0,    0,    0,    0")
 	  (match_operand:SI 3 "imm_1_2_4_8_operand" " v01, v02, v04, v08")))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "@
    insb\t%0, %1, 0
    insb\t%0, %1, 1
@@ -1563,7 +1563,7 @@
 	      (parallel [(const_int 0)])))
 	  (match_operand:V4QI 2 "register_operand"     "   0,   0,   0,   0")
 	  (match_operand:SI 3 "imm_1_2_4_8_operand"    " v01, v02, v04, v08")))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "@
    insb\t%0, %1, 0
    insb\t%0, %1, 1
@@ -1585,7 +1585,7 @@
 	    (const_int 0)
 	    (const_int 0)])
 	  (const_int 1)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "andi\t%0, %1, 0xff"
   [(set_attr "type" "arith")
    (set_attr "mode" "V4QI")])
@@ -1603,7 +1603,7 @@
 	      (match_operand:V4QI 1 "register_operand" " r")
 	      (parallel [(const_int 0)])))
 	  (const_int 2)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "andi\t%0, %1, 0xff"
   [(set_attr "type" "arith")
    (set_attr "mode" "V4QI")])
@@ -1618,7 +1618,7 @@
 	    (const_int 0)
 	    (const_int 0)])
 	  (const_int 1)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "andi\t%0, %1, 0xff"
   [(set_attr "type" "arith")
    (set_attr "mode" "V4QI")])
@@ -1633,7 +1633,7 @@
 	    (const_int 0)])
 	  (vec_duplicate:V4QI (match_operand:QI 1 "register_operand" " r"))
 	  (const_int 2)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "andi\t%0, %1, 0xff"
   [(set_attr "type" "arith")
    (set_attr "mode" "V4QI")])
@@ -1642,7 +1642,7 @@
   [(match_operand:V8QI 0 "register_operand" "")
    (match_operand:QI 1 "register_operand" "")
    (match_operand:SI 2 "immediate_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   HOST_WIDE_INT pos = INTVAL (operands[2]);
   if (pos > 7)
@@ -1658,7 +1658,7 @@
    (match_operand:V8QI 1 "register_operand" "")
    (match_operand:SI 2 "register_operand" "")
    (match_operand:SI 3 "const_insb64_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   if (INTVAL (operands[3]) > 7 || INTVAL (operands[3]) < 0)
     gcc_unreachable ();
@@ -1683,7 +1683,7 @@
 	    (match_operand:QI 1 "register_operand"  "r"))
 	  (match_operand:V8QI 2 "register_operand"  "0")
 	  (match_operand:SI 3 "pwr_7_operand" " D07")))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   operands[3] = GEN_INT (exact_log2 (INTVAL (operands[3])));
   return "insb\t%0, %1, %3";
@@ -1696,7 +1696,7 @@
 			 (match_operand:SI 1 "const_int_operand" "")
 			 (match_operand:SI 2 "insv_operand" ""))
 	(match_operand:DI 3 "register_operand" ""))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   if (INTVAL (operands[1]) != 8)
     FAIL;
@@ -1707,7 +1707,7 @@
 			 (const_int 8)
 			 (match_operand:SI 1 "insv64_operand"      "i"))
 	(match_operand:DI 2                  "register_operand"    "r"))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "insb\t%0, %2, %v1"
   [(set_attr "type"  "dinsb")
    (set_attr "mode"  "DI")])
@@ -1717,7 +1717,7 @@
 			 (const_int 8)
 			 (match_operand:SI 1 "insv64_operand"     "i"))
 	(zero_extend:DI (match_operand:QI 2 "register_operand"    "r")))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "insb\t%0, %2, %v1"
   [(set_attr "type"  "dinsb")
    (set_attr "mode"  "DI")])
@@ -1731,7 +1731,7 @@
 	      (parallel [(const_int 0)])))
 	  (match_operand:V8QI 2 "register_operand"     "0")
 	  (match_operand:SI 3 "pwr_7_operand"    "D07")))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   operands[3] = GEN_INT (exact_log2 (INTVAL (operands[3])));
   return "insb\t%0, %1, %3";
@@ -1743,7 +1743,7 @@
   [(match_operand:VSHI 0 "register_operand" "")
    (match_operand:<VNHALF> 1 "register_operand" "")
    (match_operand:SI 2 "immediate_operand" "")]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
 {
   HOST_WIDE_INT pos = INTVAL (operands[2]);
   if (pos > 2)
@@ -1761,7 +1761,7 @@
 	    (match_operand:<VNHALF> 1 "register_operand" "   r,   r"))
 	  (match_operand:VSHI 2 "register_operand" "   r,   r")
 	  (match_operand:SI 3 "imm_1_2_operand"    " v01, v02")))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "@
    pktb<bits>\t%0, %2, %1
    pkbb<bits>\t%0, %1, %2"
@@ -1772,7 +1772,7 @@
   [(match_operand:VSHI 0 "register_operand")
    (match_operand:VSHI 1 "register_operand")
    (match_operand:VSHI 2 "register_operand")]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
 {
   emit_insn (gen_vec_merge<mode> (operands[0], operands[1], operands[2],
 				  GEN_INT (2), GEN_INT (0), GEN_INT (0)));
@@ -1786,7 +1786,7 @@
 			(const_int 65535))
 		(ashift:SI (match_operand:SI 2 "register_operand" "r")
 			   (const_int 16))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "pkbb16\t%0, %2, %1"
   [(set_attr "type" "dpack")
    (set_attr "mode"  "SI")])
@@ -1797,7 +1797,7 @@
 			   (const_int 16))
 		(and:SI (match_operand:SI 1 "register_operand" "r")
 			(const_int 65535))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "pkbb16\t%0, %2, %1"
   [(set_attr "type" "dpack")
    (set_attr "mode"  "SI")])
@@ -1807,7 +1807,7 @@
 	(ior:SI (zero_extend:SI	(match_operand:HI 1 "register_operand" "r"))
 		(ashift:SI (match_operand:SI 2 "register_operand" "r")
 			   (const_int 16))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "pkbb16\t%0, %2, %1"
   [(set_attr "type" "dpack")
    (set_attr "mode"  "SI")])
@@ -1817,7 +1817,7 @@
 	(ior:SI	(ashift:SI (match_operand:SI 2 "register_operand" "r")
 			   (const_int 16))
 		(zero_extend:SI (match_operand:HI 1 "register_operand" "r"))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "pkbb16\t%0, %2, %1"
   [(set_attr "type" "dpack")
    (set_attr "mode"  "SI")])
@@ -1828,7 +1828,7 @@
 	(ior:SI (and:SI (match_operand:SI 1 "register_operand" "r")
 			(const_int -65536))
 		(zero_extend:SI (match_operand:HI 2 "register_operand" "r"))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "pktb16\t%0, %1, %2"
   [(set_attr "type" "dpack")
    (set_attr "mode"  "SI")])
@@ -1839,7 +1839,7 @@
 			(const_int -65536))
 		(and:SI (match_operand:SI 2 "register_operand" "r")
 			(const_int 65535))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "pktb16\t%0, %1, %2"
   [(set_attr "type" "dpack")
    (set_attr "mode"  "SI")])
@@ -1849,7 +1849,7 @@
 			 (const_int 16 )
 			 (const_int 0))
 	(match_operand:SI 1 "register_operand"                  " r"))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "pktb16\t%0, %0, %1"
   [(set_attr "type" "dpack")
    (set_attr "mode"  "SI")])
@@ -1859,7 +1859,7 @@
 			 (const_int 16 )
 			 (const_int 0))
 	(zero_extend:SI (match_operand:HI 1 "register_operand"  " r")))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "pktb16\t%0, %0, %1"
   [(set_attr "type" "dpack")
    (set_attr "mode"  "SI")])
@@ -1870,7 +1870,7 @@
 			(const_int -65536))
 		(lshiftrt:SI (match_operand:SI 2 "register_operand" " r")
 			     (const_int 16))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "pktt16\t%0, %1, %2"
   [(set_attr "type" "dpack")
    (set_attr "mode"  "SI")])
@@ -1879,7 +1879,7 @@
   [(match_operand:VSHI 0 "register_operand")
    (match_operand:VSHI 1 "register_operand")
    (match_operand:VSHI 2 "register_operand")]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
 {
   emit_insn (gen_vec_merge<mode> (operands[0], operands[1], operands[2],
 				  GEN_INT (2), GEN_INT (0), GEN_INT (1)));
@@ -1891,7 +1891,7 @@
   [(match_operand:VSHI 0 "register_operand")
    (match_operand:VSHI 1 "register_operand")
    (match_operand:VSHI 2 "register_operand")]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
 {
   emit_insn (gen_vec_merge<mode> (operands[0], operands[1], operands[2],
 				  GEN_INT (2), GEN_INT (1), GEN_INT (1)));
@@ -1903,7 +1903,7 @@
   [(match_operand:VSHI 0 "register_operand")
    (match_operand:VSHI 1 "register_operand")
    (match_operand:VSHI 2 "register_operand")]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
 {
   emit_insn (gen_vec_merge<mode> (operands[0], operands[1], operands[2],
 				  GEN_INT (2), GEN_INT (1), GEN_INT (0)));
@@ -1919,7 +1919,7 @@
 	  (vec_duplicate:V2HI
 	    (match_operand:HI 2 "register_operand" "   r,   r"))
 	  (match_operand:SI 3 "imm_1_2_operand"    " v01, v02")))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "@
    pkbb16\t%0, %2, %1
    pkbb16\t%0, %1, %2"
@@ -1933,7 +1933,7 @@
 	  (match_operand:V2HI 1 "register_operand" "   r,   r")
 	  (match_operand:V2HI 2 "register_operand" "   r,   r")
 	  (match_operand:SI 3 "imm_1_2_operand"    " v01, v02")))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   const char *pats[] = { "pktb16\t%0, %2, %1",
 			 "pktb16\t%0, %1, %2" };
@@ -1952,7 +1952,7 @@
 	      (match_operand:V2HI 2 "register_operand"         "   r,   r,   r,   r")
 	      (parallel [(match_operand:SI 4 "imm_0_1_operand" " v00, v01, v00, v01")])))
 	  (match_operand:SI 3 "imm_1_2_operand"                " v01, v01, v02, v02")))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "@
    pkbb16\t%0, %2, %1
    pktb16\t%0, %2, %1
@@ -1971,7 +1971,7 @@
 	  (vec_duplicate:V2HI
 	    (match_operand:HI 2 "register_operand"              "   r,   r,   r,   r"))
 	  (match_operand:SI 3 "imm_1_2_operand"                 " v01, v01, v02, v02")))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "@
    pkbb16\t%0, %2, %1
    pkbt16\t%0, %2, %1
@@ -1992,7 +1992,7 @@
 	      (match_operand:VSHI 2 "register_operand"         "  r,   r,   r,   r,   r,   r,   r,   r")
 	      (parallel [(match_operand:SI 5 "imm_0_1_operand" "v00, v01, v01, v00, v00, v01, v01, v00")])))
 	  (match_operand:SI 3 "imm_1_2_operand"                "v01, v01, v01, v01, v02, v02, v02, v02")))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "@
    pkbb<bits>\t%0, %2, %1
    pktb<bits>\t%0, %2, %1
@@ -2010,7 +2010,7 @@
 	(vec_select:QI
 	  (match_operand:V4QI 1 "nonimmediate_operand" " r,m")
 	  (parallel [(const_int 0)])))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "@
    and\t%0,%1,0xff
    lbu\t%0,%1"
@@ -2023,7 +2023,7 @@
 	  (vec_select:QI
 	    (match_operand:V4QI 1 "register_operand" " r")
 	    (parallel [(const_int 3)]))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "srai\t%0, %1, 24"
   [(set_attr "mode" "V4QI")])
 
@@ -2033,7 +2033,7 @@
 	  (vec_select:QI
 	    (match_operand:V4QI 1 "nonimmediate_operand" "r,m")
 	    (parallel [(const_int 0)]))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "@
    and\t%0,%1,0xff
    lbu\t%0,%1"
@@ -2046,7 +2046,7 @@
 	  (vec_select:QI
 	    (match_operand:V4QI 1 "register_operand" " r")
 	    (parallel [(const_int 3)]))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "srli\t%0, %1, 24"
   [(set_attr "mode" "V4QI")])
 
@@ -2056,9 +2056,9 @@
 	  (vec_select:QI
 	    (match_operand:V4QI 1 "register_operand" " r")
 	     (parallel [(const_int 0)]))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT && !reload_completed"
+  "TARGET_ZPN && !TARGET_64BIT && !reload_completed"
   "#"
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT && !reload_completed"
+  "TARGET_ZPN && !TARGET_64BIT && !reload_completed"
   [(const_int 1)]
 {
   rtx tmp = gen_reg_rtx (QImode);
@@ -2073,7 +2073,7 @@
 	(vec_select:HI
 	  (match_operand:V2HI 1 "register_operand" " r")
 	  (parallel [(const_int 1)])))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "srai\t%0, %1, 16"
   [(set_attr "mode"    "V2HI")])
 
@@ -2083,7 +2083,7 @@
 	  (vec_select:HI
 	    (match_operand:V2HI 1 "register_operand" "r")
 	    (parallel [(const_int 1)]))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "srai\t%0, %1, 16"
 )
 
@@ -2093,7 +2093,7 @@
 	  (vec_select:HI
 	    (match_operand:V2HI 1 "register_operand" "r")
 	    (parallel [(const_int 1)]))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "srli\t%0, %1, 16"
 )
 
@@ -2101,7 +2101,7 @@
   [(match_operand:V4HI 0 "register_operand")
    (match_operand:V4HI 1 "register_operand")
    (match_operand:V4HI 2 "register_operand")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_vec_pkbb64 (operands[0], operands[1], operands[2]));
   DONE;
@@ -2115,7 +2115,7 @@
 			  (match_operand:V4HI 2 "register_operand" "r"))
 	 (parallel [(const_int 0) (const_int 4)
 		    (const_int 2) (const_int 6)])))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "pkbb16\t%0, %1, %2"
   [(set_attr "type" "dpack")
    (set_attr "mode" "V4HI")])
@@ -2124,7 +2124,7 @@
   [(match_operand:V4HI 0 "register_operand")
    (match_operand:V4HI 1 "register_operand")
    (match_operand:V4HI 2 "register_operand")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_vec_pkbt64 (operands[0], operands[1], operands[2]));
   DONE;
@@ -2138,7 +2138,7 @@
 			  (match_operand:V4HI 2 "register_operand" "r"))
 	 (parallel [(const_int 0) (const_int 5)
 		    (const_int 2) (const_int 7)])))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "pkbt16\t%0, %1, %2"
   [(set_attr "type" "dpack")
    (set_attr "mode" "V4HI")])
@@ -2147,7 +2147,7 @@
   [(match_operand:V4HI 0 "register_operand")
    (match_operand:V4HI 1 "register_operand")
    (match_operand:V4HI 2 "register_operand")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_vec_pktt64 (operands[0], operands[1], operands[2]));
   DONE;
@@ -2161,7 +2161,7 @@
 			  (match_operand:V4HI 2 "register_operand" "r"))
 	 (parallel [(const_int 1) (const_int 5)
 		    (const_int 3) (const_int 7)])))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "pktt16\t%0, %1, %2"
   [(set_attr "type" "dpack")
    (set_attr "mode" "V4HI")])
@@ -2170,7 +2170,7 @@
   [(match_operand:V4HI 0 "register_operand")
    (match_operand:V4HI 1 "register_operand")
    (match_operand:V4HI 2 "register_operand")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_vec_pktb64 (operands[0], operands[1], operands[2]));
   DONE;
@@ -2184,7 +2184,7 @@
 			  (match_operand:V4HI 2 "register_operand" "r"))
 	 (parallel [(const_int 1) (const_int 4)
 		    (const_int 3) (const_int 6)])))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "pktb16\t%0, %1, %2"
   [(set_attr "type" "dpack")
    (set_attr "mode" "V4HI")])
@@ -2193,7 +2193,7 @@
   [(set (match_operand:V2SI 0 "register_operand"                             "=r")
 	(mult:V2SI (any_extend:V2SI (match_operand:V2HI 1 "register_operand" "%r"))
 		   (any_extend:V2SI (match_operand:V2HI 2 "register_operand" " r"))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "<su>mul16\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "V2SI")])
@@ -2203,7 +2203,7 @@
 	(unspec:DI [(match_operand:SI 1 "register_operand" " r")
 		    (match_operand:SI 2 "register_operand" " r")]
 		    UNSPEC_SMUL16))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "smul16\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "DI")])
@@ -2213,7 +2213,7 @@
 	(unspec:DI [(match_operand:SI 1 "register_operand" " r")
 		    (match_operand:SI 2 "register_operand" " r")]
 		    UNSPEC_UMUL16))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "umul16\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "DI")])
@@ -2223,7 +2223,7 @@
 	(unspec:DI [(match_operand:SI 1 "register_operand" " r")
 		    (match_operand:SI 2 "register_operand" " r")]
 		    UNSPEC_SMUL8))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "smul8\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "V4HI")])
@@ -2233,7 +2233,7 @@
 	(unspec:DI [(match_operand:SI 1 "register_operand" " r")
 		    (match_operand:SI 2 "register_operand" " r")]
 		    UNSPEC_UMUL8))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "umul8\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "V4HI")])
@@ -2262,7 +2262,7 @@
 		  (match_dup 2)
 		  (parallel [(const_int 0)])))))
 	  (const_int 1)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "<su>mulx16\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "V2SI")])
@@ -2272,7 +2272,7 @@
 	(unspec:DI [(match_operand:SI 1 "register_operand" " r")
 		    (match_operand:SI 2 "register_operand" " r")]
 		    UNSPEC_SMULX16))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "smulx16\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "DI")])
@@ -2282,7 +2282,7 @@
 	(unspec:DI [(match_operand:SI 1 "register_operand" " r")
 		    (match_operand:SI 2 "register_operand" " r")]
 		    UNSPEC_UMULX16))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "umulx16\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "DI")])
@@ -2292,7 +2292,7 @@
 	(unspec:DI [(match_operand:SI 1 "register_operand" " r")
 		    (match_operand:SI 2 "register_operand" " r")]
 		    UNSPEC_SMULX8))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "smulx8\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "V4HI")])
@@ -2302,7 +2302,7 @@
 	(unspec:DI [(match_operand:SI 1 "register_operand" " r")
 		    (match_operand:SI 2 "register_operand" " r")]
 		    UNSPEC_UMULX8))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "umulx8\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "V4HI")])
@@ -2312,7 +2312,7 @@
 	(vec_select:V4QI
 	   (match_operand:V4QI 1 "register_operand" " r")
 	   (parallel [(const_int 0) (const_int 1) (const_int 0) (const_int 1)])))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "pkbb\t%0, %1, %1"
   [(set_attr "type" "dpack")
    (set_attr "mode"  "V4QI")])
@@ -2322,7 +2322,7 @@
 	(vec_select:V4QI
 	   (match_operand:V4QI 1 "register_operand" " r")
 	   (parallel [(const_int 2) (const_int 3) (const_int 2) (const_int 3)])))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "pktt\t%0, %1, %1"
   [(set_attr "type" "dpack")
    (set_attr "mode"  "V4QI")])
@@ -2330,7 +2330,7 @@
 (define_expand "vec_unpacks_lo_v4qi"
   [(match_operand:V2HI 0 "register_operand" "=r")
    (match_operand:V4QI 1 "register_operand" " r")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_sunpkd810 (operands[0], operands[1]));
   DONE;
@@ -2339,7 +2339,7 @@
 (define_expand "sunpkd810"
   [(match_operand:V2HI 0 "register_operand")
    (match_operand:V4QI 1 "register_operand")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_sunpkd810_imp (operands[0], operands[1]));
   DONE;
@@ -2360,7 +2360,7 @@
 		(match_dup 1)
 		(parallel [(const_int 0)]))))
 	  (const_int 2)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "<zs>unpkd810\t%0, %1"
   [(set_attr "type" "dpack")
    (set_attr "mode"  "V2HI")])
@@ -2379,7 +2379,7 @@
 		(match_dup 1)
 		(parallel [(const_int 1)]))))
 	  (const_int 1)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "<zs>unpkd810\t%0, %1"
   [(set_attr "type" "dpack")
    (set_attr "mode"  "V2HI")])
@@ -2387,7 +2387,7 @@
 (define_expand "sunpkd820"
   [(match_operand:V2HI 0 "register_operand")
    (match_operand:V4QI 1 "register_operand")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_sunpkd820_imp (operands[0], operands[1]));
   DONE;
@@ -2408,7 +2408,7 @@
 		(match_dup 1)
 		(parallel [(const_int 0)]))))
 	  (const_int 2)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "<zs>unpkd820\t%0, %1"
   [(set_attr "type" "dpack")
    (set_attr "mode"  "V2HI")])
@@ -2427,7 +2427,7 @@
 		(match_dup 1)
 		(parallel [(const_int 2)]))))
 	  (const_int 1)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "<zs>unpkd820\t%0, %1"
   [(set_attr "type" "dpack")
    (set_attr "mode"  "V2HI")])
@@ -2435,7 +2435,7 @@
 (define_expand "sunpkd830"
   [(match_operand:V2HI 0 "register_operand")
    (match_operand:V4QI 1 "register_operand")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_sunpkd830_imp (operands[0], operands[1]));
   DONE;
@@ -2456,7 +2456,7 @@
 		(match_dup 1)
 		(parallel [(const_int 0)]))))
 	  (const_int 2)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "<zs>unpkd830\t%0, %1"
   [(set_attr "type" "dpack")
    (set_attr "mode"  "V2HI")])
@@ -2475,7 +2475,7 @@
 		(match_dup 1)
 		(parallel [(const_int 3)]))))
 	  (const_int 1)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "<zs>unpkd830\t%0, %1"
   [(set_attr "type" "dpack")
    (set_attr "mode"  "V2HI")])
@@ -2483,7 +2483,7 @@
 (define_expand "sunpkd831"
   [(match_operand:V2HI 0 "register_operand")
    (match_operand:V4QI 1 "register_operand")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_sunpkd831_imp (operands[0], operands[1]));
   DONE;
@@ -2504,7 +2504,7 @@
 		(match_dup 1)
 		(parallel [(const_int 1)]))))
 	  (const_int 2)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "<zs>unpkd831\t%0, %1"
   [(set_attr "type" "dpack")
    (set_attr "mode"  "V2HI")])
@@ -2523,7 +2523,7 @@
 		(match_dup 1)
 		(parallel [(const_int 3)]))))
 	  (const_int 1)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "<zs>unpkd831\t%0, %1"
   [(set_attr "type" "dpack")
    (set_attr "mode"  "V2HI")])
@@ -2531,7 +2531,7 @@
 (define_expand "sunpkd832"
   [(match_operand:V2HI 0 "register_operand")
    (match_operand:V4QI 1 "register_operand")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_sunpkd832_imp (operands[0], operands[1]));
   DONE;
@@ -2552,7 +2552,7 @@
 		(match_dup 1)
 		(parallel [(const_int 2)]))))
 	  (const_int 2)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "<zs>unpkd832\t%0, %1"
   [(set_attr "type" "dpack")
    (set_attr "mode"  "V2HI")])
@@ -2571,7 +2571,7 @@
 		(match_dup 1)
 		(parallel [(const_int 3)]))))
 	  (const_int 1)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "<zs>unpkd832\t%0, %1"
   [(set_attr "type" "dpack")
    (set_attr "mode"  "V2HI")])
@@ -2579,7 +2579,7 @@
 (define_expand "zunpkd810"
   [(match_operand:V2HI 0 "register_operand")
    (match_operand:V4QI 1 "register_operand")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_zunpkd810_imp (operands[0], operands[1]));
   DONE;
@@ -2589,7 +2589,7 @@
 (define_expand "zunpkd820"
   [(match_operand:V2HI 0 "register_operand")
    (match_operand:V4QI 1 "register_operand")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_zunpkd820_imp (operands[0], operands[1]));
   DONE;
@@ -2599,7 +2599,7 @@
 (define_expand "zunpkd830"
   [(match_operand:V2HI 0 "register_operand")
    (match_operand:V4QI 1 "register_operand")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_zunpkd830_imp (operands[0], operands[1]));
   DONE;
@@ -2609,7 +2609,7 @@
 (define_expand "zunpkd831"
   [(match_operand:V2HI 0 "register_operand")
    (match_operand:V4QI 1 "register_operand")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_zunpkd831_imp (operands[0], operands[1]));
   DONE;
@@ -2619,7 +2619,7 @@
 (define_expand "zunpkd832"
   [(match_operand:V2HI 0 "register_operand")
    (match_operand:V4QI 1 "register_operand")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_zunpkd832_imp (operands[0], operands[1]));
   DONE;
@@ -2632,7 +2632,7 @@
 	  (any_extend:V8HI (match_operand:V8QI 1 "register_operand" "r"))
 	  (parallel [(const_int 0) (const_int 1)
 		     (const_int 4) (const_int 5)])))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "<zs>unpkd810\t%0, %1"
   [(set_attr "type" "dpack")
    (set_attr "mode"  "V4HI")])
@@ -2643,7 +2643,7 @@
 	  (any_extend:V8HI (match_operand:V8QI 1 "register_operand" "r"))
 	  (parallel [(const_int 0) (const_int 2)
 		     (const_int 4) (const_int 6)])))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "<zs>unpkd820\t%0, %1"
   [(set_attr "type" "dpack")
    (set_attr "mode"  "V4HI")])
@@ -2654,7 +2654,7 @@
 	  (any_extend:V8HI (match_operand:V8QI 1 "register_operand" "r"))
 	  (parallel [(const_int 0) (const_int 3)
 		     (const_int 4) (const_int 7)])))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "<zs>unpkd830\t%0, %1"
   [(set_attr "type" "dpack")
    (set_attr "mode"  "V4HI")])
@@ -2665,7 +2665,7 @@
 	  (any_extend:V8HI (match_operand:V8QI 1 "register_operand" "r"))
 	  (parallel [(const_int 1) (const_int 3)
 		     (const_int 5) (const_int 7)])))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "<zs>unpkd831\t%0, %1"
   [(set_attr "type" "dpack")
    (set_attr "mode"  "V4HI")])
@@ -2676,7 +2676,7 @@
 	  (any_extend:V8HI (match_operand:V8QI 1 "register_operand" "r"))
 	  (parallel [(const_int 2) (const_int 3)
 		     (const_int 6) (const_int 7)])))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "<zs>unpkd832\t%0, %1"
   [(set_attr "type" "dpack")
    (set_attr "mode"  "V4HI")])
@@ -2685,7 +2685,7 @@
   [(match_operand:SI 0 "register_operand" "")
    (match_operand:V2HI 1 "register_operand" "")
    (match_operand:V2HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_mulhisi3v (operands[0], operands[1], operands[2],
 			    GEN_INT (0), GEN_INT (0)));
@@ -2697,7 +2697,7 @@
   [(match_operand:SI 0 "register_operand" "")
    (match_operand:V2HI 1 "register_operand" "")
    (match_operand:V2HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_mulhisi3v (operands[0], operands[1], operands[2],
 			    GEN_INT (0), GEN_INT (1)));
@@ -2709,7 +2709,7 @@
   [(match_operand:SI 0 "register_operand" "")
    (match_operand:V2HI 1 "register_operand" "")
    (match_operand:V2HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_mulhisi3v (operands[0], operands[1], operands[2],
 			    GEN_INT (1), GEN_INT (1)));
@@ -2727,7 +2727,7 @@
 	  (sign_extend:SI (vec_select:HI
 	       (match_operand:V2HI 2 "register_operand"         "   r,   r,   r,   r")
 	       (parallel [(match_operand:SI 4 "imm_0_1_operand" " v00, v01, v01, v00")])))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   const char *pats[] = { "smbb16\t%0, %1, %2",
 			 "smbt16\t%0, %1, %2",
@@ -2742,7 +2742,7 @@
   [(match_operand:V2SI 0 "register_operand" "")
    (match_operand:V4HI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_mulv2hiv2si3v (operands[0], operands[1], operands[2],
 				GEN_INT (0), GEN_INT (2), GEN_INT (0), GEN_INT (2)));
@@ -2754,7 +2754,7 @@
   [(match_operand:V2SI 0 "register_operand" "")
    (match_operand:V4HI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_mulv2hiv2si3v (operands[0], operands[1], operands[2],
 				GEN_INT (0), GEN_INT (2), GEN_INT (1), GEN_INT (3)));
@@ -2766,7 +2766,7 @@
   [(match_operand:V2SI 0 "register_operand" "")
    (match_operand:V4HI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_mulv2hiv2si3v (operands[0], operands[1], operands[2],
 				GEN_INT (1), GEN_INT (3), GEN_INT (1), GEN_INT (3)));
@@ -2787,7 +2787,7 @@
 	   (match_operand:V4HI 2 "register_operand" "r, r, r")
 	   (parallel [(match_operand:SI 5 "imm2u_operand" " v00, v01, v01")
 		      (match_operand:SI 6 "imm2u_operand" " v02, v03, v03")])))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "@
    smbb16\t%0, %1, %2
    smbt16\t%0, %1, %2
@@ -2799,7 +2799,7 @@
   [(match_operand:DI 0 "register_operand" "")
    (match_operand:V2SI 1 "register_operand" "")
    (match_operand:V2SI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_mulsidi3v (operands[0], operands[1], operands[2],
 			    GEN_INT (0), GEN_INT (0)));
@@ -2811,7 +2811,7 @@
   [(match_operand:DI 0 "register_operand" "")
    (match_operand:V2SI 1 "register_operand" "")
    (match_operand:V2SI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_mulsidi3v (operands[0], operands[1], operands[2],
 			    GEN_INT (0), GEN_INT (1)));
@@ -2823,7 +2823,7 @@
   [(match_operand:DI 0 "register_operand" "")
    (match_operand:V2SI 1 "register_operand" "")
    (match_operand:V2SI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_mulsidi3v (operands[0], operands[1], operands[2],
 			    GEN_INT (1), GEN_INT (1)));
@@ -2841,7 +2841,7 @@
 	  (sign_extend:DI (vec_select:SI
 	       (match_operand:V2SI 2 "register_operand"         "   r,   r,   r,   r")
 	       (parallel [(match_operand:SI 4 "imm_0_1_operand" " v00, v01, v01, v00")])))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   const char *pats[] = { "smbb32\t%0, %1, %2",
 			 "smbt32\t%0, %1, %2",
@@ -2857,7 +2857,7 @@
    (match_operand:SI 1 "register_operand" "")
    (match_operand:V2HI 2 "register_operand" "")
    (match_operand:V2HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_kma_internal (operands[0], operands[2], operands[3],
 			       GEN_INT (0), GEN_INT (0),
@@ -2871,7 +2871,7 @@
    (match_operand:SI 1 "register_operand" "")
    (match_operand:V2HI 2 "register_operand" "")
    (match_operand:V2HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_kma_internal (operands[0], operands[2], operands[3],
 			       GEN_INT (0), GEN_INT (1),
@@ -2885,7 +2885,7 @@
    (match_operand:SI 1 "register_operand" "")
    (match_operand:V2HI 2 "register_operand" "")
    (match_operand:V2HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_kma_internal (operands[0], operands[2], operands[3],
 			       GEN_INT (1), GEN_INT (1),
@@ -2907,7 +2907,7 @@
 	        (match_operand:V2HI 2 "register_operand"         "   r,   r,   r,   r")
 	        (parallel [(match_operand:SI 4 "imm_0_1_operand" " v00, v01, v01, v00")]))))
 	  (match_operand:SI 5 "register_operand"                 "   0,   0,   0,   0")))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   const char *pats[] = { "kmabb\t%0, %1, %2",
 			 "kmabt\t%0, %1, %2",
@@ -2923,7 +2923,7 @@
    (match_operand:V2SI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")
    (match_operand:V4HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_kma64_internal (operands[0], operands[2], operands[3],
 				 GEN_INT (0), GEN_INT (2), GEN_INT (0),
@@ -2937,7 +2937,7 @@
    (match_operand:V2SI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")
    (match_operand:V4HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_kma64_internal (operands[0], operands[2], operands[3],
 				 GEN_INT (0), GEN_INT (2), GEN_INT (1),
@@ -2951,7 +2951,7 @@
    (match_operand:V2SI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")
    (match_operand:V4HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_kma64_internal (operands[0], operands[2], operands[3],
 				 GEN_INT (1), GEN_INT (3), GEN_INT (1),
@@ -2975,7 +2975,7 @@
 	        (parallel [(match_operand:SI 5 "imm_0_1_operand" " v00, v01, v01, v00")
 			   (match_operand:SI 6 "imm_2_3_operand" " v02, v03, v03, v02")]))))
 	  (match_operand:V2SI 7 "register_operand"               "   0,   0,   0,   0")))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "@
   kmabb\t%0, %1, %2
   kmabt\t%0, %1, %2
@@ -2989,7 +2989,7 @@
    (match_operand:DI 1 "register_operand" "")
    (match_operand:V2SI 2 "register_operand" "")
    (match_operand:V2SI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_kma32_internal (operands[0], operands[2], operands[3],
 				 GEN_INT (0), GEN_INT (0),
@@ -3003,7 +3003,7 @@
    (match_operand:DI 1 "register_operand" "")
    (match_operand:V2SI 2 "register_operand" "")
    (match_operand:V2SI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_kma32_internal (operands[0], operands[2], operands[3],
 				 GEN_INT (0), GEN_INT (1),
@@ -3017,7 +3017,7 @@
    (match_operand:DI 1 "register_operand" "")
    (match_operand:V2SI 2 "register_operand" "")
    (match_operand:V2SI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_kma32_internal (operands[0], operands[2], operands[3],
 				 GEN_INT (1), GEN_INT (1),
@@ -3039,7 +3039,7 @@
 	        (match_operand:V2SI 2 "register_operand"         "   r,   r,   r,   r")
 	        (parallel [(match_operand:SI 4 "imm_0_1_operand" " v00, v01, v01, v00")]))))
 	  (match_operand:DI 5 "register_operand"                 "   0,   0,   0,   0")))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "@
   kmabb32\t%0, %1, %2
   kmabt32\t%0, %1, %2
@@ -3052,7 +3052,7 @@
   [(match_operand:SI 0 "register_operand" "")
    (match_operand:V2HI 1 "register_operand" "")
    (match_operand:V2HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_smds_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -3076,7 +3076,7 @@
 	    (sign_extend:SI (vec_select:HI
 			      (match_dup 2)
 			      (parallel [(const_int 0)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
 }
 [(set_attr "type" "dmac")])
@@ -3098,7 +3098,7 @@
 	    (sign_extend:DI (vec_select:SI
 			      (match_dup 2)
 			      (parallel [(const_int 0)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "smds32\t%0, %1, %2"
   [(set_attr "type" "dmac")])
 
@@ -3119,7 +3119,7 @@
 	    (sign_extend:V2SI (vec_select:V2HI
 				(match_dup 2)
 				(parallel [(const_int 0) (const_int 2)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "smds\t%0, %1, %2"
   [(set_attr "type" "dmac")])
 
@@ -3127,7 +3127,7 @@
   [(match_operand:SI 0 "register_operand" "")
    (match_operand:V2HI 1 "register_operand" "")
    (match_operand:V2HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_smdrs_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -3151,7 +3151,7 @@
 	    (sign_extend:SI (vec_select:HI
 			      (match_dup 2)
 			      (parallel [(const_int 1)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
 }
 [(set_attr "type" "dmac")])
@@ -3173,7 +3173,7 @@
 	    (sign_extend:DI (vec_select:SI
 			      (match_dup 2)
 			      (parallel [(const_int 1)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "smdrs32\t%0, %1, %2"
   [(set_attr "type" "dmac")])
 
@@ -3194,7 +3194,7 @@
 	    (sign_extend:V2SI (vec_select:V2HI
 				(match_dup 2)
 				(parallel [(const_int 1) (const_int 3)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "smdrs\t%0, %1, %2"
   [(set_attr "type" "dmac")])
 
@@ -3202,7 +3202,7 @@
   [(match_operand:SI 0 "register_operand" "")
    (match_operand:V2HI 1 "register_operand" "")
    (match_operand:V2HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_smxdsv_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -3227,7 +3227,7 @@
 	    (sign_extend:SI (vec_select:HI
 			      (match_dup 2)
 			      (parallel [(const_int 1)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
 }
 [(set_attr "type" "dmac")])
@@ -3249,7 +3249,7 @@
 	    (sign_extend:DI (vec_select:SI
 			      (match_dup 2)
 			      (parallel [(const_int 1)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "smxds32\t%0, %1, %2"
   [(set_attr "type" "dmac")])
 
@@ -3270,7 +3270,7 @@
 	    (sign_extend:V2SI (vec_select:V2HI
 				(match_dup 2)
 				(parallel [(const_int 1) (const_int 3)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "smxds\t%0, %1, %2"
   [(set_attr "type" "dmac")])
 
@@ -3287,7 +3287,7 @@
 		(vec_select:HI
 		  (match_dup 2)
 		  (parallel [(const_int 1)])))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "smal\t%0, %1, %2"
   [(set_attr "type" "dmac")
    (set_attr "mode" "DI")])
@@ -3304,7 +3304,7 @@
 	      (vec_select:HI
 		(match_dup 2)
 		(parallel [(const_int 1)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "smal\t%0, %1, %2"
   [(set_attr "type" "dmac")
    (set_attr "mode" "DI")])
@@ -3322,7 +3322,7 @@
 		(vec_select:HI
 		  (match_dup 2)
 		  (parallel [(const_int 0)])))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "smal\t%0, %1, %2"
   [(set_attr "type" "dmac")
    (set_attr "mode" "DI")])
@@ -3339,7 +3339,7 @@
 	      (vec_select:HI
 		(match_dup 2)
 		(parallel [(const_int 0)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "smal\t%0, %1, %2"
   [(set_attr "type" "dmac")
    (set_attr "mode" "DI")])
@@ -3358,7 +3358,7 @@
 		  (match_dup 2)
 		  (parallel [(const_int 1)])))))
 	  (match_operand:DI 1 "register_even_operand"           " r")))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "smal\t%0, %1, %2"
   [(set_attr "type" "dmac")
    (set_attr "mode" "DI")])
@@ -3376,7 +3376,7 @@
 		(match_dup 2)
 		(parallel [(const_int 1)]))))
 	  (match_operand:DI 1 "register_even_operand"         " r")))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "smal\t%0, %1, %2"
   [(set_attr "type" "dmac")
    (set_attr "mode" "DI")])
@@ -3395,7 +3395,7 @@
 		  (match_dup 2)
 		  (parallel [(const_int 0)])))))
 	  (match_operand:DI 1 "register_even_operand"           " r")))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "smal\t%0, %1, %2"
   [(set_attr "type" "dmac")
    (set_attr "mode" "DI")])
@@ -3413,7 +3413,7 @@
 		(match_dup 2)
 		(parallel [(const_int 0)]))))
 	  (match_operand:DI 1 "register_even_operand"         " r")))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "smal\t%0, %1, %2"
   [(set_attr "type" "dmac")
    (set_attr "mode" "DI")])
@@ -3436,7 +3436,7 @@
 		  (vec_select:HI (match_dup 2) (parallel [(const_int 2)])))
 		(sign_extend:SI
 		  (vec_select:HI (match_dup 2) (parallel [(const_int 3)]))))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "smal\t%0, %1, %2"
   [(set_attr "type" "dmac")
    (set_attr "mode" "DI")])
@@ -3444,7 +3444,7 @@
 (define_insn "dsp_extendqihi2"
   [(set (match_operand:HI 0 "register_operand"                 "=r")
 	(sign_extend:HI (match_operand:QI 1 "register_operand" " r")))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "sunpkd820\t%0, %1"
   [(set_attr "type" "dpack")
    (set_attr "mode" "HI")])
@@ -3457,7 +3457,7 @@
 	      (sign_extend:DI (match_operand:SI 1 "register_operand" " r"))
 	      (sign_extend:DI (match_operand:SI 2 "register_operand" " r")))
 	    (const_int 32))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "smmul\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "HI")])
@@ -3471,7 +3471,7 @@
 			  (sign_extend:DI (match_operand:SI 2 "register_operand" " r")))]
 		       UNSPEC_ROUND)
 	    (const_int 32))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "smmul.u\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "HI")])
@@ -3483,7 +3483,7 @@
 	    (mult:V2DI (sign_extend:V2DI (match_operand:V2SI 1 "register_operand" " r"))
 		       (sign_extend:V2DI (match_operand:V2SI 2 "register_operand" " r")))
 	    (const_int 32))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "smmul\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "V2SI")])
@@ -3497,7 +3497,7 @@
 			    (sign_extend:V2DI (match_operand:V2SI 2 "register_operand" " r")))]
 			  UNSPEC_ROUND)
 	    (const_int 32))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "smmul.u\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "DI")])
@@ -3511,7 +3511,7 @@
 		(sign_extend:DI (match_operand:SI 2 "register_operand" " r"))
 		(sign_extend:DI (match_operand:SI 3 "register_operand" " r")))
 	      (const_int 32)))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "kmmac\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -3524,7 +3524,7 @@
 		(sign_extend:V2DI (match_operand:V2SI 2 "register_operand" " r"))
 		(sign_extend:V2DI (match_operand:V2SI 3 "register_operand" " r")))
 	      (const_int 32)))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kmmac\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -3538,7 +3538,7 @@
 			    (sign_extend:DI (match_operand:SI 3 "register_operand" " r")))]
 			 UNSPEC_ROUND)
 	      (const_int 32)))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "kmmac.u\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -3552,7 +3552,7 @@
 			    (sign_extend:V2DI (match_operand:V2SI 3 "register_operand" " r")))]
 			 UNSPEC_ROUND)
 	      (const_int 32)))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kmmac.u\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -3565,7 +3565,7 @@
 		(sign_extend:DI (match_operand:SI 2 "register_operand" " r"))
 		(sign_extend:DI (match_operand:SI 3 "register_operand" " r")))
 	      (const_int 32)))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "kmmsb\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -3578,7 +3578,7 @@
 		(sign_extend:V2DI (match_operand:V2SI 2 "register_operand" " r"))
 		(sign_extend:V2DI (match_operand:V2SI 3 "register_operand" " r")))
 	      (const_int 32)))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kmmsb\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -3592,7 +3592,7 @@
 			    (sign_extend:DI (match_operand:SI 3 "register_operand" " r")))]
 			 UNSPEC_ROUND)
 	      (const_int 32)))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "kmmsb.u\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -3606,7 +3606,7 @@
 			    (sign_extend:V2DI (match_operand:V2SI 3 "register_operand" " r")))]
 			 UNSPEC_ROUND)
 	      (const_int 32)))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kmmsb.u\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -3618,7 +3618,7 @@
 	      (mult:DI (sign_extend:DI (match_operand:SI 1 "register_operand" " r")) (const_int 2))
 	      (mult:DI (sign_extend:DI (match_operand:SI 2 "register_operand" " r")) (const_int 2)))
 	    (const_int 32))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "kwmmul\t%0, %1, %2"
   [(set_attr "type" "dmul")])
 
@@ -3630,7 +3630,7 @@
 	      (mult:V2DI (sign_extend:V2DI (match_operand:V2SI 1 "register_operand" " r")) (const_int 2))
 	      (mult:V2DI (sign_extend:V2DI (match_operand:V2SI 2 "register_operand" " r")) (const_int 2)))
 	    (const_int 32))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kwmmul\t%0, %1, %2"
   [(set_attr "type" "dmul")])
 
@@ -3644,7 +3644,7 @@
 		(mult:DI (sign_extend:DI (match_operand:SI 2 "register_operand" " r")) (const_int 2)))]
 	      UNSPEC_ROUND)
 	    (const_int 32))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "kwmmul.u\t%0, %1, %2"
   [(set_attr "type" "dmul")])
 
@@ -3658,7 +3658,7 @@
 		(mult:V2DI (sign_extend:V2DI (match_operand:V2SI 2 "register_operand" " r")) (const_int 2)))]
 	      UNSPEC_ROUND)
 	    (const_int 32))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kwmmul.u\t%0, %1, %2"
   [(set_attr "type" "dmul")])
 
@@ -3666,7 +3666,7 @@
   [(match_operand:SI 0 "register_operand" "")
    (match_operand:SI 1 "register_operand" "")
    (match_operand:V2HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_smulhisi3_highpart_1 (operands[0], operands[1], operands[2], GEN_INT (0)));
   DONE;
@@ -3677,7 +3677,7 @@
   [(match_operand:SI 0 "register_operand" "")
    (match_operand:SI 1 "register_operand" "")
    (match_operand:V2HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_smulhisi3_highpart_1 (operands[0], operands[1], operands[2], GEN_INT (1)));
   DONE;
@@ -3695,7 +3695,7 @@
 		  (match_operand:V2HI 2 "register_operand"           "  r,   r")
 		  (parallel [(match_operand:SI 3 "imm_0_1_operand"   "v00, v01")]))))
 	    (const_int 16))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   const char *pats[] = { "smmwb\t%0, %1, %2",
 			 "smmwt\t%0, %1, %2" };
@@ -3714,7 +3714,7 @@
 		  (parallel [(match_operand:SI 3 "imm_0_1_operand"   "v00, v01")])))
 	      (sign_extend:DI (match_operand:SI 2 "register_operand" "  r,   r")))
 	    (const_int 16))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   const char *pats[] = { "smmwb\t%0, %1, %2",
 			 "smmwt\t%0, %1, %2" };
@@ -3726,7 +3726,7 @@
   [(match_operand:V2SI 0 "register_operand" "")
    (match_operand:V2SI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_smulhisi3_highpart_64 (operands[0], operands[1], operands[2],
 					GEN_INT (0), GEN_INT (2)));
@@ -3738,7 +3738,7 @@
   [(match_operand:V2SI 0 "register_operand" "")
    (match_operand:V2SI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_smulhisi3_highpart_64 (operands[0], operands[1], operands[2],
 					GEN_INT (1), GEN_INT (3)));
@@ -3773,7 +3773,7 @@
 		    (match_dup 2)
 		      (parallel [(match_operand:SI 4 "imm_2_3_operand"   "v02, v03")]))))
 	      (const_int 16)))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   const char *pats[] = { "smmwb\t%0, %1, %2",
 			 "smmwt\t%0, %1, %2" };
@@ -3785,7 +3785,7 @@
   [(match_operand:V2SI 0 "register_operand" "")
    (match_operand:V2SI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_kmmw64 (operands[0], operands[1], operands[2],
 			  GEN_INT (0), GEN_INT (2)));
@@ -3797,7 +3797,7 @@
   [(match_operand:V2SI 0 "register_operand" "")
    (match_operand:V2SI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_kmmw64 (operands[0], operands[1], operands[2],
 			 GEN_INT (1), GEN_INT (3)));
@@ -3834,7 +3834,7 @@
 		      (parallel [(match_operand:SI 4 "imm_2_3_operand"   "v02, v03")]))))]
 	      UNSPEC_KMMW)
 	      (const_int 15)))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "@
    kmmwb2\t%0, %1, %2
    kmmwt2\t%0, %1, %2"
@@ -3844,7 +3844,7 @@
   [(match_operand:SI 0 "register_operand" "")
    (match_operand:SI 1 "register_operand" "")
    (match_operand:V2HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_smmw_round_internal (operands[0], operands[1], operands[2], GEN_INT (0)));
   DONE;
@@ -3855,7 +3855,7 @@
   [(match_operand:SI 0 "register_operand" "")
    (match_operand:SI 1 "register_operand" "")
    (match_operand:V2HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_smmw_round_internal (operands[0], operands[1], operands[2], GEN_INT (1)));
   DONE;
@@ -3875,7 +3875,7 @@
 		     (parallel [(match_operand:SI 3 "imm_0_1_operand"   " v00, v01")]))))]
 	      UNSPEC_ROUND)
 	    (const_int 16))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   const char *pats[] = { "smmwb.u\t%0, %1, %2",
 			 "smmwt.u\t%0, %1, %2" };
@@ -3887,7 +3887,7 @@
   [(match_operand:V2SI 0 "register_operand" "")
    (match_operand:V2SI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_smmw64_round_internal (operands[0], operands[1], operands[2],
 					GEN_INT (0), GEN_INT (2)));
@@ -3899,7 +3899,7 @@
   [(match_operand:V2SI 0 "register_operand" "")
    (match_operand:V2SI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_smmw64_round_internal (operands[0], operands[1], operands[2],
 					GEN_INT (1), GEN_INT (3)));
@@ -3938,7 +3938,7 @@
 		      (parallel [(match_operand:SI 4 "imm_2_3_operand"   "v02, v03")]))))]
 	        UNSPEC_ROUND)
 	      (const_int 16)))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   const char *pats[] = { "smmwb.u\t%0, %1, %2",
 			 "smmwt.u\t%0, %1, %2" };
@@ -3950,7 +3950,7 @@
   [(match_operand:SI 0 "register_operand" "")
    (match_operand:SI 1 "register_operand" "")
    (match_operand:V2HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_kmmw2_internal (operands[0], operands[1], operands[2], GEN_INT (0)));
   DONE;
@@ -3961,7 +3961,7 @@
   [(match_operand:SI 0 "register_operand" "")
    (match_operand:SI 1 "register_operand" "")
    (match_operand:V2HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_kmmw2_internal (operands[0], operands[1], operands[2], GEN_INT (1)));
   DONE;
@@ -3980,7 +3980,7 @@
 		  (parallel [(match_operand:SI 3 "imm_0_1_operand"   "  v00,  v01")]))))]
 	    UNSPEC_KMMW)
 	    (const_int 15))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "@
    kmmwb2\t%0, %1, %2
    kmmwt2\t%0, %1, %2"
@@ -3990,7 +3990,7 @@
   [(match_operand:SI 0 "register_operand" "")
    (match_operand:SI 1 "register_operand" "")
    (match_operand:V2HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_kmmw2_round_internal (operands[0], operands[1],
 				       operands[2], GEN_INT (0)));
@@ -4002,7 +4002,7 @@
   [(match_operand:SI 0 "register_operand" "")
    (match_operand:SI 1 "register_operand" "")
    (match_operand:V2HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_kmmw2_round_internal (operands[0], operands[1],
 				       operands[2], GEN_INT (1)));
@@ -4023,7 +4023,7 @@
 		     (parallel [(match_operand:SI 3 "imm_0_1_operand"   "  v00,  v01")]))))]
 	      UNSPEC_KMMWU)
 	    (const_int 15))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "@
    kmmwb2.u\t%0, %1, %2
    kmmwt2.u\t%0, %1, %2"
@@ -4033,7 +4033,7 @@
   [(match_operand:V2SI 0 "register_operand" "")
    (match_operand:V2SI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_kmmw64_round (operands[0], operands[1], operands[2],
 			       GEN_INT (0), GEN_INT (2)));
@@ -4045,7 +4045,7 @@
   [(match_operand:V2SI 0 "register_operand" "")
    (match_operand:V2SI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_kmmw64_round (operands[0], operands[1], operands[2],
 			       GEN_INT (1), GEN_INT (3)));
@@ -4084,7 +4084,7 @@
 		      (parallel [(match_operand:SI 4 "imm_2_3_operand"   "v02, v03")]))))]
 		UNSPEC_KMMWU)
 	      (const_int 15)))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "@
    kmmwb2.u\t%0, %1, %2
    kmmwt2.u\t%0, %1, %2"
@@ -4095,7 +4095,7 @@
    (match_operand:SI 1 "register_operand" "")
    (match_operand:SI 2 "register_operand" "")
    (match_operand:V2HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_kmmaw_internal (operands[0], operands[2], operands[3],
 				 GEN_INT (0), operands[1], GEN_INT (16)));
@@ -4108,7 +4108,7 @@
    (match_operand:SI 1 "register_operand" "")
    (match_operand:SI 2 "register_operand" "")
    (match_operand:V2HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_kmmaw_internal (operands[0], operands[2], operands[3],
 				 GEN_INT (1), operands[1], GEN_INT (16)));
@@ -4121,7 +4121,7 @@
    (match_operand:SI 1 "register_operand" "")
    (match_operand:SI 2 "register_operand" "")
    (match_operand:V2HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_kmmaw_internal (operands[0], operands[2], operands[3],
 				 GEN_INT (0), operands[1], GEN_INT (15)));
@@ -4134,7 +4134,7 @@
    (match_operand:SI 1 "register_operand" "")
    (match_operand:SI 2 "register_operand" "")
    (match_operand:V2HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_kmmaw_internal (operands[0], operands[2], operands[3],
 				 GEN_INT (1), operands[1], GEN_INT (15)));
@@ -4155,7 +4155,7 @@
 		      (match_operand:V2HI 2 "register_operand"         "   r,   r,   r,   r")
 		      (parallel [(match_operand:SI 3 "imm_0_1_operand" " v00, v01, v00, v01")]))))
 	      (match_operand:SI 5 "imm_15_16_operand"                  " v16, v16, v15, v15" )))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "@
   kmmawb\t%0, %1, %2
   kmmawt\t%0, %1, %2
@@ -4168,7 +4168,7 @@
    (match_operand:V2SI 1 "register_operand" "")
    (match_operand:V2SI 2 "register_operand" "")
    (match_operand:V4HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_kmmaw64_internal (operands[0], operands[2], operands[3],
 				   GEN_INT (0), GEN_INT (2), operands[1],
@@ -4182,7 +4182,7 @@
    (match_operand:V2SI 1 "register_operand" "")
    (match_operand:V2SI 2 "register_operand" "")
    (match_operand:V4HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_kmmaw64_internal (operands[0], operands[2], operands[3],
 				   GEN_INT (1), GEN_INT (3), operands[1],
@@ -4196,7 +4196,7 @@
    (match_operand:V2SI 1 "register_operand" "")
    (match_operand:V2SI 2 "register_operand" "")
    (match_operand:V4HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_kmmaw64_internal (operands[0], operands[2], operands[3],
 				   GEN_INT (0), GEN_INT (2), operands[1],
@@ -4210,7 +4210,7 @@
    (match_operand:V2SI 1 "register_operand" "")
    (match_operand:V2SI 2 "register_operand" "")
    (match_operand:V4HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_kmmaw64_internal (operands[0], operands[2], operands[3],
 				   GEN_INT (1), GEN_INT (3), operands[1],
@@ -4248,7 +4248,7 @@
 		    (match_dup 2)
 		      (parallel [(match_operand:SI 4 "imm_2_3_operand" "v02, v03, v02, v03")]))))
 	      (match_dup 6))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "@
   kmmawb\t%0, %1, %2
   kmmawt\t%0, %1, %2
@@ -4261,7 +4261,7 @@
    (match_operand:SI 1 "register_operand" "")
    (match_operand:SI 2 "register_operand" "")
    (match_operand:V2HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_kmmaw_round_internal (operands[0], operands[2], operands[3],
 				       GEN_INT (0), operands[1], GEN_INT (16)));
@@ -4274,7 +4274,7 @@
    (match_operand:SI 1 "register_operand" "")
    (match_operand:SI 2 "register_operand" "")
    (match_operand:V2HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_kmmaw_round_internal (operands[0], operands[2], operands[3],
 				       GEN_INT (1), operands[1], GEN_INT (16)));
@@ -4287,7 +4287,7 @@
    (match_operand:SI 1 "register_operand" "")
    (match_operand:SI 2 "register_operand" "")
    (match_operand:V2HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_kmmaw_round_internal (operands[0], operands[2], operands[3],
 				       GEN_INT (0), operands[1], GEN_INT (15)));
@@ -4300,7 +4300,7 @@
    (match_operand:SI 1 "register_operand" "")
    (match_operand:SI 2 "register_operand" "")
    (match_operand:V2HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_kmmaw_round_internal (operands[0], operands[2], operands[3],
 				       GEN_INT (1), operands[1], GEN_INT (15)));
@@ -4323,7 +4323,7 @@
 		       (parallel [(match_operand:SI 3 "imm_0_1_operand"   " v00, v01, v00, v01")]))))]
 		UNSPEC_ROUND)
 	      (match_operand:SI 5 "imm_15_16_operand"                     " v16, v16, v15, v15")))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "@
   kmmawb.u\t%0, %1, %2
   kmmawt.u\t%0, %1, %2
@@ -4336,7 +4336,7 @@
    (match_operand:V2SI 1 "register_operand" "")
    (match_operand:V2SI 2 "register_operand" "")
    (match_operand:V4HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_kmmaw64_round_internal (operands[0], operands[2], operands[3],
 					 GEN_INT (0), GEN_INT (2), operands[1],
@@ -4350,7 +4350,7 @@
    (match_operand:V2SI 1 "register_operand" "")
    (match_operand:V2SI 2 "register_operand" "")
    (match_operand:V4HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_kmmaw64_round_internal (operands[0], operands[2], operands[3],
 					 GEN_INT (1), GEN_INT (3), operands[1],
@@ -4364,7 +4364,7 @@
    (match_operand:V2SI 1 "register_operand" "")
    (match_operand:V2SI 2 "register_operand" "")
    (match_operand:V4HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_kmmaw64_round_internal (operands[0], operands[2], operands[3],
 					 GEN_INT (0), GEN_INT (2), operands[1],
@@ -4378,7 +4378,7 @@
    (match_operand:V2SI 1 "register_operand" "")
    (match_operand:V2SI 2 "register_operand" "")
    (match_operand:V4HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_kmmaw64_round_internal (operands[0], operands[2], operands[3],
 					 GEN_INT (1), GEN_INT (3), operands[1],
@@ -4420,7 +4420,7 @@
 			(parallel [(match_operand:SI 4 "imm_2_3_operand" "v02, v03, v02, v03")]))))]
 		  UNSPEC_ROUND)
 	      (match_operand:SI 6 "imm_15_16_operand"                    "v16, v16, v15, v15"))))))]
-"(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+"TARGET_ZPN && TARGET_64BIT"
   "@
   kmmawb.u\t%0, %1, %2
   kmmawt.u\t%0, %1, %2
@@ -4433,7 +4433,7 @@
    (match_operand:DI 1 "register_even_operand" "")
    (match_operand:V2HI 2 "register_operand" "")
    (match_operand:V2HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_smaddhidi (operands[0], operands[2],
 			    operands[3], operands[1],
@@ -4447,7 +4447,7 @@
    (match_operand:DI 1 "register_even_operand" "")
    (match_operand:V2HI 2 "register_operand" "")
    (match_operand:V2HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_smaddhidi (operands[0], operands[2],
 			    operands[3], operands[1],
@@ -4461,7 +4461,7 @@
    (match_operand:DI 1 "register_even_operand" "")
    (match_operand:V2HI 2 "register_operand" "")
    (match_operand:V2HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_smaddhidi (operands[0], operands[2],
 			    operands[3], operands[1],
@@ -4483,7 +4483,7 @@
 	      (vec_select:HI
 		(match_operand:V2HI 2 "register_operand"         "   r,   r,   r,   r")
 		(parallel [(match_operand:SI 5 "imm_0_1_operand" " v00, v01, v01, v00")]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
     const char *pats[] = { "smalbb\t%0, %1, %2",
 			   "smalbt\t%0, %1, %2",
@@ -4506,7 +4506,7 @@
 		(match_operand:V2HI 2 "register_operand"         "   r,   r,   r,   r")
 		(parallel [(match_operand:SI 5 "imm_0_1_operand" " v00, v01, v01, v00")]))))
 	  (match_operand:DI 3 "register_even_operand"                 "   0,   0,   0,   0")))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
     const char *pats[] = { "smalbb\t%0, %1, %2",
 			   "smalbt\t%0, %1, %2",
@@ -4521,7 +4521,7 @@
    (match_operand:DI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")
    (match_operand:V4HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_smaddhidi64 (operands[0], operands[2],
 			      operands[3], operands[1],
@@ -4536,7 +4536,7 @@
    (match_operand:DI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")
    (match_operand:V4HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_smaddhidi64 (operands[0], operands[2],
 			      operands[3], operands[1],
@@ -4551,7 +4551,7 @@
    (match_operand:DI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")
    (match_operand:V4HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_smaddhidi64 (operands[0], operands[2],
 			      operands[3], operands[1],
@@ -4584,7 +4584,7 @@
 		(vec_select:HI
 		  (match_dup 2)
 		  (parallel [(match_operand:SI 7 "imm_2_3_operand" " v02, v03, v03, v02")])))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "@
    smalbb\t%0, %1, %2
    smalbt\t%0, %1, %2
@@ -4597,7 +4597,7 @@
    (match_operand:DI 1 "register_even_operand" "")
    (match_operand:V2HI 2 "register_operand" " r")
    (match_operand:V2HI 3 "register_operand" " r")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_smalda1_le (operands[0], operands[1], operands[2], operands[3]));
   DONE;
@@ -4609,7 +4609,7 @@
    (match_operand:DI 1 "register_even_operand" "")
    (match_operand:V2HI 2 "register_operand" " r")
    (match_operand:V2HI 3 "register_operand" " r")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_smalds1_le (operands[0], operands[1], operands[2], operands[3]));
   DONE;
@@ -4636,7 +4636,7 @@
 		(sign_extend:SI (vec_select:HI
 				  (match_dup 3)
 				  (parallel [(const_int 0)]))))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "smalda\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -4665,7 +4665,7 @@
 		(mult:SI
 		  (sign_extend:SI (vec_select:HI (match_dup 2) (parallel [(const_int 3)])))
 		  (sign_extend:SI (vec_select:HI (match_dup 3) (parallel [(const_int 3)])))))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "smalda\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -4689,7 +4689,7 @@
 		(sign_extend:SI (vec_select:HI
 				  (match_dup 3)
 				  (parallel [(const_int 0)]))))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "smalds\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -4718,7 +4718,7 @@
 		(mult:SI
 		  (sign_extend:SI (vec_select:HI (match_dup 2) (parallel [(const_int 2)])))
 		  (sign_extend:SI (vec_select:HI (match_dup 3) (parallel [(const_int 2)])))))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "smalds\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -4727,7 +4727,7 @@
    (match_operand:DI 1 "register_even_operand" "")
    (match_operand:V2HI 2 "register_operand" " r")
    (match_operand:V2HI 3 "register_operand" " r")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_smaldrs3_le (operands[0], operands[1], operands[2], operands[3]));
   DONE;
@@ -4754,7 +4754,7 @@
 		(sign_extend:SI (vec_select:HI
 				  (match_dup 3)
 				  (parallel [(const_int 1)]))))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "smaldrs\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -4783,7 +4783,7 @@
 		(mult:SI
 		  (sign_extend:SI (vec_select:HI (match_dup 2) (parallel [(const_int 3)])))
 		  (sign_extend:SI (vec_select:HI (match_dup 3) (parallel [(const_int 3)])))))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "smaldrs\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -4792,7 +4792,7 @@
    (match_operand:DI 1 "register_even_operand" "")
    (match_operand:V2HI 2 "register_operand" " r")
    (match_operand:V2HI 3 "register_operand" " r")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_smalxda1_le (operands[0], operands[1], operands[2], operands[3]));
   DONE;
@@ -4804,7 +4804,7 @@
    (match_operand:DI 1 "register_even_operand" "")
    (match_operand:V2HI 2 "register_operand" " r")
    (match_operand:V2HI 3 "register_operand" " r")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_smalxds1_le (operands[0], operands[1], operands[2], operands[3]));
   DONE;
@@ -4831,7 +4831,7 @@
 		(sign_extend:SI (vec_select:HI
 				  (match_dup 3)
 				  (parallel [(const_int 1)]))))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "smalxd<add_sub>\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -4860,7 +4860,7 @@
 		(mult:SI
 		  (sign_extend:SI (vec_select:HI (match_dup 2) (parallel [(const_int 2)])))
 		  (sign_extend:SI (vec_select:HI (match_dup 3) (parallel [(const_int 3)])))))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "smalxd<add_sub>\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -4885,7 +4885,7 @@
 	      (sign_extend:SI (vec_select:HI
 				(match_dup 3)
 				(parallel [(const_int 0)])))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "smslda\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -4914,7 +4914,7 @@
 		(mult:SI
 		  (sign_extend:SI (vec_select:HI (match_dup 2) (parallel [(const_int 3)])))
 		  (sign_extend:SI (vec_select:HI (match_dup 3) (parallel [(const_int 3)]))))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "smslda\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -4939,7 +4939,7 @@
 	      (sign_extend:SI (vec_select:HI
 				(match_dup 3)
 				(parallel [(const_int 1)])))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "smslxda\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -4968,7 +4968,7 @@
 		(mult:SI
 		  (sign_extend:SI (vec_select:HI (match_dup 2) (parallel [(const_int 3)])))
 		  (sign_extend:SI (vec_select:HI (match_dup 3) (parallel [(const_int 2)]))))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "smslxda\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -4990,9 +4990,9 @@
 	    (sign_extend:SI (vec_select:HI
 			      (match_dup 2)
 			      (parallel [(match_operand:SI 6 "imm_0_1_operand" " u01")]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT && !reload_completed"
+  "TARGET_ZPN && !TARGET_64BIT && !reload_completed"
   "#"
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT && !reload_completed"
+  "TARGET_ZPN && !TARGET_64BIT && !reload_completed"
   [(const_int 1)]
 {
   rtx result0 = gen_reg_rtx (SImode);
@@ -5022,9 +5022,9 @@
 	    (sign_extend:SI (vec_select:HI
 			      (match_dup 1)
 			      (parallel [(match_operand:SI 6 "imm_0_1_operand" " Iu01")]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT && !reload_completed"
+  "TARGET_ZPN && !TARGET_64BIT && !reload_completed"
   "#"
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT && !reload_completed"
+  "TARGET_ZPN && !TARGET_64BIT && !reload_completed"
   [(const_int 1)]
 {
   rtx result0 = gen_reg_rtx (SImode);
@@ -5055,7 +5055,7 @@
 	    (sign_extend:SI (vec_select:HI
 			      (match_dup 2)
 			      (parallel [(const_int 0)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "kmda\t%0, %1, %2"
   [(set_attr "type" "dmac")])
 
@@ -5076,7 +5076,7 @@
 	    (sign_extend:DI (vec_select:SI
 			      (match_dup 2)
 			      (parallel [(const_int 0)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kmda32\t%0, %1, %2"
   [(set_attr "type" "dmac")])
 
@@ -5097,7 +5097,7 @@
 	    (sign_extend:V2SI (vec_select:V2HI
 				(match_dup 2)
 				(parallel [(const_int 0) (const_int 2)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kmda\t%0, %1, %2"
   [(set_attr "type" "dmac")])
 
@@ -5118,7 +5118,7 @@
 	    (sign_extend:SI (vec_select:HI
 			      (match_dup 2)
 			      (parallel [(const_int 1)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "kmxda\t%0, %1, %2"
   [(set_attr "type" "dmac")])
 
@@ -5139,7 +5139,7 @@
 	    (sign_extend:DI (vec_select:SI
 			      (match_dup 2)
 			      (parallel [(const_int 1)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kmxda32\t%0, %1, %2"
   [(set_attr "type" "dmac")])
 
@@ -5160,7 +5160,7 @@
 	    (sign_extend:V2SI (vec_select:V2HI
 				(match_dup 2)
 				(parallel [(const_int 1) (const_int 3)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kmxda\t%0, %1, %2"
   [(set_attr "type" "dmac")])
 
@@ -5183,7 +5183,7 @@
 	      (sign_extend:SI (vec_select:HI
 				(match_dup 3)
 				(parallel [(const_int 0)])))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "kmada\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -5206,7 +5206,7 @@
 	      (sign_extend:DI (vec_select:SI
 				(match_dup 3)
 				(parallel [(const_int 0)])))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kmada32\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -5229,7 +5229,7 @@
 	      (sign_extend:V2SI (vec_select:V2HI
 				(match_dup 3)
 				(parallel [(const_int 0) (const_int 2)])))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kmada\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -5252,7 +5252,7 @@
 	      (sign_extend:SI (vec_select:HI
 				(match_dup 3)
 				(parallel [(const_int 1)])))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "kmada\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -5275,7 +5275,7 @@
 	      (sign_extend:SI (vec_select:HI
 				(match_dup 3)
 				(parallel [(const_int 1)])))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "kmaxda\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -5298,7 +5298,7 @@
 	      (sign_extend:DI (vec_select:SI
 				(match_dup 3)
 				(parallel [(const_int 1)])))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kmaxda32\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -5321,7 +5321,7 @@
 	      (sign_extend:V2SI (vec_select:V2HI
 				(match_dup 3)
 				(parallel [(const_int 1) (const_int 3)])))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kmaxda\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -5344,7 +5344,7 @@
 	      (sign_extend:SI (vec_select:HI
 				(match_dup 3)
 				(parallel [(const_int 0)])))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "kmads\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -5367,7 +5367,7 @@
 	      (sign_extend:DI (vec_select:SI
 				(match_dup 3)
 				(parallel [(const_int 0)])))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kmads32\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -5390,7 +5390,7 @@
 	      (sign_extend:V2SI (vec_select:V2HI
 				(match_dup 3)
 				(parallel [(const_int 0) (const_int 2)])))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kmads\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -5413,7 +5413,7 @@
 	      (sign_extend:SI (vec_select:HI
 				(match_dup 3)
 				(parallel [(const_int 1)])))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "kmadrs\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -5436,7 +5436,7 @@
 	      (sign_extend:DI (vec_select:SI
 				(match_dup 3)
 				(parallel [(const_int 1)])))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kmadrs32\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -5459,7 +5459,7 @@
 	      (sign_extend:V2SI (vec_select:V2HI
 				(match_dup 3)
 				(parallel [(const_int 1) (const_int 3)])))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kmadrs\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -5482,7 +5482,7 @@
 	      (sign_extend:SI (vec_select:HI
 				(match_dup 3)
 				(parallel [(const_int 1)])))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "kmaxds\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -5505,7 +5505,7 @@
 	      (sign_extend:DI (vec_select:SI
 				(match_dup 3)
 				(parallel [(const_int 1)])))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kmaxds32\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -5528,7 +5528,7 @@
 	      (sign_extend:V2SI (vec_select:V2HI
 				(match_dup 3)
 				(parallel [(const_int 1) (const_int 3)])))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kmaxds\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -5551,7 +5551,7 @@
 	      (sign_extend:SI (vec_select:HI
 				(match_dup 3)
 				(parallel [(const_int 0)])))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "kmsda\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -5574,7 +5574,7 @@
 	      (sign_extend:DI (vec_select:SI
 				(match_dup 3)
 				(parallel [(const_int 0)])))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kmsda32\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -5597,7 +5597,7 @@
 	      (sign_extend:V2SI (vec_select:V2HI
 				(match_dup 3)
 				(parallel [(const_int 0) (const_int 2)])))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kmsda\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -5620,7 +5620,7 @@
 	      (sign_extend:SI (vec_select:HI
 				(match_dup 3)
 				(parallel [(const_int 1)])))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "kmsxda\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -5643,7 +5643,7 @@
 	      (sign_extend:DI (vec_select:SI
 				(match_dup 3)
 				(parallel [(const_int 1)])))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kmsxda32\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -5666,7 +5666,7 @@
 	      (sign_extend:V2SI (vec_select:V2HI
 				(match_dup 3)
 				(parallel [(const_int 1) (const_int 3)])))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kmsxda\t%0, %2, %3"
   [(set_attr "type" "dmac")])
 
@@ -5675,7 +5675,7 @@
   [(set (match_operand:VECI 0 "register_operand"             "=r")
 	(sumax:VECI (match_operand:VECI 1 "register_operand" " r")
 		    (match_operand:VECI 2 "register_operand" " r")))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "<opcode><bits>\t%0, %1, %2"
   [(set_attr "type" "dalu")])
 
@@ -5684,7 +5684,7 @@
   [(set (match_operand:VECI 0 "register_operand"             "=r")
 	(sumin:VECI (match_operand:VECI 1 "register_operand" " r")
 		    (match_operand:VECI 2 "register_operand" " r")))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "<opcode><bits>\t%0, %1, %2"
   [(set_attr "type" "dalu")])
 
@@ -5696,7 +5696,7 @@
 			  (vec_select:<VELT>
 			    (match_operand:VQIHI 2 "register_operand" " r")
 			    (parallel [(const_int 0)]))))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "<opcode><bits>\t%0, %1, %2"
   [(set_attr "type" "dalu")])
 
@@ -5718,9 +5718,9 @@
 			    (match_dup 2)
 			    (parallel [(const_int 0)]))))
 	  (const_int 2)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "#"
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   [(const_int 0)]
 {
   emit_insn (gen_<opcode>v2hi3 (operands[0], operands[1], operands[2]));
@@ -5732,14 +5732,14 @@
 (define_expand "abs<mode>2"
   [(set (match_operand:VQIHI 0 "register_operand"               "=r")
 	(ss_abs:VQIHI (match_operand:VQIHI 1 "register_operand" " r")))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !flag_wrapv"
+  "TARGET_ZPN && !flag_wrapv"
 {
 })
 
 (define_insn "kabs<mode>2"
   [(set (match_operand:VECI 0 "register_operand"              "=r")
 	(ss_abs:VECI (match_operand:VECI 1 "register_operand" " r")))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "kabs<bits>\t%0, %1"
   [(set_attr "type"   "dalu")
    (set_attr "mode" "<MODE>")])
@@ -5753,7 +5753,7 @@
 	      (match_operand:SI 2 "register_operand" " r"))
 	    (any_extend:DI
 	      (match_operand:SI 3 "register_operand" " r")))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "<su>mar64\t%0, %2, %3"
   [(set_attr "type"   "dmac")
    (set_attr "mode"   "DI")])
@@ -5776,7 +5776,7 @@
 		(vec_select:SI (match_dup 2) (parallel [(const_int 1)])))
 	      (any_extend:DI
 		(vec_select:SI (match_dup 3) (parallel [(const_int 1)])))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "<su>mar64\t%0, %2, %3"
   [(set_attr "type"   "dmac")
    (set_attr "mode" "DI")])
@@ -5790,7 +5790,7 @@
 	    (any_extend:DI
 	      (match_operand:SI 3 "register_operand" " r")))
 	  (match_operand:DI 1 "register_even_operand"     " 0")))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "<su>mar64\t%0, %2, %3"
   [(set_attr "type"   "dmac")
    (set_attr "mode"   "DI")])
@@ -5803,7 +5803,7 @@
 	    (mult:SI
 	      (match_operand:SI 2 "register_operand" " r")
 	      (match_operand:SI 3 "register_operand" " r")))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "<su>mar64\t%0, %2, %3"
   [(set_attr "type"   "dmac")
    (set_attr "mode"   "DI")])
@@ -5816,7 +5816,7 @@
 	      (match_operand:SI 2 "register_operand" " r")
 	      (match_operand:SI 3 "register_operand" " r")))
 	  (match_operand:DI 1 "register_even_operand"     " 0")))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "<su>mar64\t%0, %2, %3"
   [(set_attr "type"   "dmac")
    (set_attr "mode"   "DI")])
@@ -5830,7 +5830,7 @@
 	      (match_operand:SI 2 "register_operand" " r"))
 	    (any_extend:DI
 	      (match_operand:SI 3 "register_operand" " r")))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "<su>msr64\t%0, %2, %3"
   [(set_attr "type"   "dmac")
    (set_attr "mode"   "DI")])
@@ -5854,7 +5854,7 @@
 		(vec_select:SI (match_dup 2) (parallel [(const_int 1)])))
 	      (any_extend:DI
 		(vec_select:SI (match_dup 3) (parallel [(const_int 1)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "<su>msr64\t%0, %2, %3"
   [(set_attr "type"   "dmac")
    (set_attr "mode" "DI")])
@@ -5867,7 +5867,7 @@
 	    (mult:SI
 	      (match_operand:SI 2 "register_operand" " r")
 	      (match_operand:SI 3 "register_operand" " r")))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "<su>msr64\t%0, %2, %3"
   [(set_attr "type"   "dmac")
    (set_attr "mode"   "DI")])
@@ -5882,7 +5882,7 @@
 	      (match_operand:SI 2 "register_operand" " r"))
 	    (sign_extend:DI
 	      (match_operand:SI 3 "register_operand" " r")))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "kmar64\t%0, %2, %3"
   [(set_attr "type"   "dmac")
    (set_attr "mode"   "DI")])
@@ -5896,7 +5896,7 @@
 	    (sign_extend:DI
 	      (match_operand:SI 3 "register_operand" " r")))
 	  (match_operand:DI 1 "register_even_operand"     " 0")))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "kmar64\t%0, %2, %3"
   [(set_attr "type"   "dmac")
    (set_attr "mode"   "DI")])
@@ -5919,7 +5919,7 @@
 		(vec_select:SI (match_dup 2) (parallel [(const_int 1)])))
 	      (sign_extend:DI
 		(vec_select:SI (match_dup 3) (parallel [(const_int 1)])))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kmar64\t%0, %2, %3"
   [(set_attr "type"   "dmac")
    (set_attr "mode" "DI")])
@@ -5933,7 +5933,7 @@
 	      (match_operand:SI 2 "register_operand" " r"))
 	    (sign_extend:DI
 	      (match_operand:SI 3 "register_operand" " r")))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "kmsr64\t%0, %2, %3"
   [(set_attr "type"   "dmac")
    (set_attr "mode"   "DI")])
@@ -5957,7 +5957,7 @@
 		(vec_select:SI (match_dup 2) (parallel [(const_int 1)])))
 	      (sign_extend:DI
 		(vec_select:SI (match_dup 3) (parallel [(const_int 1)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kmsr64\t%0, %2, %3"
   [(set_attr "type"   "dmac")
    (set_attr "mode" "DI")])
@@ -5971,7 +5971,7 @@
 	      (match_operand:SI 2 "register_operand" " r"))
 	    (zero_extend:DI
 	      (match_operand:SI 3 "register_operand" " r")))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "ukmar64\t%0, %2, %3"
   [(set_attr "type"   "dmac")
    (set_attr "mode"   "DI")])
@@ -5994,7 +5994,7 @@
 		(vec_select:SI (match_dup 2) (parallel [(const_int 1)])))
 	      (sign_extend:DI
 		(vec_select:SI (match_dup 3) (parallel [(const_int 1)])))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "ukmar64\t%0, %2, %3"
   [(set_attr "type"   "dmac")
    (set_attr "mode" "DI")])
@@ -6008,7 +6008,7 @@
 	    (zero_extend:DI
 	      (match_operand:SI 3 "register_operand" " r")))
 	  (match_operand:DI 1 "register_even_operand"     " 0")))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "ukmar64\t%0, %2, %3"
   [(set_attr "type"   "dmac")
    (set_attr "mode"   "DI")])
@@ -6022,7 +6022,7 @@
 	      (match_operand:SI 2 "register_operand" " r"))
 	    (zero_extend:DI
 	      (match_operand:SI 3 "register_operand" " r")))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "ukmsr64\t%0, %2, %3"
   [(set_attr "type"   "dmac")
    (set_attr "mode"   "DI")])
@@ -6046,7 +6046,7 @@
 		(vec_select:SI (match_dup 2) (parallel [(const_int 1)])))
 	      (sign_extend:DI
 		(vec_select:SI (match_dup 3) (parallel [(const_int 1)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "ukmsr64\t%0, %2, %3"
   [(set_attr "type"   "dmac")
    (set_attr "mode" "DI")])
@@ -6060,7 +6060,7 @@
 	    (and:X
 	      (match_operand:X 2 "register_operand" " r")
 	      (not:X (match_dup 3)))))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "bpick\t%0, %1, %2, %3"
   [(set_attr "type"   "dbpick")
    (set_attr "mode"   "<MODE>")])
@@ -6074,7 +6074,7 @@
 	    (and:GPR
 	      (not:GPR (match_dup 2))
 	      (match_operand:GPR 3 "register_operand" " r"))))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "bpick\t%0, %1, %3, %2"
   [(set_attr "type"   "dbpick")
    (set_attr "mode"   "<MODE>")])
@@ -6088,7 +6088,7 @@
 	    (and:GPR
 	      (match_operand:GPR 3 "register_operand" " r")
 	      (not:GPR (match_dup 1)))))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "bpick\t%0, %2, %3, %1"
   [(set_attr "type"   "dbpick")
    (set_attr "mode"   "<MODE>")])
@@ -6102,7 +6102,7 @@
 	    (and:GPR
 	      (not:GPR (match_dup 1))
 	      (match_operand:GPR 3 "register_operand" " r"))))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "bpick\t%0, %2, %3, %1"
   [(set_attr "type"   "dbpick")
    (set_attr "mode"   "<MODE>")])
@@ -6116,7 +6116,7 @@
 	    (and:GPR
 	      (match_operand:GPR 3 "register_operand"         " r")
 	      (match_dup 2))))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "bpick\t%0, %3, %1, %2"
   [(set_attr "type"   "dbpick")
    (set_attr "mode"   "<MODE>")])
@@ -6130,7 +6130,7 @@
 	    (and:GPR
 	      (match_operand:GPR 3 "register_operand" " r")
 	      (match_dup 1))))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "bpick\t%0, %3, %2, %1"
   [(set_attr "type"   "dbpick")
    (set_attr "mode"   "<MODE>")])
@@ -6144,7 +6144,7 @@
 	    (and:GPR
 	      (match_dup 2)
 	      (match_operand:GPR 3 "register_operand"         " r"))))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "bpick\t%0, %3, %1, %2"
   [(set_attr "type"   "dbpick")
    (set_attr "mode"   "<MODE>")])
@@ -6158,7 +6158,7 @@
 	    (and:GPR
 	      (match_dup 1)
 	      (match_operand:GPR 3 "register_operand"         " r"))))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "bpick\t%0, %3, %2, %1"
   [(set_attr "type"   "dbpick")
    (set_attr "mode"   "<MODE>")])
@@ -6172,7 +6172,7 @@
 	    (and:SI
 	      (match_dup 1)
 	      (match_operand:SI 3 "register_operand"         " r"))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "bpick\t%0, %3, %2, %1"
   [(set_attr "type"   "dbpick")
    (set_attr "mode"   "SI")])
@@ -6182,7 +6182,7 @@
 	(unspec:SI [(ashiftrt:SI (match_operand:SI 1 "register_operand" "   r, r")
 				 (match_operand:SI 2 "rimm5u_operand"   " u05, r"))]
 		    UNSPEC_ROUND))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "@
    srai.u\t%0, %1, %2
    sra.u\t%0, %1, %2"
@@ -6194,7 +6194,7 @@
 	(unspec:DI [(ashiftrt:DI (match_operand:DI 1 "register_operand" "   r, r")
 				 (match_operand:DI 2 "rimm6u_operand"   " u06, r"))]
 		    UNSPEC_ROUND))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "@
    srai.u\t%0, %1, %2
    sra.u\t%0, %1, %2"
@@ -6206,7 +6206,7 @@
 	(unspec:DI [(match_operand:SI 1 "register_operand" "   r")
 		    (match_operand:SI 2 "imm5u_operand"    " u05")]
 		    UNSPEC_ROUND64))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "sraiw.u\t%0, %1, %2"
   [(set_attr "type"   "daluround")
    (set_attr "mode"   "DI")])
@@ -6215,7 +6215,7 @@
   [(set (match_operand:SI 0 "register_operand"               "=   r, r")
 	(ss_ashift:SI (match_operand:SI 1 "register_operand" "    r, r")
 		      (match_operand:SI 2 "rimm5u_operand"   " Iu05, r")))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "@
    kslliw\t%0, %1, %2
    ksllw\t%0, %1, %2"
@@ -6232,7 +6232,7 @@
 		     UNSPEC_ROUND)
 	  (ss_ashift:SI (match_dup 1)
 			(match_dup 2))))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "kslraw.u\t%0, %1, %2"
   [(set_attr "type"   "daluround")
    (set_attr "mode"   "SI")])
@@ -6241,7 +6241,7 @@
   [(set (match_operand:VD_SI 0 "register_operand" "=r")
 	(unspec:VD_SI [(match_operand:VD_SI 1 "register_operand" "r")
 		       (match_operand:X 2 "immediate_operand" "i")] UNSPEC_CLIPS_OV))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "sclip32\t%0, %1, %2"
   [(set_attr "type"   "dclip")
    (set_attr "mode" "<VD_SI:MODE>")])
@@ -6250,7 +6250,7 @@
   [(set (match_operand:VD_SI 0 "register_operand" "=r")
 	(unspec:VD_SI [(match_operand:VD_SI 1 "register_operand" "r")
 		       (match_operand:X 2 "immediate_operand" "i")] UNSPEC_CLIP_OV))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "uclip32\t%0, %1, %2"
   [(set_attr "type"   "dclip")
    (set_attr "mode" "<VD_SI:MODE>")])
@@ -6260,7 +6260,7 @@
 	(unspec:SI [(match_operand:SI 1 "register_operand" " r,   r")
 		    (match_operand:SI 2 "rimm5u_operand"   " r, u05")]
 		   UNSPEC_BITREV))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "@
    bitrev\t%0, %1, %2
    bitrevi\t%0, %1, %2"
@@ -6272,7 +6272,7 @@
 	(unspec:DI [(match_operand:DI 1 "register_operand" " r,   r")
 		    (match_operand:SI 2 "rimm6u_operand"   " r, u06")]
 		   UNSPEC_BITREV))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "@
    bitrev\t%0, %1, %2
    bitrevi\t%0, %1, %2"
@@ -6286,7 +6286,7 @@
 	  (any_shiftrt:DI
 	    (match_operand:DI 1 "register_even_operand" " r,  r")
 	    (match_operand:SI 2 "rimm5u_operand"   " r,u05"))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "@
    wext\t%0, %1, %2
    wexti\t%0, %1, %2"
@@ -6300,7 +6300,7 @@
 	    (ashiftrt:DI
 	      (match_operand:DI 1 "register_operand" " r,  r")
 	      (match_operand:DI 2 "rimm5u_operand"   " r,u05")))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "@
    wext\t%0, %1, %2
    wexti\t%0, %1, %2"
@@ -6316,7 +6316,7 @@
 	      (sign_extend:DI (match_operand:SI 1 "register_operand" " r"))
 	      (sign_extend:DI (match_operand:SI 2 "register_operand" " r")))
 	    (const_int 1))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "r<opcode>w\t%0, %1, %2"
   [(set_attr "type" "dalu")])
 
@@ -6330,7 +6330,7 @@
 		(sign_extend:DI (match_operand:SI 1 "register_operand" " r"))
 		(sign_extend:DI (match_operand:SI 2 "register_operand" " r")))
 	      (const_int 1)))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "r<opcode>w\t%0, %1, %2"
   [(set_attr "type" "dalu")])
 
@@ -6343,7 +6343,7 @@
 	      (zero_extend:DI (match_operand:SI 1 "register_operand" " r"))
 	      (zero_extend:DI (match_operand:SI 2 "register_operand" " r")))
 	    (const_int 1))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "ur<opcode>w\t%0, %1, %2"
   [(set_attr "type" "dalu")])
 
@@ -6357,7 +6357,7 @@
 		(zero_extend:DI (match_operand:SI 1 "register_operand" " r"))
 		(zero_extend:DI (match_operand:SI 2 "register_operand" " r")))
 	      (const_int 1)))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "ur<opcode>w\t%0, %1, %2"
   [(set_attr "type" "dalu")])
 
@@ -6366,7 +6366,7 @@
 (define_insn "kabs"
   [(set (match_operand:SI 0 "register_operand" "=r")
 	(unspec:SI [(match_operand:SI 1 "register_operand" "r")] UNSPEC_KABS))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "kabsw\t%0, %1"
   [(set_attr "type" "dalu")
    (set_attr "mode" "SI")])
@@ -6375,7 +6375,7 @@
   [(set (match_operand:SI 0 "register_operand" "=r")
 	(unspec:SI [(match_operand:SI 1 "register_operand" "r")
 		    (match_operand:SI 2 "register_operand" "r")] UNSPEC_KADDW))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "kaddw\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "SI")])
@@ -6384,7 +6384,7 @@
   [(set (match_operand:DI 0 "register_operand" "=r")
 	(sign_extend:DI (unspec:SI [(match_operand:SI 1 "register_operand" "r")
 				    (match_operand:SI 2 "register_operand" "r")] UNSPEC_KADDW)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kaddw\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "DI")])
@@ -6393,7 +6393,7 @@
   [(set (match_operand:SI 0 "register_operand" "=r")
 	(unspec:SI [(match_operand:SI 1 "register_operand" "r")
 		    (match_operand:SI 2 "register_operand" "r")] UNSPEC_KSUBW))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "ksubw\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "SI")])
@@ -6402,7 +6402,7 @@
   [(set (match_operand:DI 0 "register_operand" "=r")
 	(sign_extend:DI (unspec:SI [(match_operand:SI 1 "register_operand" "r")
 				    (match_operand:SI 2 "register_operand" "r")] UNSPEC_KSUBW)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "ksubw\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "DI")])
@@ -6411,7 +6411,7 @@
   [(set (match_operand:SI 0 "register_operand" "=r")
 	(sign_extend:SI (unspec:SI [(match_operand:SI 1 "register_operand" "r")
 				    (match_operand:SI 2 "register_operand" "r")] UNSPEC_KADDH)))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "kaddh\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "SI")])
@@ -6420,7 +6420,7 @@
   [(set (match_operand:SI 0 "register_operand" "=r")
 	(sign_extend:SI (unspec:SI [(match_operand:SI 1 "register_operand" "r")
 				    (match_operand:SI 2 "register_operand" "r")] UNSPEC_KSUBH)))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "ksubh\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "SI")])
@@ -6429,7 +6429,7 @@
   [(set (match_operand:SI 0 "register_operand"             "=r")
 	(unspec:SI [(match_operand:SI 1 "register_operand" "r")
 		    (match_operand:SI 2 "register_operand" "r")] UNSPEC_UKADDW))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "ukaddw\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "SI")])
@@ -6438,7 +6438,7 @@
   [(set (match_operand:DI 0 "register_operand"             "=r")
 	(sign_extend:DI (unspec:SI [(match_operand:SI 1 "register_operand" "r")
 				    (match_operand:SI 2 "register_operand" "r")] UNSPEC_UKADDW64)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "ukaddw\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "DI")])
@@ -6447,7 +6447,7 @@
   [(set (match_operand:SI 0 "register_operand"             "=r")
 	(unspec:SI [(match_operand:SI 1 "register_operand" "r")
 		    (match_operand:SI 2 "register_operand" "r")] UNSPEC_UKSUBW))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "uksubw\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "SI")])
@@ -6456,7 +6456,7 @@
   [(set (match_operand:DI 0 "register_operand"             "=r")
 	(sign_extend:DI (unspec:SI [(match_operand:SI 1 "register_operand" "r")
 				    (match_operand:SI 2 "register_operand" "r")] UNSPEC_UKSUBW64)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "uksubw\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "DI")])
@@ -6465,7 +6465,7 @@
   [(set (match_operand:SI 0 "register_operand"             "=r")
 	(sign_extend:SI (unspec:SI [(match_operand:SI 1 "register_operand" "r")
 				    (match_operand:SI 2 "register_operand" "r")] UNSPEC_UKADDH)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "ukaddh\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "SI")])
@@ -6474,7 +6474,7 @@
   [(set (match_operand:DI 0 "register_operand"             "=r")
 	(sign_extend:DI (unspec:SI [(match_operand:SI 1 "register_operand" "r")
 				    (match_operand:SI 2 "register_operand" "r")] UNSPEC_UKADDH)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "ukaddh\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "DI")])
@@ -6483,7 +6483,7 @@
   [(set (match_operand:SI 0 "register_operand"             "=r")
 	(sign_extend:SI (unspec:SI [(match_operand:SI 1 "register_operand" "r")
 				    (match_operand:SI 2 "register_operand" "r")] UNSPEC_UKSUBH)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "uksubh\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "SI")])
@@ -6492,7 +6492,7 @@
   [(set (match_operand:DI 0 "register_operand"             "=r")
 	(sign_extend:DI (unspec:SI [(match_operand:SI 1 "register_operand" "r")
 				    (match_operand:SI 2 "register_operand" "r")] UNSPEC_UKSUBH)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "uksubh\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "DI")])
@@ -6501,7 +6501,7 @@
   [(set (match_operand:VHI 0 "register_operand" "=r")
 	(unspec:VHI [(match_operand:VHI 1 "register_operand" "r")
 		     (match_operand:VHI 2 "register_operand" "r")] UNSPEC_KDMBB))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "kdmbb\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "<MODE>")])
@@ -6510,7 +6510,7 @@
   [(set (match_operand:VHI 0 "register_operand" "=r")
 	(unspec:VHI [(match_operand:VHI 1 "register_operand" "r")
 		     (match_operand:VHI 2 "register_operand" "r")] UNSPEC_KDMBT))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "kdmbt\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "<MODE>")])
@@ -6519,7 +6519,7 @@
   [(set (match_operand:VHI 0 "register_operand" "=r")
 	(unspec:VHI [(match_operand:VHI 1 "register_operand" "r")
 		     (match_operand:VHI 2 "register_operand" "r")] UNSPEC_KDMTT))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "kdmtt\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "<MODE>")])
@@ -6529,7 +6529,7 @@
 	(sign_extend:DI
 	  (unspec:SI [(match_operand:SI 1 "register_operand" "r")
 		      (match_operand:SI 2 "register_operand" "r")] UNSPEC_KDMBB)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kdmbb\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "DI")])
@@ -6539,7 +6539,7 @@
 	(sign_extend:DI
 	  (unspec:SI [(match_operand:SI 1 "register_operand" "r")
 		      (match_operand:SI 2 "register_operand" "r")] UNSPEC_KDMBT)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kdmbt\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "DI")])
@@ -6549,7 +6549,7 @@
 	(sign_extend:DI
 	  (unspec:SI [(match_operand:SI 1 "register_operand" "r")
 		      (match_operand:SI 2 "register_operand" "r")] UNSPEC_KDMTT)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kdmtt\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "DI")])
@@ -6558,7 +6558,7 @@
   [(set (match_operand:V4HI 0 "register_operand" "=r")
 	(unspec:V4HI [(match_operand:V4HI 1 "register_operand" "r")
 		      (match_operand:V4HI 2 "register_operand" "r")] UNSPEC_KDMBB16))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kdmbb16\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "V4HI")])
@@ -6567,7 +6567,7 @@
   [(set (match_operand:V4HI 0 "register_operand" "=r")
 	(unspec:V4HI [(match_operand:V4HI 1 "register_operand" "r")
 		      (match_operand:V4HI 2 "register_operand" "r")] UNSPEC_KDMBT16))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kdmbt16\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "V4HI")])
@@ -6576,7 +6576,7 @@
   [(set (match_operand:V4HI 0 "register_operand" "=r")
 	(unspec:V4HI [(match_operand:V4HI 1 "register_operand" "r")
 		      (match_operand:V4HI 2 "register_operand" "r")] UNSPEC_KDMTT16))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kdmtt16\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "V4HI")])
@@ -6585,7 +6585,7 @@
   [(set (match_operand:VHI 0 "register_operand" "=r")
 	(unspec:VHI [(match_operand:VHI 1 "register_operand" "r")
 		     (match_operand:VHI 2 "register_operand" "r")] UNSPEC_KHMBB))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "khmbb\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "<MODE>")])
@@ -6594,7 +6594,7 @@
   [(set (match_operand:VHI 0 "register_operand" "=r")
 	(unspec:VHI [(match_operand:VHI 1 "register_operand" "r")
 		     (match_operand:VHI 2 "register_operand" "r")] UNSPEC_KHMBT))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "khmbt\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "<MODE>")])
@@ -6603,7 +6603,7 @@
   [(set (match_operand:VHI 0 "register_operand" "=r")
 	(unspec:VHI [(match_operand:VHI 1 "register_operand" "r")
 		     (match_operand:VHI 2 "register_operand" "r")] UNSPEC_KHMTT))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "khmtt\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "<MODE>")])
@@ -6613,7 +6613,7 @@
 	(sign_extend:DI
 	  (unspec:SI [(match_operand:SI 1 "register_operand" "r")
 		      (match_operand:SI 2 "register_operand" "r")] UNSPEC_KHMBB)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "khmbb\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "DI")])
@@ -6623,7 +6623,7 @@
 	(sign_extend:DI
 	  (unspec:SI [(match_operand:SI 1 "register_operand" "r")
 		      (match_operand:SI 2 "register_operand" "r")] UNSPEC_KHMBT)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "khmbt\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "DI")])
@@ -6633,7 +6633,7 @@
 	(sign_extend:DI
 	  (unspec:SI [(match_operand:SI 1 "register_operand" "r")
 		      (match_operand:SI 2 "register_operand" "r")] UNSPEC_KHMTT)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "khmtt\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "DI")])
@@ -6642,7 +6642,7 @@
   [(set (match_operand:V4HI 0 "register_operand" "=r")
 	(unspec:V4HI [(match_operand:V4HI 1 "register_operand" "r")
 		      (match_operand:V4HI 2 "register_operand" "r")] UNSPEC_KHMBB16))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "khmbb16\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "V4HI")])
@@ -6651,7 +6651,7 @@
   [(set (match_operand:V4HI 0 "register_operand" "=r")
 	(unspec:V4HI [(match_operand:V4HI 1 "register_operand" "r")
 		      (match_operand:V4HI 2 "register_operand" "r")] UNSPEC_KHMBT16))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "khmbt16\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "V4HI")])
@@ -6660,7 +6660,7 @@
   [(set (match_operand:V4HI 0 "register_operand" "=r")
 	(unspec:V4HI [(match_operand:V4HI 1 "register_operand" "r")
 		      (match_operand:V4HI 2 "register_operand" "r")] UNSPEC_KHMTT16))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "khmtt16\t%0, %1, %2"
   [(set_attr "type" "dmul")
    (set_attr "mode" "V4HI")])
@@ -6669,7 +6669,7 @@
   [(set (match_operand:SI 0 "register_operand" "=r")
 	(unspec:SI [(match_operand:SI 1 "register_operand" "r")
 		    (match_operand:SI 2 "register_operand" "r")] UNSPEC_KSLRAW))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "kslraw\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "SI")])
@@ -6679,7 +6679,7 @@
 	(sign_extend:DI
 	  (unspec:SI [(match_operand:SI 1 "register_operand" "r")
 		      (match_operand:SI 2 "register_operand" "r")] UNSPEC_KSLRAW)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kslraw\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "DI")])
@@ -6688,7 +6688,7 @@
   [(set (match_operand:SI 0 "register_operand" "=r")
 	(unspec:SI [(match_operand:SI 1 "register_operand" "r")
 		    (match_operand:SI 2 "register_operand" "r")] UNSPEC_KSLRAWU))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "kslraw.u\t%0, %1, %2"
   [(set_attr "type" "daluround")
    (set_attr "mode" "SI")])
@@ -6698,7 +6698,7 @@
 	(sign_extend:DI
 	  (unspec:SI [(match_operand:SI 1 "register_operand" "r")
 		      (match_operand:SI 2 "register_operand" "r")] UNSPEC_KSLRAWU)))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kslraw.u\t%0, %1, %2"
   [(set_attr "type" "daluround")
    (set_attr "mode" "DI")])
@@ -6707,7 +6707,7 @@
   [(match_operand:SI 0 "register_operand" "")
    (match_operand:SI 1 "register_operand" "")
    (match_operand:SI 2 "register_operand" "")]
- "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+ "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_ave (operands[0], operands[1], operands[2]));
   DONE;
@@ -6723,7 +6723,7 @@
 		(sign_extend:DI (match_operand:SI 2 "register_operand" "r")))
 	      (const_int 1))
 	  (const_int 1))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "ave\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "SI")])
@@ -6732,7 +6732,7 @@
   [(match_operand:DI 0 "register_operand" "")
    (match_operand:DI 1 "register_operand" "")
    (match_operand:DI 2 "register_operand" "")]
- "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+ "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_avedi (operands[0], operands[1], operands[2]));
   DONE;
@@ -6748,7 +6748,7 @@
 		(sign_extend:TI (match_operand:DI 2 "register_operand" "r")))
 	      (const_int 1))
 	  (const_int 1))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "ave\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "DI")])
@@ -6757,7 +6757,7 @@
   [(set (match_operand:SI 0 "register_operand"          "=r")
 	(smax:SI (match_operand:SI 1 "register_operand" " r")
 		 (match_operand:SI 2 "register_operand" " r")))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "maxw\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "SI")])
@@ -6766,7 +6766,7 @@
   [(set (match_operand:SI 0 "register_operand"          "=r")
 	(smin:SI (match_operand:SI 1 "register_operand" " r")
 		 (match_operand:SI 2 "register_operand" " r")))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "minw\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "SI")])
@@ -6776,7 +6776,7 @@
   [(set (match_operand:VQI 0 "register_operand"                "")
 	(any_shift:VQI (match_operand:VQI 1 "register_operand" "")
 			(match_operand:SI 2 "rimm3u_operand" "")))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
 {
   if (operands[2] == const0_rtx)
     {
@@ -6789,7 +6789,7 @@
   [(set (match_operand:VQI 0 "register_operand"             "=  r, r")
 	(ashift:VQI (match_operand:VQI 1 "register_operand" "   r, r")
 		     (match_operand:SI 2   "rimm3u_operand" " u03, r")))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "@
    slli8\t%0, %1, %2
    sll8\t%0, %1, %2"
@@ -6800,7 +6800,7 @@
   [(set (match_operand:VQI 0 "register_operand"                "=  r, r")
 	(ss_ashift:VQI (match_operand:VQI 1 "register_operand" "   r, r")
 		       (match_operand:X 2   "rimm3u_operand"   " u03, r")))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "@
    kslli8\t%0, %1, %2
    ksll8\t%0, %1, %2"
@@ -6811,7 +6811,7 @@
   [(set (match_operand:VQI 0 "register_operand"               "=  r, r")
 	(ashiftrt:VQI (match_operand:VQI 1 "register_operand" "   r, r")
 		       (match_operand:SI 2 "rimm3u_operand"   " u03, r")))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "@
    srai8\t%0, %1, %2
    sra8\t%0, %1, %2"
@@ -6823,7 +6823,7 @@
 	(unspec:VQI [(ashiftrt:VQI (match_operand:VQI 1 "register_operand" "   r, r")
 				   (match_operand:SI 2  "rimm3u_operand"   " u03, r"))]
 		      UNSPEC_ROUND))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "@
    srai8.u\t%0, %1, %2
    sra8.u\t%0, %1, %2"
@@ -6834,7 +6834,7 @@
   [(set (match_operand:VQI 0 "register_operand"               "=  r, r")
 	(lshiftrt:VQI (match_operand:VQI 1 "register_operand" "   r, r")
 		       (match_operand:SI 2 "rimm3u_operand"   " u03, r")))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "@
    srli8\t%0, %1, %2
    srl8\t%0, %1, %2"
@@ -6846,7 +6846,7 @@
 	(unspec:VQI [(lshiftrt:VQI (match_operand:VQI 1 "register_operand" "   r, r")
 				   (match_operand:SI 2  "rimm3u_operand"   " u03, r"))]
 		      UNSPEC_ROUND))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "@
    srli8.u\t%0, %1, %2
    srl8.u\t%0, %1, %2"
@@ -6857,7 +6857,7 @@
   [(set (match_operand:GPR 0 "register_operand" "=r")
 	(unspec:GPR [(match_operand:GPR 1 "register_operand" "r")
 		     (match_operand:GPR 2 "register_operand" "r")] UNSPEC_PBSAD))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "pbsad\t%0, %1, %2"
   [(set_attr "type" "dmac")
    (set_attr "mode" "<MODE>")])
@@ -6876,7 +6876,7 @@
   [(set (match_operand:DI 0 "register_operand"                          "=r")
 	(mult:DI (sign_extend:DI (match_operand:SI 1 "register_operand" " r"))
 		 (sign_extend:DI (match_operand:SI 2 "register_operand" " r"))))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "mulsr64\t%0, %1, %2"
   [(set_attr "type"   "dmul")
    (set_attr "mode"   "DI")])
@@ -6885,7 +6885,7 @@
   [(set (match_operand:DI 0 "register_operand"                          "=r")
 	(mult:DI (zero_extend:DI (match_operand:SI 1 "register_operand" " r"))
 		 (zero_extend:DI (match_operand:SI 2 "register_operand" " r"))))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "mulr64\t%0, %1, %2"
   [(set_attr "type"   "dmul")
    (set_attr "mode"   "DI")])
@@ -6896,7 +6896,7 @@
 	(plus:SI (match_operand:SI 3 "register_operand"          " 0")
 		 (mult:SI (match_operand:SI 1 "register_operand" " r")
 			  (match_operand:SI 2 "register_operand" " r"))))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "maddr32\t%0, %1, %2"
   [(set_attr "type"   "dmac")
    (set_attr "mode"   "SI")])
@@ -6906,25 +6906,67 @@
 	(plus:SI (mult:SI (match_operand:SI 1 "register_operand" " r")
 			  (match_operand:SI 2 "register_operand" " r"))
 		 (match_operand:SI 3 "register_operand"          " 0")))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "maddr32\t%0, %1, %2"
   [(set_attr "type"   "dmac")
    (set_attr "mode"   "SI")])
+
+(define_insn "maddr32_32"
+  [(set (match_operand:SI 0 "register_operand"                   "=r")
+	(plus:SI (mult:SI (match_operand:SI 1 "register_operand" " r")
+			  (match_operand:SI 2 "register_operand" " r"))
+		 (match_operand:SI 3 "register_operand"          " 0")))]
+  "TARGET_ZPN && !TARGET_64BIT"
+  "maddr32\t%0, %1, %2"
+  [(set_attr "type"   "dmac")
+   (set_attr "mode"   "SI")])
+
+(define_insn "maddr32_64"
+  [(set (match_operand:DI 0 "register_operand"                   "=r")
+  	(sign_extend:DI 
+		(plus:SI (mult:SI (match_operand:SI 1 "register_operand" " r")
+				(match_operand:SI 2 "register_operand" " r"))
+			(match_operand:SI 3 "register_operand"          " 0"))))]
+	"TARGET_ZPN && TARGET_64BIT"
+	"maddr32\t%0, %1, %2"
+	[(set_attr "type"   "dmac")
+	(set_attr "mode"   "DI")])
 
 (define_insn "*msubr32"
   [(set (match_operand:SI 0 "register_operand"                    "=r")
 	(minus:SI (match_operand:SI 3 "register_operand"          " 0")
 		  (mult:SI (match_operand:SI 1 "register_operand" " r")
 			   (match_operand:SI 2 "register_operand" " r"))))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
+  "msubr32\t%0, %1, %2"
+  [(set_attr "type"   "dmac")
+   (set_attr "mode"   "SI")])
+
+(define_insn "msubr32_32"
+  [(set (match_operand:SI 0 "register_operand"                    "=r")
+	(minus:SI (match_operand:SI 3 "register_operand"          " 0")
+		  (mult:SI (match_operand:SI 1 "register_operand" " r")
+			   (match_operand:SI 2 "register_operand" " r"))))]
+  "TARGET_ZPN && !TARGET_64BIT"
   "msubr32\t%0, %1, %2"
   [(set_attr "type"   "dmac")
    (set_attr "mode"   "SI")])
    
+(define_insn "msubr32_64"
+  [(set (match_operand:DI 0 "register_operand"                    "=r")
+	(sign_extend:DI 
+		(minus:SI (match_operand:SI 3 "register_operand"          " 0")
+		  (mult:SI (match_operand:SI 1 "register_operand" " r")
+			   (match_operand:SI 2 "register_operand" " r")))))]
+  "TARGET_ZPN && TARGET_64BIT"
+  "msubr32\t%0, %1, %2"
+  [(set_attr "type"   "dmac")
+   (set_attr "mode"   "DI")])
+
 (define_insn "bswaphi2"
   [(set (match_operand:HI 0 "register_operand" "=r")
 	(bswap:HI (match_operand:HI 1 "register_operand" "r")))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "swap8\t%0, %1"
   [(set_attr "type"  "dalu")
    (set_attr "mode"  "HI")])
@@ -6932,7 +6974,7 @@
 (define_insn "unspec_bswap8"
   [(set (match_operand:V4QI 0 "register_operand" "=r")
 	(unspec:V4QI [(match_operand:V4QI 1 "register_operand" "r")] UNSPEC_BSWAP))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "swap8\t%0, %1"
   [(set_attr "type"  "dalu")
    (set_attr "mode"  "V4QI")])
@@ -6940,7 +6982,7 @@
 (define_insn "unspec_bswap8_64"
   [(set (match_operand:V8QI 0 "register_operand" "=r")
 	(unspec:V8QI [(match_operand:V8QI 1 "register_operand" "r")] UNSPEC_BSWAP))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "swap8\t%0, %1"
   [(set_attr "type"  "dalu")
    (set_attr "mode"  "V8QI")])
@@ -6948,13 +6990,13 @@
 (define_insn "rdov<X:mode>"
   [(set (match_operand:X 0 "register_operand" "=r")
 	(unspec_volatile:X [(const_int 0)] UNSPEC_RDOV))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
-  "csrrs\t%0, vxsat, zero"
+  "TARGET_ZPN"
+  "csrr \t%0, vxsat, zero"
   [(set_attr "mode" "<MODE>")])
 
 (define_insn "clrov<X:mode>"
   [(unspec_volatile:X [(const_int 0)] UNSPEC_CLROV)]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "csrrci zero, vxsat, 1"
   [(set_attr "mode" "<MODE>")])
 
@@ -6963,7 +7005,7 @@
    (match_operand:SI 1 "register_operand" "")
    (match_operand:V2HI 2 "register_operand" "")
    (match_operand:V2HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_kdma_internal (operands[0], operands[2], operands[3],
 				GEN_INT (0), GEN_INT (0), operands[1]));
@@ -6976,7 +7018,7 @@
 	(unspec:DI [(match_operand:DI 1 "register_operand" "0")
 		    (match_operand:SI 2 "register_operand" "r")
 		    (match_operand:SI 3 "register_operand" "r")] UNSPEC_KDMABB))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kdmabb\t%0, %2, %3"
   [(set_attr "type" "dmac")
    (set_attr "mode" "SI")])
@@ -6986,7 +7028,7 @@
    (match_operand:DI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")
    (match_operand:V4HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_kdma64_internal (operands[0], operands[2], operands[3],
 				  GEN_INT (0), GEN_INT (0), operands[1]));
@@ -6999,7 +7041,7 @@
    (match_operand:SI 1 "register_operand" "")
    (match_operand:V2HI 2 "register_operand" "")
    (match_operand:V2HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_kdma_internal (operands[0], operands[2], operands[3],
 				GEN_INT (0), GEN_INT (1), operands[1]));
@@ -7012,7 +7054,7 @@
 	(unspec:DI [(match_operand:DI 1 "register_operand" "0")
 		    (match_operand:SI 2 "register_operand" "r")
 		    (match_operand:SI 3 "register_operand" "r")] UNSPEC_KDMABT))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kdmabt\t%0, %2, %3"
   [(set_attr "type" "dmac")
    (set_attr "mode" "SI")])
@@ -7022,7 +7064,7 @@
    (match_operand:DI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")
    (match_operand:V4HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_kdma64_internal (operands[0], operands[2], operands[3],
 				  GEN_INT (0), GEN_INT (1), operands[1]));
@@ -7035,7 +7077,7 @@
    (match_operand:SI 1 "register_operand" "")
    (match_operand:V2HI 2 "register_operand" "")
    (match_operand:V2HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_kdma_internal (operands[0], operands[2], operands[3],
 				GEN_INT (1), GEN_INT (1), operands[1]));
@@ -7048,7 +7090,7 @@
 	(unspec:DI [(match_operand:DI 1 "register_operand" "0")
 		    (match_operand:SI 2 "register_operand" "r")
 		    (match_operand:SI 3 "register_operand" "r")] UNSPEC_KDMATT))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kdmatt\t%0, %2, %3"
   [(set_attr "type" "dmac")
    (set_attr "mode" "SI")])
@@ -7058,7 +7100,7 @@
    (match_operand:DI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")
    (match_operand:V4HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_kdma64_internal (operands[0], operands[2], operands[3],
 				  GEN_INT (1), GEN_INT (1), operands[1]));
@@ -7081,7 +7123,7 @@
 		  (parallel [(match_operand:SI 4 "imm_0_1_operand"  " v00, v01, v01, v00")]))))
 	    (const_int 1))
 	  (match_operand:SI 5 "register_operand"                    "   0,   0,   0,   0")))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "@
    kdmabb\t%0, %1, %2
    kdmabt\t%0, %1, %2
@@ -7107,7 +7149,7 @@
 	      (const_int 1))
 	    (truncate:SI
 	      (match_operand:DI 5 "register_operand"                  "   0,   0,   0,   0")))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "@
    kdmabb\t%0, %1, %2
    kdmabt\t%0, %1, %2
@@ -7121,7 +7163,7 @@
    (match_operand:V2SI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")
    (match_operand:V4HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_vkdma_internal (operands[0], operands[2], operands[3],
 				 GEN_INT (0), GEN_INT (0), GEN_INT (2),
@@ -7135,7 +7177,7 @@
    (match_operand:V2SI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")
    (match_operand:V4HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_vkdma_internal (operands[0], operands[2], operands[3],
 				 GEN_INT (0), GEN_INT (1), GEN_INT (2),
@@ -7149,7 +7191,7 @@
    (match_operand:V2SI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")
    (match_operand:V4HI 3 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_vkdma_internal (operands[0], operands[2], operands[3],
 				 GEN_INT (1), GEN_INT (1), GEN_INT (3),
@@ -7185,7 +7227,7 @@
 		    (parallel [(match_operand:SI 6 "imm_2_3_operand"  " v02, v03, v03, v02")]))))
 	      (const_int 1)))
 	  (match_operand:V2SI 7 "register_operand"                    "   0,   0,   0,   0")))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "@
    kdmabb16\t%0, %1, %2
    kdmabt16\t%0, %1, %2
@@ -7199,7 +7241,7 @@
    (match_operand:SI 1 "register_operand")
    (match_operand:V4QI 2 "register_operand")
    (match_operand:V4QI 3 "register_operand")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_smaqav4qi (operands[0], operands[1],
 			    operands[2], operands[3]));
@@ -7212,7 +7254,7 @@
    (match_operand:SI 1 "register_operand")
    (match_operand:V4QI 2 "register_operand")
    (match_operand:V4QI 3 "register_operand")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_umaqav4qi (operands[0], operands[1],
 			    operands[2], operands[3]));
@@ -7247,7 +7289,7 @@
 	      (mult:HI
 		(any_extend:HI (vec_select:QI (match_dup 2) (parallel [(const_int 3)])))
 		(any_extend:HI (vec_select:QI (match_dup 3) (parallel [(const_int 3)])))))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "<su>maqa\t%0, %2, %3"
   [(set_attr "type" "dmac")
    (set_attr "mode" "DI")])
@@ -7257,7 +7299,7 @@
    (match_operand:V2SI 1 "register_operand")
    (match_operand:V8QI 2 "register_operand")
    (match_operand:V8QI 3 "register_operand")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_smaqav8qi (operands[0], operands[1],
 			    operands[2], operands[3]));
@@ -7270,7 +7312,7 @@
    (match_operand:V2SI 1 "register_operand")
    (match_operand:V8QI 2 "register_operand")
    (match_operand:V8QI 3 "register_operand")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_umaqav8qi (operands[0], operands[1],
 			    operands[2], operands[3]));
@@ -7326,7 +7368,7 @@
 		  (mult:HI
 		    (any_extend:HI (vec_select:QI (match_dup 2) (parallel [(const_int 7)])))
 		    (any_extend:HI (vec_select:QI (match_dup 3) (parallel [(const_int 7)]))))))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "<su>maqa\t%0, %2, %3"
   [(set_attr "type" "dmac")
    (set_attr "mode" "V2SI")])
@@ -7336,7 +7378,7 @@
    (match_operand:SI 1 "register_operand")
    (match_operand:V4QI 2 "register_operand")
    (match_operand:V4QI 3 "register_operand")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
 {
   emit_insn (gen_sumaqav4qi (operands[0], operands[1],
 			     operands[2], operands[3]));
@@ -7372,7 +7414,7 @@
 	      (mult:HI
 		(sign_extend:HI (vec_select:QI (match_dup 2) (parallel [(const_int 3)])))
 		(zero_extend:HI (vec_select:QI (match_dup 3) (parallel [(const_int 3)])))))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "smaqa.su\t%0, %2, %3"
   [(set_attr "type" "dmac")
    (set_attr "mode" "SI")])
@@ -7382,7 +7424,7 @@
    (match_operand:V2SI 1 "register_operand")
    (match_operand:V8QI 2 "register_operand")
    (match_operand:V8QI 3 "register_operand")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_sumaqav8qi (operands[0], operands[1],
 			     operands[2], operands[3]));
@@ -7438,7 +7480,7 @@
 		  (mult:HI
 		    (sign_extend:HI (vec_select:QI (match_dup 2) (parallel [(const_int 7)])))
 		    (zero_extend:HI (vec_select:QI (match_dup 3) (parallel [(const_int 7)]))))))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "smaqa.su\t%0, %2, %3"
   [(set_attr "type" "dmac")
    (set_attr "mode" "V2SI")])
@@ -7446,7 +7488,7 @@
 (define_insn "<rvp_optab><mode>2"
   [(set (match_operand:VECI 0 "register_operand" "=r")
         (unop:VECI (match_operand:VECI 1 "register_operand" "r")))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "<rvp_insn><bits>\t%0, %1"
   [(set_attr "type" "dalu")
    (set_attr "mode" "<MODE>")])
@@ -7454,7 +7496,7 @@
 (define_insn "<rvp_optab>si2"
   [(set (match_operand:SI 0 "register_operand" "=r")
         (unop:SI (match_operand:SI 1 "register_operand" "r")))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "<rvp_insn>32\t%0, %1"
   [(set_attr "type" "dalu")
    (set_attr "mode" "SI")])
@@ -7463,7 +7505,7 @@
   [(set (match_operand:VECI 0 "register_operand"               "=r")
 	(unspec:VECI [(match_operand:VECI 1 "register_operand" " r")]
 		      UNSPEC_CLO))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "clo<bits>\t%0, %1"
   [(set_attr "type" "dalu")
    (set_attr "mode" "<MODE>")])
@@ -7472,7 +7514,7 @@
   [(set (match_operand:SI 0 "register_operand" "=r")
         (unspec:SI [(match_operand:SI 1 "register_operand" "r")]
 		    UNSPEC_CLO))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && !TARGET_64BIT"
+  "TARGET_ZPN && !TARGET_64BIT"
   "clo32\t%0, %1"
   [(set_attr "type" "dalu")
    (set_attr "mode" "SI")])
@@ -7481,7 +7523,7 @@
   [(match_operand:VSHI 0 "register_operand" "")
    (match_operand:VSHI 1 "register_operand" "")
    (match_operand:VSHI 2 "register_operand" "")]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
 {
   emit_insn (gen_stas<mode>_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -7508,7 +7550,7 @@
 		(match_dup 1)
 		(parallel [(const_int 1)]))))
 	  (const_int 1)))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "stas<bits>\t%0, %1, %2"
   [(set_attr "type" "dalu")]
 )
@@ -7517,7 +7559,7 @@
   [(match_operand:VSHI 0 "register_operand" "")
    (match_operand:VSHI 1 "register_operand" "")
    (match_operand:VSHI 2 "register_operand" "")]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
 {
   emit_insn (gen_kstas<mode>_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -7544,7 +7586,7 @@
 		(match_dup 1)
 		(parallel [(const_int 1)]))))
 	  (const_int 1)))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "kstas<bits>\t%0, %1, %2"
   [(set_attr "type" "dalu")]
 )
@@ -7553,7 +7595,7 @@
   [(match_operand:VSHI 0 "register_operand" "")
    (match_operand:VSHI 1 "register_operand" "")
    (match_operand:VSHI 2 "register_operand" "")]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
 {
   emit_insn (gen_ukstas<mode>_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -7580,7 +7622,7 @@
 		(match_dup 1)
 		(parallel [(const_int 1)]))))
 	  (const_int 1)))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "ukstas<bits>\t%0, %1, %2"
   [(set_attr "type" "dalu")]
 )
@@ -7589,7 +7631,7 @@
   [(match_operand:VSHI 0 "register_operand" "")
    (match_operand:VSHI 1 "register_operand" "")
    (match_operand:VSHI 2 "register_operand" "")]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
 {
   emit_insn (gen_stsa<mode>_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -7616,7 +7658,7 @@
 		(match_dup 2)
 		(parallel [(const_int 1)]))))
 	  (const_int 2)))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "stsa<bits>\t%0, %1, %2"
   [(set_attr "type" "dalu")]
 )
@@ -7625,7 +7667,7 @@
   [(match_operand:VSHI 0 "register_operand" "")
    (match_operand:VSHI 1 "register_operand" "")
    (match_operand:VSHI 2 "register_operand" "")]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
 {
   emit_insn (gen_kstsa<mode>_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -7652,7 +7694,7 @@
 		(match_dup 2)
 		(parallel [(const_int 1)]))))
 	  (const_int 2)))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "kstsa<bits>\t%0, %1, %2"
   [(set_attr "type" "dalu")]
 )
@@ -7661,7 +7703,7 @@
   [(match_operand:VSHI 0 "register_operand" "")
    (match_operand:VSHI 1 "register_operand" "")
    (match_operand:VSHI 2 "register_operand" "")]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
 {
   emit_insn (gen_ukstsa<mode>_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -7688,7 +7730,7 @@
 		(match_dup 2)
 		(parallel [(const_int 1)]))))
 	  (const_int 2)))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "ukstsa<bits>\t%0, %1, %2"
   [(set_attr "type" "dalu")]
 )
@@ -7697,7 +7739,7 @@
   [(match_operand:VSHI 0 "register_operand" "")
    (match_operand:VSHI 1 "register_operand" "")
    (match_operand:VSHI 2 "register_operand" "")]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
 {
   emit_insn (gen_rstas<mode>_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -7734,7 +7776,7 @@
 		      (parallel [(const_int 1)]))))
 		(const_int 1))))
 	  (const_int 1)))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "rstas<bits>\t%0, %1, %2"
   [(set_attr "type" "dalu")]
 )
@@ -7743,7 +7785,7 @@
   [(match_operand:VSHI 0 "register_operand" "")
    (match_operand:VSHI 1 "register_operand" "")
    (match_operand:VSHI 2 "register_operand" "")]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
 {
   emit_insn (gen_urstas<mode>_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -7780,7 +7822,7 @@
 		      (parallel [(const_int 1)]))))
 		(const_int 1))))
 	  (const_int 1)))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "urstas<bits>\t%0, %1, %2"
   [(set_attr "type" "dalu")]
 )
@@ -7789,7 +7831,7 @@
   [(match_operand:VSHI 0 "register_operand" "")
    (match_operand:VSHI 1 "register_operand" "")
    (match_operand:VSHI 2 "register_operand" "")]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
 {
   emit_insn (gen_rstsa<mode>_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -7826,7 +7868,7 @@
 		      (parallel [(const_int 1)]))))
 		(const_int 1))))
 	  (const_int 2)))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "rstsa<bits>\t%0, %1, %2"
   [(set_attr "type" "dalu")]
 )
@@ -7835,7 +7877,7 @@
   [(match_operand:VSHI 0 "register_operand" "")
    (match_operand:VSHI 1 "register_operand" "")
    (match_operand:VSHI 2 "register_operand" "")]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
 {
   emit_insn (gen_urstsa<mode>_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -7872,7 +7914,7 @@
 		      (parallel [(const_int 1)]))))
 		(const_int 1))))
 	  (const_int 2)))]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
   "urstsa<bits>\t%0, %1, %2"
   [(set_attr "type" "dalu")]
 )
@@ -7881,7 +7923,7 @@
   [(match_operand:V4HI 0 "register_operand" "")
    (match_operand:V4HI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_stas16_64_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -7903,7 +7945,7 @@
 		      (vec_select:HI (match_dup 2) (parallel [(const_int 2)])))
 	    (plus:HI  (vec_select:HI (match_dup 1) (parallel [(const_int 3)]))
 		      (vec_select:HI (match_dup 2) (parallel [(const_int 3)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "stas16\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "V4HI")])
@@ -7912,7 +7954,7 @@
   [(match_operand:V4HI 0 "register_operand" "")
    (match_operand:V4HI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_kstas16_64_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -7934,7 +7976,7 @@
 			 (vec_select:HI (match_dup 2) (parallel [(const_int 2)])))
 	    (ss_plus:HI  (vec_select:HI (match_dup 1) (parallel [(const_int 3)]))
 			 (vec_select:HI (match_dup 2) (parallel [(const_int 3)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kstas16\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "V4HI")])
@@ -7943,7 +7985,7 @@
   [(match_operand:V4HI 0 "register_operand" "")
    (match_operand:V4HI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN"
+  "TARGET_ZPN"
 {
   emit_insn (gen_ukstas16_64_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -7965,7 +8007,7 @@
 			 (vec_select:HI (match_dup 2) (parallel [(const_int 2)])))
 	    (us_plus:HI  (vec_select:HI (match_dup 1) (parallel [(const_int 3)]))
 			 (vec_select:HI (match_dup 2) (parallel [(const_int 3)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "ukstas16\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "V4HI")])
@@ -7974,7 +8016,7 @@
   [(match_operand:V4HI 0 "register_operand" "")
    (match_operand:V4HI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_stsa16_64_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -7996,7 +8038,7 @@
 		     (vec_select:HI (match_dup 2) (parallel [(const_int 2)])))
 	    (minus:HI  (vec_select:HI (match_dup 1) (parallel [(const_int 3)]))
 		       (vec_select:HI (match_dup 2) (parallel [(const_int 3)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "stsa16\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "V4HI")])
@@ -8005,7 +8047,7 @@
   [(match_operand:V4HI 0 "register_operand" "")
    (match_operand:V4HI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_kstsa16_64_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -8027,7 +8069,7 @@
 			(vec_select:HI (match_dup 2) (parallel [(const_int 2)])))
 	    (ss_minus:HI  (vec_select:HI (match_dup 1) (parallel [(const_int 3)]))
 			  (vec_select:HI (match_dup 2) (parallel [(const_int 3)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "kstsa16\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "V4HI")])
@@ -8036,7 +8078,7 @@
   [(match_operand:V4HI 0 "register_operand" "")
    (match_operand:V4HI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_ukstsa16_64_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -8058,7 +8100,7 @@
 			(vec_select:HI (match_dup 2) (parallel [(const_int 2)])))
 	    (us_minus:HI  (vec_select:HI (match_dup 1) (parallel [(const_int 3)]))
 			  (vec_select:HI (match_dup 2) (parallel [(const_int 3)]))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "ukstsa16\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "V4HI")])
@@ -8067,7 +8109,7 @@
   [(match_operand:V4HI 0 "register_operand" "")
    (match_operand:V4HI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_rstas16_64_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -8105,7 +8147,7 @@
 		  (sign_extend:SI (vec_select:HI (match_dup 1) (parallel [(const_int 3)])))
 		  (sign_extend:SI (vec_select:HI (match_dup 2) (parallel [(const_int 3)]))))
 		(const_int 1))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "rstas16\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "V4HI")])
@@ -8114,7 +8156,7 @@
   [(match_operand:V4HI 0 "register_operand" "")
    (match_operand:V4HI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_urstas16_64_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -8152,7 +8194,7 @@
 		  (zero_extend:SI (vec_select:HI (match_dup 1) (parallel [(const_int 3)])))
 		  (zero_extend:SI (vec_select:HI (match_dup 2) (parallel [(const_int 3)]))))
 		(const_int 1))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "urstas16\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "V4HI")])
@@ -8161,7 +8203,7 @@
   [(match_operand:V4HI 0 "register_operand" "")
    (match_operand:V4HI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_rstsa16_64_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -8199,7 +8241,7 @@
 		  (sign_extend:SI (vec_select:HI (match_dup 1) (parallel [(const_int 3)])))
 		  (sign_extend:SI (vec_select:HI (match_dup 2) (parallel [(const_int 3)]))))
 		(const_int 1))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "rstsa16\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "V4HI")])
@@ -8208,7 +8250,7 @@
   [(match_operand:V4HI 0 "register_operand" "")
    (match_operand:V4HI 1 "register_operand" "")
    (match_operand:V4HI 2 "register_operand" "")]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
 {
   emit_insn (gen_urstsa16_64_le (operands[0], operands[1], operands[2]));
   DONE;
@@ -8246,7 +8288,7 @@
 		  (zero_extend:SI (vec_select:HI (match_dup 1) (parallel [(const_int 3)])))
 		  (zero_extend:SI (vec_select:HI (match_dup 2) (parallel [(const_int 3)]))))
 		(const_int 1))))))]
-  "(TARGET_ZPSF || TARGET_ZPRV || TARGET_ZPN) && TARGET_64BIT"
+  "TARGET_ZPN && TARGET_64BIT"
   "urstsa16\t%0, %1, %2"
   [(set_attr "type" "dalu")
    (set_attr "mode" "V4HI")])

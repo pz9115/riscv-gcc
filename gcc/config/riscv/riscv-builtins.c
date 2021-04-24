@@ -101,10 +101,11 @@ struct riscv_builtin_description {
 AVAIL (hard_float, TARGET_HARD_FLOAT)
 AVAIL (zprv, TARGET_ZPRV)
 AVAIL (zpsf, TARGET_ZPSF)
+AVAIL (zpsf32, TARGET_ZPSF && !TARGET_64BIT)
+AVAIL (zpsf64, TARGET_ZPSF && TARGET_64BIT)
 AVAIL (zpn, TARGET_ZPN)
 AVAIL (zpn64, TARGET_ZPN && TARGET_64BIT)
 AVAIL (zpn32, TARGET_ZPN && !TARGET_64BIT)
-AVAIL (rvp, TARGET_ZPSF || TARGET_ZPN || TARGET_ZPRV)
 
 AVAIL (crypto_zknd32, TARGET_ZKND && !TARGET_64BIT)
 AVAIL (crypto_zknd64, TARGET_ZKND && TARGET_64BIT)
@@ -411,7 +412,7 @@ riscv_expand_builtin_direct (enum insn_code icode, rtx target, tree exp,
   gcc_assert (opno + call_expr_nargs (exp)
 	      == insn_data[icode].n_generator_args);
   for (int argno = 0; argno < call_expr_nargs (exp); argno++){
-    if (TARGET_ZPRV || TARGET_ZPSF || TARGET_ZPN)
+    if (TARGET_ZPN)
       riscv_rvp_prepare_builtin_arg (&ops[opno++], exp, argno, icode, has_target_p);
     else
       riscv_prepare_builtin_arg (&ops[opno++], exp, argno);

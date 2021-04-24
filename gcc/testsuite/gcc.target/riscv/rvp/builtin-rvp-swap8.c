@@ -1,7 +1,6 @@
 /* This is a test program for wsbh instruction.  */
-/* { dg-do run } */
+/* { dg-do run { target { riscv32*-*-* } } } */
 /* { dg-options "-O0" } */
-/* { dg-require-effective-target riscv32 } */
 
 #include <rvp_intrinsic.h>
 #include <stdlib.h>
@@ -11,8 +10,8 @@
 int
 main ()
 {
-  unsigned int a = 0x03020100;
-  unsigned int b;
+  uint32_t a = 0x03020100;
+  uint32_t b;
 
   b = __rv__swap8 (a);
 

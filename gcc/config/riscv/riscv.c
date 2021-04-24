@@ -5273,12 +5273,12 @@ riscv_vector_mode_supported_p (enum machine_mode mode)
 {
   if (mode == V4QImode
       || mode == V2HImode)
-    return (TARGET_ZPRV || TARGET_ZPSF || TARGET_ZPN) && !TARGET_64BIT;
+    return TARGET_ZPN && !TARGET_64BIT;
 
   if (mode == V8QImode
       || mode == V4HImode
       || mode == V2SImode)
-    return (TARGET_ZPRV || TARGET_ZPSF || TARGET_ZPN) && TARGET_64BIT;
+    return TARGET_ZPN && TARGET_64BIT;
 
   return false;
 }
@@ -5286,7 +5286,7 @@ riscv_vector_mode_supported_p (enum machine_mode mode)
 static enum machine_mode
 riscv_vectorize_preferred_simd_mode (scalar_mode mode)
 {
-  if (!(TARGET_ZPRV || TARGET_ZPSF || TARGET_ZPN))
+  if (!TARGET_ZPN)
    return word_mode;
 
   switch (mode)

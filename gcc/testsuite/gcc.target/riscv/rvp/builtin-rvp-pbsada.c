@@ -1,7 +1,6 @@
 /* This is a test program for pbsada instruction.  */
-/* { dg-do run } */
+/* { dg-do run { target { riscv32*-*-* } } } */
 /* { dg-options "-O1" } */
-/* { dg-require-effective-target riscv32 } */
 
 #include <rvp_intrinsic.h>
 #include <stdlib.h>
@@ -11,9 +10,9 @@
 int
 main ()
 {
-  unsigned int a = 0x09070605;
-  unsigned int b = 0x04020301;
-  unsigned int r = 1;
+  uint32_t a = 0x09070605;
+  uint32_t b = 0x04020301;
+  uint32_t r = 1;
 
   r = __rv__pbsada(r, a, b);
 
