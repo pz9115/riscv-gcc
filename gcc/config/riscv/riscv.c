@@ -2478,7 +2478,7 @@ riscv_function_arg_boundary (machine_mode mode, const_tree type)
 static unsigned
 riscv_pass_mode_in_fpr_p (machine_mode mode)
 {
-  if (GET_MODE_UNIT_SIZE (mode) <= UNITS_PER_FP_ARG)
+  if (GET_MODE_UNIT_SIZE (mode) <= UNITS_PER_FP_ARG && !TARGET_ZFINX)
     {
       if (GET_MODE_CLASS (mode) == MODE_FLOAT)
 	return 1;
@@ -4808,10 +4808,8 @@ riscv_conditional_register_usage (void)
 
   if (!TARGET_HARD_FLOAT)
     {
-      if(!TARGET_ZFINX){
-         for (int regno = FP_REG_FIRST; regno <= FP_REG_LAST; regno++)
-	   fixed_regs[regno] = call_used_regs[regno] = 1;
-      }
+      for (int regno = FP_REG_FIRST; regno <= FP_REG_LAST; regno++)
+	fixed_regs[regno] = call_used_regs[regno] = 1;
     }
 
   /* In the soft-float ABI, there are no callee-saved FP registers.  */
