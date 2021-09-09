@@ -2554,6 +2554,41 @@ DEFINE_INT_AND_FLOAT_ROUND_FN (RINT)
 	 && single_use (@3))
      (mult (plusminus @2 { build_one_cst (type); }) @0))))))
 
+#if GIMPLE
+/* Canonicalize X + (X << C) into X * (1 + (1 << C)) and
+   (X << C1) + (X << C2) into X * ((1 << C1) + (1 << C2)).  */
+(simplify
+ (plus:c @0 (lshift:s @0 INTEGER_CST@1))
+  (if (ANY_INTEGRAL_TYPE_P (TREE_TYPE (@0))
+       && tree_fits_uhwi_p (@1)
+       && tree_to_uhwi (@1) < element_precision (type))
+   (with { tree t = type;
+	   if (!TYPE_OVERFLOW_WRAPS (t)) t = unsigned_type_for (t);
+	   wide_int w = wi::set_bit_in_zero (tree_to_uhwi (@1),
+					     element_precision (type));
+	   w += 1;
+	   tree cst = wide_int_to_tree (VECTOR_TYPE_P (t) ? TREE_TYPE (t)
+					: t, w);
+	   cst = build_uniform_cst (t, cst); }
+    (convert (mult (convert:t @0) { cst; })))))
+(simplify
+ (plus (lshift:s @0 INTEGER_CST@1) (lshift:s @0 INTEGER_CST@2))
+  (if (ANY_INTEGRAL_TYPE_P (TREE_TYPE (@0))
+       && tree_fits_uhwi_p (@1)
+       && tree_to_uhwi (@1) < element_precision (type)
+       && tree_fits_uhwi_p (@2)
+       && tree_to_uhwi (@2) < element_precision (type))
+   (with { tree t = type;
+	   if (!TYPE_OVERFLOW_WRAPS (t)) t = unsigned_type_for (t);
+	   unsigned int prec = element_precision (type);
+	   wide_int w = wi::set_bit_in_zero (tree_to_uhwi (@1), prec);
+	   w += wi::set_bit_in_zero (tree_to_uhwi (@2), prec);
+	   tree cst = wide_int_to_tree (VECTOR_TYPE_P (t) ? TREE_TYPE (t)
+					: t, w);
+	   cst = build_uniform_cst (t, cst); }
+    (convert (mult (convert:t @0) { cst; })))))
+#endif
+
 /* Simplifications of MIN_EXPR, MAX_EXPR, fmin() and fmax().  */
 
 (for minmax (min max FMIN_ALL FMAX_ALL)
@@ -5866,10 +5901,42 @@ DEFINE_INT_AND_FLOAT_ROUND_FN (RINT)
 	&& tree_to_uhwi (@3) == c2
 	&& tree_to_uhwi (@9) == c3
 	&& tree_to_uhwi (@7) == c3
-	&& tree_to_uhwi (@11) == c4
-	&& direct_internal_fn_supported_p (IFN_POPCOUNT, type,
-					   OPTIMIZE_FOR_BOTH))
-    (convert (IFN_POPCOUNT:type @0)))))
+	&& tree_to_uhwi (@11) == c4)
+    (if (direct_internal_fn_supported_p (IFN_POPCOUNT, type,
+					 OPTIMIZE_FOR_BOTH))
+     (convert (IFN_POPCOUNT:type @0))
+     /* Try to do popcount in two halves.  PREC must be at least
+	five bits for this to work without extension before adding.  */
+     (with {
+       tree half_type = NULL_TREE;
+       opt_machine_mode m = mode_for_size ((prec + 1) / 2, MODE_INT, 1);
+       int half_prec = 8;
+       if (m.exists ()
+	   && m.require () != TYPE_MODE (type))
+	 {
+	   half_prec = GET_MODE_PRECISION (as_a <scalar_int_mode> (m));
+	   half_type = build_nonstandard_integer_type (half_prec, 1);
+	 }
+       gcc_assert (half_prec > 2);
+      }
+      (if (half_type != NULL_TREE
+	   && direct_internal_fn_supported_p (IFN_POPCOUNT, half_type,
+					      OPTIMIZE_FOR_BOTH))
+       (convert (plus
+	 (IFN_POPCOUNT:half_type (convert @0))
+	 (IFN_POPCOUNT:half_type (convert (rshift @0
+	    { build_int_cst (integer_type_node, half_prec); } )))))))))))
+
+/* __builtin_ffs needs to deal on many targets with the possible zero
+   argument.  If we know the argument is always non-zero, __builtin_ctz + 1
+   should lead to better code.  */
+(simplify
+ (FFS tree_expr_nonzero_p@0)
+ (if (INTEGRAL_TYPE_P (TREE_TYPE (@0))
+      && direct_internal_fn_supported_p (IFN_CTZ, TREE_TYPE (@0),
+					 OPTIMIZE_FOR_SPEED))
+  (with { tree utype = unsigned_type_for (TREE_TYPE (@0)); }
+   (plus (CTZ:type (convert:utype @0)) { build_one_cst (type); }))))
 #endif
 
 /* Simplify:
