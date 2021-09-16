@@ -4916,6 +4916,9 @@ riscv_register_move_cost (machine_mode mode,
 static bool
 riscv_vector_mode (machine_mode mode)
 {
+  if (!TARGET_VECTOR)
+    return false;
+
   scalar_mode inner = GET_MODE_INNER (mode);
   if (VECTOR_MODE_P (mode)
       && (inner == BImode
@@ -5724,13 +5727,28 @@ riscv_hard_regno_rename_ok (unsigned from_regno ATTRIBUTE_UNUSED,
   return !cfun->machine->interrupt_handler_p || df_regs_ever_live_p (to_regno);
 }
 
+/* return true if the vector mode is supported by p ext */
+static bool
+riscv_packed_vector_mode (enum machine_mode mode)
+{
+  if (!TARGET_ZPN || GET_MODE_CLASS (MODE) != MODE_VECTOR_INT)
+    return false;
+
+  if (mode == V4QImode)
+    return !TARGET_64BIT;
+
+  if (mode == V8QImode
+   || mode == V4HImode
+   || mode == V2SImode)
+    return TARGET_64BIT;
+
+  return mode == V2HImode;
+}
+
 bool
 riscv_vector_mode_supported_p (enum machine_mode mode)
 {
-  if (TARGET_VECTOR && riscv_vector_mode (mode))
-    return true;
-
-  return false;
+  return riscv_vector_mode (mode) || riscv_packed_vector_mode (mode);
 }
 
 /* Implement TARGET_NEW_ADDRESS_PROFITABLE_P.  */
