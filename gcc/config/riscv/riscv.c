@@ -5727,18 +5727,6 @@ riscv_hard_regno_rename_ok (unsigned from_regno ATTRIBUTE_UNUSED,
 bool
 riscv_vector_mode_supported_p (enum machine_mode mode)
 {
-  /* a few instructions(e.g. kdmabb) in RV64P also supports V2HI */
-  if (mode == V2HImode)
-    return TARGET_ZPN;
-
-  if (mode == V4QImode)
-    return TARGET_ZPN && !TARGET_64BIT;
-
-  if (mode == V8QImode
-      || mode == V4HImode
-      || mode == V2SImode)
-    return TARGET_ZPN && TARGET_64BIT;
-
   if (TARGET_VECTOR && riscv_vector_mode (mode))
     return true;
 
