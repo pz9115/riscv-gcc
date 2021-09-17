@@ -2,7 +2,8 @@
 /* { dg-options "-O2 -ftree-vectorize -fdump-tree-vect-details" } */
 /* { dg-options "-O2 -ftree-vectorize -fdump-tree-vect-details -mno-vx" { target { s390*-*-* } } } */
 /* { dg-options "-O2 -ftree-vectorize -fdump-tree-vect-details -mno-sse" { target { i?86-*-* x86_64-*-* } } } */
-/* { dg-options "-O2 -ftree-vectorize -fdump-tree-vect-details -march=rv64gc" { target { riscv*-*-* } } } */
+/* { dg-options "-O2 -ftree-vectorize -fdump-tree-vect-details -march=rv64gc" { target { riscv64-*-* } } } */
+/* { dg-options "-O2 -ftree-vectorize -fdump-tree-vect-details -march=rv32gc" { target { riscv32-*-* } } } */
 
 #include <stdlib.h>
 
