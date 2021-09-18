@@ -114,18 +114,18 @@
 
 ;; Vector constraints.
 
-(define_register_constraint "vr" "TARGET_VECTOR ? VECTOR_REGS : NO_REGS"
+(define_register_constraint "vr" "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) ? VECTOR_REGS : NO_REGS"
   "A vector register (if available).")
 
 ;; TODO: This could be wrong if vector mask can use other than v0.
-(define_register_constraint "vd" "TARGET_VECTOR ? VECTOR_NO_MASK_REGS : NO_REGS"
+(define_register_constraint "vd" "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) ? VECTOR_NO_MASK_REGS : NO_REGS"
   "A vector register except mask register (if available).")
 
 ;; ??? Not used yet.
-(define_register_constraint "vm" "TARGET_VECTOR ? VECTOR_MASK_REGS : NO_REGS"
+(define_register_constraint "vm" "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) ? VECTOR_MASK_REGS : NO_REGS"
   "A vector mask register (if available).")
 
-(define_register_constraint "vt" "TARGET_VECTOR ? VTYPE_REGS : NO_REGS"
+(define_register_constraint "vt" "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) ? VTYPE_REGS : NO_REGS"
   "VTYPE register (if available).")
 
 (define_constraint "vc"

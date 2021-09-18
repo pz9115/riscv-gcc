@@ -40,7 +40,9 @@ along with GCC; see the file COPYING3.  If not see
 #include "emit-rtl.h"
 #include "explow.h"
 #include "stringpool.h"
+#include "attribs.h"
 #include "riscv-vector-iterator.h"
+#include "riscv-protos.h"
 
 /* We don't want the PTR definition from ansi-decl.h.  */
 #undef PTR
@@ -133,6 +135,17 @@ enum riscv_builtin_type {
    return (COND);			\
  }
 
+#define DECL_CHECKER(NAME) \
+static bool                \
+check_##NAME (tree, rtx, rtx, machine_mode);
+
+#define DEF_CHECKER(NAME)                        \
+static bool                                      \
+check_##NAME (tree exp ATTRIBUTE_UNUSED,         \
+              rtx target ATTRIBUTE_UNUSED,       \
+              rtx subtarget ATTRIBUTE_UNUSED,    \
+              machine_mode mode ATTRIBUTE_UNUSED)
+
 /* This structure describes a single built-in function.  */
 struct riscv_builtin_description {
   /* The code of the main .md file instruction.  See riscv_builtin_type
@@ -150,12 +163,15 @@ struct riscv_builtin_description {
 
   /* Whether the function is available.  */
   unsigned int (*avail) (void);
+
+  /* Checker for the function.  */
+  bool (*check) (tree, rtx, rtx, machine_mode);
 };
 
 AVAIL (hard_float, TARGET_HARD_FLOAT)
 
 AVAIL (bitmanip64, TARGET_64BIT && TARGET_BITMANIP)
-AVAIL (vector, TARGET_VECTOR)
+AVAIL (vector, (TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC))
 AVAIL (crypto_zknd32, TARGET_ZKND && !TARGET_64BIT)
 AVAIL (crypto_zknd64, TARGET_ZKND && TARGET_64BIT)
 AVAIL (crypto_zkne32, TARGET_ZKNE && !TARGET_64BIT)
@@ -179,6 +195,11 @@ AVAIL (zpsf, TARGET_ZPSF)
 AVAIL (zpsf32, TARGET_ZPSF && !TARGET_64BIT)
 AVAIL (zpsf64, TARGET_ZPSF && TARGET_64BIT)
 
+DECL_CHECKER(vector_insert)
+DECL_CHECKER(vector_tuple_insert)
+DECL_CHECKER(vector_extract)
+DECL_CHECKER(vector_tuple_extract)
+
 /* Construct a riscv_builtin_description from the given arguments.
 
    INSN is the name of the associated instruction pattern, without the
@@ -193,13 +214,20 @@ AVAIL (zpsf64, TARGET_ZPSF && TARGET_64BIT)
    riscv_builtin_avail_.  */
 #define RISCV_BUILTIN(INSN, NAME, BUILTIN_TYPE,	FUNCTION_TYPE, AVAIL)	\
   { CODE_FOR_riscv_ ## INSN, "__builtin_riscv_" NAME,			\
-    BUILTIN_TYPE, FUNCTION_TYPE, riscv_builtin_avail_ ## AVAIL }
+    BUILTIN_TYPE, FUNCTION_TYPE, riscv_builtin_avail_ ## AVAIL, NULL}
+
+#define RISCV_BUILTIN_WITH_CHECKER(INSN, NAME, BUILTIN_TYPE, FUNCTION_TYPE, AVAIL, CHECKER)	\
+  { CODE_FOR_riscv_ ## INSN, "__builtin_riscv_" NAME,			\
+    BUILTIN_TYPE, FUNCTION_TYPE, riscv_builtin_avail_ ## AVAIL, check_ ## CHECKER}
 
 /* Define __builtin_riscv_<INSN>, which is a RISCV_BUILTIN_DIRECT function
    mapped to instruction CODE_FOR_riscv_<INSN>,  FUNCTION_TYPE and AVAIL
    are as for RISCV_BUILTIN.  */
 #define DIRECT_BUILTIN(INSN, FUNCTION_TYPE, AVAIL)			\
   RISCV_BUILTIN (INSN, #INSN, RISCV_BUILTIN_DIRECT, FUNCTION_TYPE, AVAIL)
+
+#define DIRECT_BUILTIN_WITH_CHECKER(INSN, FUNCTION_TYPE, AVAIL, CHECKER)			\
+  RISCV_BUILTIN_WITH_CHECKER (INSN, #INSN, RISCV_BUILTIN_DIRECT, FUNCTION_TYPE, AVAIL, CHECKER)
 
 /* Define __builtin_riscv_<INSN>, which is a RISCV_BUILTIN_DIRECT_NO_TARGET
    function mapped to instruction CODE_FOR_riscv_<INSN>,  FUNCTION_TYPE
@@ -222,16 +250,27 @@ AVAIL (zpsf64, TARGET_ZPSF && TARGET_64BIT)
   { CODE_FOR_ ## INSN, "__builtin_riscv_" # NAME,			\
     RISCV_BUILTIN_DIRECT_NO_TARGET, FUNCTION_TYPE, riscv_builtin_avail_ ## AVAIL }
 
+#define DIRECT_NO_TARGET_BUILTIN_WITH_CHECKER(INSN, FUNCTION_TYPE, AVAIL, CHECKER) \
+  RISCV_BUILTIN_WITH_CHECKER (INSN, #INSN, RISCV_BUILTIN_DIRECT_NO_TARGET,		\
+		 FUNCTION_TYPE, AVAIL, CHECKER)
+
 /* Same as above, but for using named patterns in the md file.  It drops the
    riscv after CODE_FOR_, but it is otherwise the same.  */
 #define RISCV_NAMED(INSN, NAME, BUILTIN_TYPE, FUNCTION_TYPE, AVAIL)	\
   { CODE_FOR_ ## INSN, "__builtin_riscv_" NAME,			\
-    BUILTIN_TYPE, FUNCTION_TYPE, riscv_builtin_avail_ ## AVAIL }
+    BUILTIN_TYPE, FUNCTION_TYPE, riscv_builtin_avail_ ## AVAIL, NULL}
+
+#define RISCV_NAMED_WITH_CHECKER(INSN, NAME, BUILTIN_TYPE, FUNCTION_TYPE, AVAIL, CHECKER)	\
+  { CODE_FOR_ ## INSN, "__builtin_riscv_" NAME,			\
+    BUILTIN_TYPE, FUNCTION_TYPE, riscv_builtin_avail_ ## AVAIL, check_ ## CHECKER}
 
 /* This has an extra NAME argument, as the builtin name and the pattern name
    are constructed differently.  */
 #define DIRECT_NAMED(INSN, NAME, FUNCTION_TYPE, AVAIL)			\
   RISCV_NAMED (INSN, #NAME, RISCV_BUILTIN_DIRECT, FUNCTION_TYPE, AVAIL)
+
+#define DIRECT_NAMED_WITH_CHECKER(INSN, NAME, FUNCTION_TYPE, AVAIL, CHECKER)			\
+  RISCV_NAMED_WITH_CHECKER (INSN, #NAME, RISCV_BUILTIN_DIRECT, FUNCTION_TYPE, AVAIL, CHECKER)
 
 /* This has an extra NAME argument, as the builtin name and the pattern name
    are constructed differently.  */
@@ -239,15 +278,29 @@ AVAIL (zpsf64, TARGET_ZPSF && TARGET_64BIT)
   RISCV_NAMED (INSN, #NAME, RISCV_BUILTIN_DIRECT_NO_TARGET,		\
 	       FUNCTION_TYPE, AVAIL)
 
+#define DIRECT_NAMED_NO_TARGET_WITH_CHECKER(INSN, NAME, FUNCTION_TYPE, AVAIL, CHECKER)	\
+  RISCV_NAMED_WITH_CHECKER (INSN, #NAME, RISCV_BUILTIN_DIRECT_NO_TARGET,		\
+	       FUNCTION_TYPE, AVAIL, CHECKER)
+
 #define SHIFT_NAMED(INSN, NAME, FUNCTION_TYPE, AVAIL)			\
   RISCV_NAMED (INSN, #NAME, RISCV_BUILTIN_SHIFT_SCALAR, FUNCTION_TYPE, AVAIL)
+
+#define SHIFT_NAMED_WITH_CHECKER(INSN, NAME, FUNCTION_TYPE, AVAIL, CHECKER)			\
+  RISCV_NAMED_WITH_CHECKER (INSN, #NAME, RISCV_BUILTIN_SHIFT_SCALAR, FUNCTION_TYPE, AVAIL, CHECKER)
 
 #define SHIFT_MASK_NAMED(INSN, NAME, FUNCTION_TYPE, AVAIL)		\
   RISCV_NAMED (INSN, #NAME, RISCV_BUILTIN_SHIFT_MASK_SCALAR,		\
 	       FUNCTION_TYPE, AVAIL)
 
+#define SHIFT_MASK_NAMED_WITH_CHECKER(INSN, NAME, FUNCTION_TYPE, AVAIL, CHECKER)		\
+  RISCV_NAMED_WITH_CHECKER (INSN, #NAME, RISCV_BUILTIN_SHIFT_MASK_SCALAR,		\
+	       FUNCTION_TYPE, AVAIL, CHECKER)
+
 #define MV_XS_NAMED(INSN, NAME, FUNCTION_TYPE, AVAIL)			\
   RISCV_NAMED (INSN, #NAME, RISCV_BUILTIN_MV_XS, FUNCTION_TYPE, AVAIL)
+
+#define MV_XS_NAMED_WITH_CHECKER(INSN, NAME, FUNCTION_TYPE, AVAIL, CHECKER)			\
+  RISCV_NAMED_WITH_CHECKER (INSN, #NAME, RISCV_BUILTIN_MV_XS, FUNCTION_TYPE, AVAIL, CHECKER)
 
 /* type nodes for target-specific width support (xlen_t) */
 tree uint_xlen_node;
@@ -534,67 +587,15 @@ tree const_float16_ptr_type_node;
 _SCALAR_INT_ITERATOR(DECLARE_SCALAR_INT_PTR_TYPE_NODE)
 
 /* Vector type nodes.  */
-tree rvvint8mf8_t_node;
-tree rvvint8mf4_t_node;
-tree rvvint8mf2_t_node;
-tree rvvint8m1_t_node;
-tree rvvint8m2_t_node;
-tree rvvint8m4_t_node;
-tree rvvint8m8_t_node;
-tree rvvint16mf4_t_node;
-tree rvvint16mf2_t_node;
-tree rvvint16m1_t_node;
-tree rvvint16m2_t_node;
-tree rvvint16m4_t_node;
-tree rvvint16m8_t_node;
-tree rvvint32mf2_t_node;
-tree rvvint32m1_t_node;
-tree rvvint32m2_t_node;
-tree rvvint32m4_t_node;
-tree rvvint32m8_t_node;
-tree rvvint64m1_t_node;
-tree rvvint64m2_t_node;
-tree rvvint64m4_t_node;
-tree rvvint64m8_t_node;
 
-tree rvvuint8mf8_t_node;
-tree rvvuint8mf4_t_node;
-tree rvvuint8mf2_t_node;
-tree rvvuint8m1_t_node;
-tree rvvuint8m2_t_node;
-tree rvvuint8m4_t_node;
-tree rvvuint8m8_t_node;
-tree rvvuint16mf4_t_node;
-tree rvvuint16mf2_t_node;
-tree rvvuint16m1_t_node;
-tree rvvuint16m2_t_node;
-tree rvvuint16m4_t_node;
-tree rvvuint16m8_t_node;
-tree rvvuint32mf2_t_node;
-tree rvvuint32m1_t_node;
-tree rvvuint32m2_t_node;
-tree rvvuint32m4_t_node;
-tree rvvuint32m8_t_node;
-tree rvvuint64m1_t_node;
-tree rvvuint64m2_t_node;
-tree rvvuint64m4_t_node;
-tree rvvuint64m8_t_node;
+#define RISCV_DECL_INT_TYPES(SEW, LMUL, MLEN,	MODE, SUBMODE)	\
+  tree rvvint##SEW##m##LMUL##_t_node;	\
+  tree rvvuint##SEW##m##LMUL##_t_node;
+_RVV_INT_ITERATOR(RISCV_DECL_INT_TYPES)
 
-tree rvvfloat16mf4_t_node;
-tree rvvfloat16mf2_t_node;
-tree rvvfloat16m1_t_node;
-tree rvvfloat16m2_t_node;
-tree rvvfloat16m4_t_node;
-tree rvvfloat16m8_t_node;
-tree rvvfloat32mf2_t_node;
-tree rvvfloat32m1_t_node;
-tree rvvfloat32m2_t_node;
-tree rvvfloat32m4_t_node;
-tree rvvfloat32m8_t_node;
-tree rvvfloat64m1_t_node;
-tree rvvfloat64m2_t_node;
-tree rvvfloat64m4_t_node;
-tree rvvfloat64m8_t_node;
+#define RISCV_DECL_FLOAT_TYPES(SEW, LMUL, MLEN,	MODE, SUBMODE) \
+  tree rvvfloat##SEW##m##LMUL##_t_node;
+_RVV_FLOAT_ITERATOR(RISCV_DECL_FLOAT_TYPES)
 
 tree rvvbool1_t_node;
 tree rvvbool2_t_node;
@@ -1831,48 +1832,48 @@ _RVV_SEG_ARG (RISCV_DECL_SEG_TYPES, X)
 #define VINT_VEC_INSERT(SEW, WLMUL, LMUL, MLEN,				\
 			SMODE_PREFIX_UPPER, SMODE_PREFIX_LOWER,		\
 			VMODE_PREFIX_UPPER, VMODE_PREFIX_LOWER)         \
-  DIRECT_NAMED (							\
+  DIRECT_NAMED_WITH_CHECKER (							\
     vector_insert##VMODE_PREFIX_LOWER##i,				\
     vector_insertint##SEW##m##LMUL##m##WLMUL,				\
     RISCV_VI##SEW##M##WLMUL##_FTYPE_VI##SEW##M##WLMUL##_VI##SEW##M##LMUL##_SI,\
-    vector),								\
-  DIRECT_NAMED (							\
+    vector, vector_insert),								\
+  DIRECT_NAMED_WITH_CHECKER (							\
     vector_insert##VMODE_PREFIX_LOWER##i,				\
     vector_insertuint##SEW##m##LMUL##m##WLMUL,				\
     RISCV_VUI##SEW##M##WLMUL##_FTYPE_VUI##SEW##M##WLMUL##_VUI##SEW##M##LMUL##_SI,\
-    vector),
+    vector, vector_insert),
 
 #define VFLOAT_VEC_INSERT(SEW, WLMUL, LMUL, MLEN,				\
 			  SMODE_PREFIX_UPPER, SMODE_PREFIX_LOWER,	\
 			  VMODE_PREFIX_UPPER, VMODE_PREFIX_LOWER)	\
-  DIRECT_NAMED (							\
+  DIRECT_NAMED_WITH_CHECKER (							\
     vector_insert##VMODE_PREFIX_LOWER##f,				\
     vector_insertfloat##SEW##m##LMUL##m##WLMUL,				\
     RISCV_VF##SEW##M##WLMUL##_FTYPE_VF##SEW##M##WLMUL##_VF##SEW##M##LMUL##_SI,\
-    vector),
+    vector, vector_insert),
 
 #define VINT_VEC_EXTRACT(SEW, WLMUL, LMUL, MLEN,				\
 			SMODE_PREFIX_UPPER, SMODE_PREFIX_LOWER,		\
 			VMODE_PREFIX_UPPER, VMODE_PREFIX_LOWER)	\
-  DIRECT_NAMED (							\
+  DIRECT_NAMED_WITH_CHECKER (							\
     vector_extract##VMODE_PREFIX_LOWER##i,				\
     vector_extractint##SEW##m##WLMUL##m##LMUL,				\
     RISCV_VI##SEW##M##LMUL##_FTYPE_VI##SEW##M##WLMUL##_SI,	\
-    vector),								\
-  DIRECT_NAMED (							\
+    vector, vector_extract),								\
+  DIRECT_NAMED_WITH_CHECKER (							\
     vector_extract##VMODE_PREFIX_LOWER##i,				\
     vector_extractuint##SEW##m##WLMUL##m##LMUL,				\
     RISCV_VUI##SEW##M##LMUL##_FTYPE_VUI##SEW##M##WLMUL##_SI,	\
-    vector),
+    vector, vector_extract),
 
 #define VFLOAT_VEC_EXTRACT(SEW, WLMUL, LMUL, MLEN,				\
 			SMODE_PREFIX_UPPER, SMODE_PREFIX_LOWER,		\
 			VMODE_PREFIX_UPPER, VMODE_PREFIX_LOWER)	\
-  DIRECT_NAMED (							\
+  DIRECT_NAMED_WITH_CHECKER (							\
     vector_extract##VMODE_PREFIX_LOWER##f,				\
     vector_extractfloat##SEW##m##WLMUL##m##LMUL,				\
     RISCV_VF##SEW##M##LMUL##_FTYPE_VF##SEW##M##WLMUL##_SI,	\
-    vector),
+    vector, vector_extract),
 
 #define VREINTERPRET_INT(E, L, MLEN, IMODE, ISUBMODE)			\
   DIRECT_NAMED (mov##IMODE,						\
@@ -2302,48 +2303,48 @@ _RVV_SEG_ARG (RISCV_DECL_SEG_TYPES, X)
 #define VINT_SEG_INSERT(SEW, LMUL, NF, MLEN,				\
 			SMODE_PREFIX_UPPER, SMODE_PREFIX_LOWER,		\
 			VMODE_PREFIX_UPPER, VMODE_PREFIX_LOWER, XX)	\
-  DIRECT_NAMED (							\
+  DIRECT_NAMED_WITH_CHECKER (							\
     vtuple_insert##VMODE_PREFIX_LOWER##i,				\
     vtuple_insertint##SEW##m##LMUL##x##NF,				\
     RISCV_VI##SEW##M##LMUL##X##NF##_FTYPE_VI##SEW##M##LMUL##X##NF##_VI##SEW##M##LMUL##_SI,\
-    vector),								\
-  DIRECT_NAMED (							\
+    vector, vector_tuple_insert),								\
+  DIRECT_NAMED_WITH_CHECKER (							\
     vtuple_insert##VMODE_PREFIX_LOWER##i,				\
     vtuple_insertuint##SEW##m##LMUL##x##NF,				\
     RISCV_VUI##SEW##M##LMUL##X##NF##_FTYPE_VUI##SEW##M##LMUL##X##NF##_VUI##SEW##M##LMUL##_SI,\
-    vector),
+    vector, vector_tuple_insert),
 
 #define VFLOAT_SEG_INSERT(SEW, LMUL, NF, MLEN,				\
 			  SMODE_PREFIX_UPPER, SMODE_PREFIX_LOWER,	\
 			  VMODE_PREFIX_UPPER, VMODE_PREFIX_LOWER, XX)	\
-  DIRECT_NAMED (							\
+  DIRECT_NAMED_WITH_CHECKER (							\
     vtuple_insert##VMODE_PREFIX_LOWER##f,				\
     vtuple_insertfloat##SEW##m##LMUL##x##NF,				\
     RISCV_VF##SEW##M##LMUL##X##NF##_FTYPE_VF##SEW##M##LMUL##X##NF##	_VF##SEW##M##LMUL##_SI,\
-    vector),								\
+    vector, vector_tuple_insert),								\
 
 #define VINT_SEG_EXTRACT(SEW, LMUL, NF, MLEN,				\
 			SMODE_PREFIX_UPPER, SMODE_PREFIX_LOWER,		\
 			VMODE_PREFIX_UPPER, VMODE_PREFIX_LOWER, XX)	\
-  DIRECT_NAMED (							\
+  DIRECT_NAMED_WITH_CHECKER (							\
     vtuple_extract##VMODE_PREFIX_LOWER##i,				\
     vtuple_extractint##SEW##m##LMUL##x##NF,				\
     RISCV_VI##SEW##M##LMUL##_FTYPE_VI##SEW##M##LMUL##X##NF##_SI,	\
-    vector),								\
-  DIRECT_NAMED (							\
+    vector, vector_tuple_extract),								\
+  DIRECT_NAMED_WITH_CHECKER (							\
     vtuple_extract##VMODE_PREFIX_LOWER##i,				\
     vtuple_extractuint##SEW##m##LMUL##x##NF,				\
     RISCV_VUI##SEW##M##LMUL##_FTYPE_VUI##SEW##M##LMUL##X##NF##_SI,	\
-    vector),
+    vector, vector_tuple_extract),
 
 #define VFLOAT_SEG_EXTRACT(SEW, LMUL, NF, MLEN,				\
 			SMODE_PREFIX_UPPER, SMODE_PREFIX_LOWER,		\
 			VMODE_PREFIX_UPPER, VMODE_PREFIX_LOWER, XX)	\
-  DIRECT_NAMED (							\
+  DIRECT_NAMED_WITH_CHECKER (							\
     vtuple_extract##VMODE_PREFIX_LOWER##f,				\
     vtuple_extractfloat##SEW##m##LMUL##x##NF,				\
     RISCV_VF##SEW##M##LMUL##_FTYPE_VF##SEW##M##LMUL##X##NF##_SI,	\
-    vector),
+    vector, vector_tuple_extract),
 
 #define VINT_SEG_CREATE2(SEW, LMUL, NF, MLEN,				\
 			 SMODE_PREFIX_UPPER, SMODE_PREFIX_LOWER,	\
@@ -2849,6 +2850,48 @@ riscv_build_function_type (enum riscv_function_type type)
   return types[(int) type];
 }
 
+#define RVV_TYPE_ATTR_NAME "RVV type"
+
+/* Add type attributes to builtin type tree, currently only the mangled name. */
+
+static void
+add_vector_type_attribute (tree type, const char *type_name)
+{
+  char mangled_name[18];
+  snprintf (mangled_name, sizeof (mangled_name),
+    "%d_%s", (int) strlen (type_name) + 1, type_name);
+
+  tree mangled_name_tree = get_identifier (mangled_name);
+  tree value = tree_cons (NULL_TREE, mangled_name_tree, NULL_TREE);
+  TYPE_ATTRIBUTES (type) = tree_cons (get_identifier (RVV_TYPE_ATTR_NAME), value,
+				      TYPE_ATTRIBUTES (type));
+}
+
+/* If TYPE is an ABI-defined RVV type, return its attribute descriptor,
+   otherwise return null.  */
+
+static tree
+lookup_rvv_type_attribute (const_tree type)
+{
+  if (type == error_mark_node)
+    return NULL_TREE;
+  return lookup_attribute (RVV_TYPE_ATTR_NAME, TYPE_ATTRIBUTES (type));
+}
+
+/* If TYPE is a built-in type defined by the RVV ABI, return the mangled name,
+   otherwise return NULL.  */
+
+const char *
+riscv_mangle_builtin_type (const_tree type)
+{
+  if (TYPE_NAME (type) && TREE_CODE (TYPE_NAME (type)) == TYPE_DECL)
+    type = TREE_TYPE (TYPE_NAME (type));
+  if (tree attr = lookup_rvv_type_attribute (type))
+    if (tree id = TREE_VALUE (chain_index (0, TREE_VALUE (attr))))
+      return IDENTIFIER_POINTER (id);
+  return NULL;
+}
+
 /* Create a builtin vector type with a name.  Taking care not to give
    the canonical type a name.  */
 
@@ -2859,6 +2902,7 @@ riscv_vector_type (const char *name, tree elt_type, enum machine_mode mode)
 
   /* Copy so we don't give the canonical type a name.  */
   result = build_distinct_type_copy (result);
+  add_vector_type_attribute(result, name);
 
   (*lang_hooks.types.register_builtin_type) (result, name);
 
@@ -2891,6 +2935,7 @@ riscv_vector_tuple_type (const char *name,
 
   layout_type (tuple_type);
   SET_TYPE_MODE (tuple_type, mode);
+  add_vector_type_attribute(tuple_type, name);
 
   tree decl = build_decl (input_location, TYPE_DECL,
 			  get_identifier (name), tuple_type);
@@ -2952,7 +2997,7 @@ riscv_init_builtins (void)
   layout_type (fp16_type_node);
   (*lang_hooks.types.register_builtin_type) (fp16_type_node, "__fp16");
 
-  if (TARGET_VECTOR)
+  if (TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
     {
       /* These types exist only for the ld/st intrinsics.  */
       const_float_ptr_type_node
@@ -3438,6 +3483,13 @@ riscv_expand_builtin (tree exp, rtx target, rtx subtarget ATTRIBUTE_UNUSED,
   unsigned int fcode = DECL_MD_FUNCTION_CODE (fndecl);
   const struct riscv_builtin_description *d = &riscv_builtins[fcode];
 
+  /* TARGET_CHECK_BUILTIN_CALL can only do checking during paring, so
+     some information for indirect builtin call (like in inline functions,
+     etc.) can't pass to checker, so we do checking during expanding. */
+  if(d->check &&
+    !d->check (exp, target, subtarget, mode))
+    return const0_rtx;
+
   switch (d->builtin_type)
     {
     case RISCV_BUILTIN_SHIFT_SCALAR:
@@ -3473,4 +3525,70 @@ riscv_atomic_assign_expand_fenv (tree *hold, tree *clear, tree *update)
 		  build_call_expr (frflags, 0), NULL_TREE, NULL_TREE);
   *clear = build_call_expr (fsflags, 1, old_flags);
   *update = NULL_TREE;
+}
+
+static bool
+check_range (location_t loc, tree tuple, tree index, machine_mode emode)
+{
+  if (TREE_CODE (index) != INTEGER_CST)
+    return true;
+
+  machine_mode tmode = TYPE_MODE (TREE_TYPE (tuple));
+  poly_uint64 tsize = GET_MODE_SIZE (tmode);
+  poly_uint64 esize = GET_MODE_SIZE (emode);
+
+  poly_int64 max_poly = exact_div (tsize, esize);
+  gcc_assert (max_poly.is_constant ());
+  HOST_WIDE_INT max = max_poly.to_constant();
+
+  if(TREE_INT_CST_LOW (index) >= max)
+    {
+      error_at (loc, "index %d is out of range, should be less than %d.",
+        TREE_INT_CST_LOW (index), max);
+      return false;
+    }
+  return true;
+}
+
+static bool
+check_tuple_range (location_t loc, tree tuple, tree index)
+{
+  if (TREE_CODE (index) != INTEGER_CST)
+    return true;
+
+  machine_mode tmode = TYPE_MODE (TREE_TYPE (tuple));
+  int nf = riscv_get_nf (tmode);
+  if (TREE_INT_CST_LOW (index) >= nf)
+    {
+      error_at (loc, "index %d is out of range, should be less than %d.",
+        TREE_INT_CST_LOW (index), nf);
+      return false;
+    }
+  return true;
+}
+
+DEF_CHECKER (vector_insert)
+{
+  return check_range (EXPR_LOCATION (exp),
+           CALL_EXPR_ARG (exp, 0), CALL_EXPR_ARG (exp, 2),
+           TYPE_MODE (TREE_TYPE (CALL_EXPR_ARG (exp, 1))));
+}
+
+DEF_CHECKER (vector_tuple_insert)
+{
+  return check_tuple_range (EXPR_LOCATION (exp),
+           CALL_EXPR_ARG (exp, 0), CALL_EXPR_ARG (exp, 2));
+}
+
+DEF_CHECKER (vector_extract)
+{
+  return check_range (EXPR_LOCATION (exp),
+           CALL_EXPR_ARG (exp, 0), CALL_EXPR_ARG (exp, 1),
+           TYPE_MODE (TREE_TYPE (exp)));
+}
+
+DEF_CHECKER (vector_tuple_extract)
+{
+  return check_tuple_range (EXPR_LOCATION (exp),
+           CALL_EXPR_ARG (exp, 0), CALL_EXPR_ARG (exp, 1));
 }

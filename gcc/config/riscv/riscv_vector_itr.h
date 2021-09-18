@@ -1954,3 +1954,4 @@
   MACRO (16, 1, 8, 16, __float16_t, __VA_ARGS__) \
   MACRO (32, 1, 8, 32, __float32_t, __VA_ARGS__) \
   MACRO (64, 1, 8, 64, __float64_t, __VA_ARGS__) \
+
