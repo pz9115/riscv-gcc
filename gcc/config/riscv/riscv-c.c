@@ -65,6 +65,9 @@ riscv_cpu_cpp_builtins (cpp_reader *pfile)
       builtin_define ("__riscv_fsqrt");
     }
 
+  if (TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
+    builtin_define ("__riscv_vector");
+
   switch (riscv_abi)
     {
     case ABI_ILP32E:
@@ -103,7 +106,4 @@ riscv_cpu_cpp_builtins (cpp_reader *pfile)
       builtin_define ("__riscv_cmodel_medany");
       break;
     }
-
-    if (TARGET_VECTOR)
-      builtin_define ("__riscv_vector");
 }

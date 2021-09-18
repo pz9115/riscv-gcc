@@ -253,14 +253,14 @@
 			   UNSPECV_VSETVL))
    (set (reg:SI VL_REGNUM) (unspec_volatile:SI [(match_dup 1)] UNSPECV_VSETVL))
    (set (reg:VIMODES VTYPE_REGNUM) (const_int UNSPECV_VSETVL))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vsetvli\t%0,%1,e<VIMODES:sew>,m<VIMODES:lmul>"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
 
 (define_insn "vsetvli_x0_<mode>"
   [(set (reg:VIMODES VTYPE_REGNUM) (const_int UNSPECV_VSETVL))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vsetvli\tx0,x0,e<sew>,m<lmul>"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -270,7 +270,7 @@
    (set (reg:P VL_REGNUM) (const_int UNSPECV_VSETVL))
    (set (match_operand:P 0 "register_operand" "=r")
 	(reg:P VL_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vsetvli\t%0,x0,e<VIMODES:sew>,m<VIMODES:lmul>"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -287,7 +287,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -298,7 +298,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vle<sew>.v\t%0,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -315,7 +315,7 @@
 		       (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -329,7 +329,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vle<sew>.v\t%0,%1,%2.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -343,7 +343,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -355,7 +355,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vse<sew>.v\t%0,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -372,7 +372,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -387,7 +387,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vse<sew>.v\t%2,%0,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -406,7 +406,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -421,7 +421,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vlse<sew>.v\t%0,(%1),%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -441,7 +441,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -459,7 +459,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vlse<sew>.v\t%0,(%1),%2,%3.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -476,7 +476,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -491,7 +491,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vsse<sew>.v\t%0,(%1),%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -509,7 +509,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -525,7 +525,7 @@
 	    (reg:SI VL_REGNUM)]
 	  UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vsse<sew>.v\t%0,(%1),%2,%3.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -547,7 +547,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VMODES:VLMODE> VTYPE_REGNUM))])]
-  "TARGET_64BIT && TARGET_VECTOR
+  "TARGET_64BIT && (TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
    && known_eq (GET_MODE_NUNITS (<VMODES:MODE>mode),
 		GET_MODE_NUNITS (<VIMODES:MODE>mode))"
 {
@@ -566,7 +566,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VMODES:VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
    && known_eq (GET_MODE_NUNITS (<VMODES:MODE>mode),
 		GET_MODE_NUNITS (<VIMODES:MODE>mode))"
   "vloxei<VIMODES:sew>.v\t%0,(%1),%2"
@@ -588,7 +588,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VMODES:VLMODE> VTYPE_REGNUM))])]
-  "TARGET_64BIT && TARGET_VECTOR
+  "TARGET_64BIT && (TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
    && known_eq (GET_MODE_NUNITS (<VMODES:MODE>mode),
 		GET_MODE_NUNITS (<VIMODES:MODE>mode))"
 {
@@ -608,7 +608,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VMODES:VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
    && known_eq (GET_MODE_NUNITS (<VMODES:MODE>mode),
 		GET_MODE_NUNITS (<VIMODES:MODE>mode))"
   "vloxei<VIMODES:sew>.v\t%0,(%1),%2,%5.t"
@@ -629,7 +629,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VMODES:VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
    && known_eq (GET_MODE_NUNITS (<VMODES:MODE>mode),
 		GET_MODE_NUNITS (<VIMODES:MODE>mode))"
 {
@@ -646,7 +646,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VMODES:VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
    && known_eq (GET_MODE_NUNITS (<VMODES:MODE>mode),
 		GET_MODE_NUNITS (<VIMODES:MODE>mode))"
   "vloxei<VIMODES:sew>.v\t%0,(%1),%2"
@@ -667,7 +667,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VMODES:VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
    && known_eq (GET_MODE_NUNITS (<VMODES:MODE>mode),
 		GET_MODE_NUNITS (<VIMODES:MODE>mode))"
 {
@@ -686,7 +686,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VMODES:VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
    && known_eq (GET_MODE_NUNITS (<VMODES:MODE>mode),
 		GET_MODE_NUNITS (<VIMODES:MODE>mode))"
   "vloxei<VIMODES:sew>.v\t%0,(%3),%4,%1.t"
@@ -705,7 +705,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VMODES:VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
    && known_eq (GET_MODE_NUNITS (<VMODES:MODE>mode),
 		GET_MODE_NUNITS (<VIMODES:MODE>mode))"
 {
@@ -722,7 +722,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VMODES:VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
    && known_eq (GET_MODE_NUNITS (<VMODES:MODE>mode),
 		GET_MODE_NUNITS (<VIMODES:MODE>mode))"
   "vluxei<VIMODES:sew>.v\t%0,(%1),%2"
@@ -743,7 +743,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VMODES:VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
    && known_eq (GET_MODE_NUNITS (<VMODES:MODE>mode),
 		GET_MODE_NUNITS (<VIMODES:MODE>mode))"
 {
@@ -762,7 +762,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VMODES:VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
    && known_eq (GET_MODE_NUNITS (<VMODES:MODE>mode),
 		GET_MODE_NUNITS (<VIMODES:MODE>mode))"
   "vluxei<VIMODES:sew>.v\t%0,(%3),%4,%1.t"
@@ -786,7 +786,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VMODES:VLMODE> VTYPE_REGNUM))])]
-  "TARGET_64BIT && TARGET_VECTOR
+  "TARGET_64BIT && (TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
    && known_eq (GET_MODE_NUNITS (<VMODES:MODE>mode),
 		GET_MODE_NUNITS (<VIMODES:MODE>mode))"
 {
@@ -805,7 +805,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VMODES:VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
    && known_eq (GET_MODE_NUNITS (<VMODES:MODE>mode),
 		GET_MODE_NUNITS (<VIMODES:MODE>mode))"
   "vsoxei<VIMODES:sew>.v\t%4,(%0),%1"
@@ -827,7 +827,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VMODES:VLMODE> VTYPE_REGNUM))])]
-  "TARGET_64BIT && TARGET_VECTOR
+  "TARGET_64BIT && (TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
    && known_eq (GET_MODE_NUNITS (<VMODES:MODE>mode),
 		GET_MODE_NUNITS (<VIMODES:MODE>mode))"
 {
@@ -847,7 +847,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VMODES:VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
    && known_eq (GET_MODE_NUNITS (<VMODES:MODE>mode),
 		GET_MODE_NUNITS (<VIMODES:MODE>mode))"
   "vsoxei<VIMODES:sew>.v\t%4,(%0),%1,%5.t"
@@ -868,7 +868,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VMODES:VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
    && known_eq (GET_MODE_NUNITS (<VMODES:MODE>mode),
 		GET_MODE_NUNITS (<VIMODES:MODE>mode))"
 {
@@ -885,7 +885,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VMODES:VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
    && known_eq (GET_MODE_NUNITS (<VMODES:MODE>mode),
 		GET_MODE_NUNITS (<VIMODES:MODE>mode))"
   "vs<order>xei<VIMODES:sew>.v\t%2,(%0),%1"
@@ -905,7 +905,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VMODES:VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
    && known_eq (GET_MODE_NUNITS (<VMODES:MODE>mode),
 		GET_MODE_NUNITS (<VIMODES:MODE>mode))"
 {
@@ -923,7 +923,7 @@
 	   (reg:SI VL_REGNUM)]
 	  UNSPEC_USEVL))
    (use (reg:<VMODES:VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
    && known_eq (GET_MODE_NUNITS (<VMODES:MODE>mode),
 		GET_MODE_NUNITS (<VIMODES:MODE>mode))"
   "vs<order>xei<VIMODES:sew>.v\t%3,(%1),%2,%0.t"
@@ -940,7 +940,7 @@
 (define_expand "mov<mode>"
   [(set (match_operand:VMODES 0 "reg_or_mem_operand")
 		(match_operand:VMODES 1 "vector_move_operand"))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
   /* Need to force register if mem <- !reg.  */
   if (MEM_P (operands[0]) && !REG_P (operands[1]))
@@ -967,7 +967,7 @@
 (define_insn "*mov<mode>"
   [(set (match_operand:VMODES 0 "reg_or_mem_operand"  "=vr,vr,m")
 		(match_operand:VMODES 1 "reg_or_mem_operand"  "vr,m,vr"))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "@
    vmv<xlmul>r.v\t%0,%1
    vl<xlmul>r.v\t%0,%1
@@ -978,7 +978,7 @@
 (define_expand "mov<mode>"
   [(set (match_operand:VMASKMODES 0 "reg_or_mem_operand")
 		(match_operand:VMASKMODES 1 "vector_move_operand"))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
   rtx ele;
   if (const_vec_duplicate_p (operands[1], &ele))
@@ -1003,7 +1003,7 @@
 (define_insn "*mov<mode>"
   [(set (match_operand:VMASKMODES 0 "reg_or_mem_operand"  "=vr,vr, m")
 		(match_operand:VMASKMODES 1 "reg_or_mem_operand"  "vr, m, vr"))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "@
    vmv1r.v\t%0, %1
    vl1r.v\t%0, %1
@@ -1024,7 +1024,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -1037,7 +1037,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vmv.x.s\t%0,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -1054,7 +1054,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -1069,7 +1069,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vmv.s.x\t%0,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -1087,7 +1087,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -1100,7 +1100,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfmv.f.s\t%0,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -1117,7 +1117,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -1132,7 +1132,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfmv.s.f\t%0,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -1149,7 +1149,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -1162,7 +1162,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "@
    v<insn>.vv\t%0,%1,%2
    v<insn>.vi\t%0,%1,%v2"
@@ -1180,7 +1180,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -1194,7 +1194,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "v<insn>.vx\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -1212,7 +1212,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -1228,7 +1228,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "@
    v<insn>.vv\t%0,%3,%4,%1.t
    v<insn>.vi\t%0,%3,%v4,%1.t"
@@ -1249,7 +1249,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -1266,7 +1266,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "v<insn>.vx\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -1283,7 +1283,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -1296,7 +1296,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "@
    v<insn>.vv\t%0,%1,%2
    v<neg_add>.vi\t%0,%1,%V2"
@@ -1313,7 +1313,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -1326,7 +1326,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vssubu.vv\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -1345,7 +1345,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -1359,7 +1359,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "v<insn>.vx\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -1377,7 +1377,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -1393,7 +1393,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "v<insn>.vv\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -1412,7 +1412,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -1429,7 +1429,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "v<insn>.vx\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -1444,7 +1444,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -1457,7 +1457,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vrsub.vi\t%0,%1,%v2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -1473,7 +1473,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -1487,7 +1487,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vrsub.vx\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -1505,7 +1505,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -1521,7 +1521,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vrsub.vi\t%0,%4,%v3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -1540,7 +1540,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -1557,7 +1557,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vrsub.vx\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -1574,7 +1574,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -1587,7 +1587,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "@
    v<insn>.vv\t%0,%1,%2
    v<insn>.vi\t%0,%1,%v2"
@@ -1605,7 +1605,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -1619,7 +1619,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "v<insn>.vx\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -1637,7 +1637,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -1653,7 +1653,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "@
    v<insn>.vv\t%0,%3,%4,%1.t
    v<insn>.vi\t%0,%3,%v4,%1.t"
@@ -1674,7 +1674,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -1691,7 +1691,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "v<insn>.vx\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -1705,7 +1705,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -1717,7 +1717,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vnot.v\t%0,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -1734,7 +1734,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -1749,7 +1749,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vnot.v\t%0,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -1763,7 +1763,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -1775,7 +1775,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vneg.v\t%0,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -1792,7 +1792,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -1807,7 +1807,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vneg.v\t%0,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -1829,7 +1829,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -1847,7 +1847,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "@
    vadc.vvm\t%0,%1,%2,%3
    vadc.vim\t%0,%1,%v2,%3"
@@ -1870,7 +1870,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -1889,7 +1889,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vadc.vxm\t%0,%1,%2,%3"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -1911,7 +1911,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -1931,7 +1931,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "@
    vmadc.vvm\t%0,%1,%2,%3
    vmadc.vim\t%0,%1,%v2,%3"
@@ -1956,7 +1956,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -1977,7 +1977,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vmadc.vxm\t%0,%1,%2,%3"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -1994,7 +1994,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -2009,7 +2009,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "@
    vmadc.vv\t%0,%1,%2
    vmadc.vi\t%0,%1,%v2"
@@ -2029,7 +2029,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -2045,7 +2045,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vmadc.vx\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -2065,7 +2065,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -2083,7 +2083,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vsbc.vvm\t%0,%1,%2,%3"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -2104,7 +2104,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -2123,7 +2123,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vsbc.vxm\t%0,%1,%2,%3"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -2145,7 +2145,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -2165,7 +2165,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vmsbc.vvm\t%0,%1,%2,%3"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -2188,7 +2188,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -2209,7 +2209,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vmsbc.vxm\t%0,%1,%2,%3"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -2226,7 +2226,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -2241,7 +2241,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vmsbc.vv\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -2259,7 +2259,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -2275,7 +2275,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vmsbc.vx\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -2293,7 +2293,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -2306,7 +2306,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vf<optab>.vv\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -2324,7 +2324,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -2340,7 +2340,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vf<optab>.vv\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -2356,7 +2356,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -2370,7 +2370,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vf<optab>.vf\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -2389,7 +2389,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -2406,7 +2406,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vf<optab>.vf\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -2422,7 +2422,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -2436,7 +2436,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vf<optab>.vf\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -2455,7 +2455,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -2472,7 +2472,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vf<optab>.vf\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -2488,7 +2488,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -2502,7 +2502,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfr<optab>.vf\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -2521,7 +2521,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -2538,7 +2538,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfr<optab>.vf\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -2553,7 +2553,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -2565,7 +2565,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfsqrt.v\t%0,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -2582,7 +2582,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -2597,7 +2597,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfsqrt.v\t%0,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -2610,7 +2610,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_RSQRTE7))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -2621,7 +2621,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_RSQRTE7))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfrsqrt7.v\t%0,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -2636,7 +2636,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_RSQRTE7))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -2649,7 +2649,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_RSQRTE7))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfrsqrt7.v\t%0,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -2663,7 +2663,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -2675,7 +2675,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_RECE7))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -2686,7 +2686,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_RECE7))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfrec7.v\t%0,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -2701,7 +2701,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_RECE7))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -2714,7 +2714,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_RECE7))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vrec7.v\t%0,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -2728,7 +2728,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfneg.v\t%0,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -2745,7 +2745,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -2760,7 +2760,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfneg.v\t%0,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -2780,7 +2780,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -2795,7 +2795,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vw<add_sub:insn><any_extend:u>.vv\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -2813,7 +2813,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -2829,7 +2829,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vw<add_sub:insn><any_extend:u>.vx\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -2849,7 +2849,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -2867,7 +2867,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vw<add_sub:insn><any_extend:u>.vv\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -2888,7 +2888,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -2907,7 +2907,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vw<add_sub:insn><any_extend:u>.vx\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -2923,7 +2923,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -2937,7 +2937,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vw<add_sub:insn><any_extend:u>.wv\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -2954,7 +2954,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -2969,7 +2969,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vw<add_sub:insn><any_extend:u>.wx\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -2988,7 +2988,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -3005,7 +3005,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vw<add_sub:insn><any_extend:u>.wv\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -3025,7 +3025,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -3043,7 +3043,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vw<add_sub:insn><any_extend:u>.wx\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -3059,7 +3059,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -3071,7 +3071,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vwcvt<u>.x.x.v\t%0,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -3088,7 +3088,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -3103,7 +3103,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vwcvt<u>.x.x.v\t%0,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -3117,7 +3117,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VWVLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -3129,7 +3129,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VWVLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "v<sz>ext.vf2\t%0,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -3146,7 +3146,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VWVLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -3161,7 +3161,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VWVLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "v<sz>ext.vf2\t%0,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -3177,7 +3177,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VQWVLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -3189,7 +3189,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VQWVLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "v<sz>ext.vf4\t%0,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -3206,7 +3206,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VQWVLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -3221,7 +3221,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VQWVLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "v<sz>ext.vf4\t%0,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -3237,7 +3237,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VEWVLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -3249,7 +3249,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VEWVLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "v<sz>ext.vf8\t%0,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -3266,7 +3266,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VEWVLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -3281,7 +3281,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VEWVLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "v<sz>ext.vf8\t%0,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -3300,7 +3300,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -3315,7 +3315,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vfw<insn>.vv\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -3333,7 +3333,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -3349,7 +3349,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vfw<insn>.vf\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -3369,7 +3369,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -3387,7 +3387,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vfw<insn>.vv\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -3408,7 +3408,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -3427,7 +3427,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vfw<insn>.vf\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -3443,7 +3443,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -3457,7 +3457,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vfw<insn>.wv\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -3474,7 +3474,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -3489,7 +3489,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vfw<insn>.wf\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -3508,7 +3508,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -3525,7 +3525,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vfw<insn>.wv\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -3545,7 +3545,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -3563,7 +3563,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vfw<insn>.wf\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -3580,7 +3580,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -3593,7 +3593,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vmul.vv\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -3609,7 +3609,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -3623,7 +3623,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vmul.vx\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -3641,7 +3641,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -3657,7 +3657,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vmul.vv\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -3676,7 +3676,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -3693,7 +3693,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vmul.vx\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -3715,7 +3715,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -3733,7 +3733,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vmulh<u>.vv\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -3753,7 +3753,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -3771,7 +3771,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vmulhsu.vv\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -3787,7 +3787,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
   rtx shift = GEN_INT (GET_MODE_UNIT_BITSIZE (<VIMODES:MODE>mode));
   emit_insn (gen_<v_su>mul<mode>3_highpart (operands[0], operands[1],
@@ -3813,7 +3813,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -3832,7 +3832,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vmulh<u>.vx\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -3853,7 +3853,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -3872,7 +3872,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vmulhsu.vx\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -3888,7 +3888,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
   rtx shift = GEN_INT (GET_MODE_UNIT_BITSIZE (<VIMODES:MODE>mode));
   emit_insn (gen_<v_su>mul<mode>3_highpart_scalar (operands[0], operands[1],
@@ -3917,7 +3917,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -3938,7 +3938,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vmulh<u>.vv\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -3961,7 +3961,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -3982,7 +3982,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vmulhsu.vv\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -4001,7 +4001,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
   rtx shift = GEN_INT (GET_MODE_UNIT_BITSIZE (<VIMODES:MODE>mode));
   emit_insn (gen_<v_su>mul<mode>3_highpart_mask (operands[0], operands[1],
@@ -4032,7 +4032,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -4054,7 +4054,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vmulh<u>.vx\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -4078,7 +4078,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -4100,7 +4100,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vmulhsu.vx\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -4119,7 +4119,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
   rtx shift = GEN_INT (GET_MODE_UNIT_BITSIZE (<VIMODES:MODE>mode));
   emit_insn (gen_<v_su>mul<mode>3_highpart_scalar_mask (operands[0],
@@ -4145,7 +4145,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -4160,7 +4160,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vfwmul.vv\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -4178,7 +4178,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -4194,7 +4194,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vfwmul.vf\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -4214,7 +4214,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -4232,7 +4232,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vfwmul.vv\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -4253,7 +4253,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -4272,7 +4272,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vfwmul.vf\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -4291,7 +4291,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -4307,7 +4307,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -4324,7 +4324,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -4340,7 +4340,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "@
    vf<vfmadd_sub>.vv\t%0,%1,%3
    vf<vfmac>.vv\t%0,%1,%2"
@@ -4360,7 +4360,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -4377,7 +4377,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -4393,7 +4393,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "@
    vf<vfmadd_sub>.vf\t%0,%1,%3
    vf<vfmac>.vf\t%0,%1,%2"
@@ -4415,7 +4415,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -4433,7 +4433,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vf<vfmadd_sub>.vv\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -4453,7 +4453,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -4471,7 +4471,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vf<vfmac>.vv\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -4492,7 +4492,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -4511,7 +4511,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vf<vfmadd_sub>.vf\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -4532,7 +4532,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -4551,7 +4551,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vf<vfmac>.vf\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -4571,7 +4571,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -4588,7 +4588,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -4605,7 +4605,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -4621,7 +4621,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "@
    vf<vfnmadd_sub>.vv\t%0,%1,%3
    vf<vfnmac>.vv\t%0,%1,%2"
@@ -4642,7 +4642,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -4660,7 +4660,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -4677,7 +4677,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "@
    vf<vfnmadd_sub>.vf\t%0,%1,%3
    vf<vfnmac>.vf\t%0,%1,%2"
@@ -4700,7 +4700,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -4719,7 +4719,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vf<vfnmadd_sub>.vv\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -4740,7 +4740,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -4759,7 +4759,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vf<vfnmac>.vv\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -4781,7 +4781,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -4801,7 +4801,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vf<vfnmadd_sub>.vf\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -4823,7 +4823,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -4843,7 +4843,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vf<vfnmac>.vf\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -4864,7 +4864,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -4881,7 +4881,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfw<vfmac>.vv\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -4901,7 +4901,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -4919,7 +4919,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfw<vfmac>.vf\t%0,%2,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -4941,7 +4941,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -4961,7 +4961,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfw<vfmac>.vv\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -4984,7 +4984,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -5005,7 +5005,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfw<vfmac>.vf\t%0,%4,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -5027,7 +5027,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -5045,7 +5045,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfw<vfnmac>.vv\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -5066,7 +5066,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -5085,7 +5085,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfw<vfnmac>.vf\t%0,%2,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -5108,7 +5108,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -5129,7 +5129,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfw<vfnmac>.vv\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -5153,7 +5153,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -5175,7 +5175,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfw<vfnmac>.vf\t%0,%4,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -5191,7 +5191,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -5203,7 +5203,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "@
    vmv.v.x\t%0,%1
    vmv.v.i\t%0,%1"
@@ -5221,7 +5221,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -5233,7 +5233,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "@
    vfmv.v.f\t%0,%1
    vmv.v.x\t%0,%1"
@@ -5253,7 +5253,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -5267,7 +5267,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfsgnj<nx>.vv\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -5284,7 +5284,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -5299,7 +5299,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfsgnj<nx>.vf\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -5318,7 +5318,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -5335,7 +5335,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfsgnj<nx>.vv\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -5355,7 +5355,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -5373,7 +5373,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vfsgnj<nx>.vf\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -5393,7 +5393,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
   if (ltge_operator (operands[1], <VCMPEQUIV>mode)
       && !ltge_vector_arith_operand(operands[3], <MODE>mode))
@@ -5409,7 +5409,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
  "@
   vms%B1.vv\t%0,%2,%3
   vms%B1.vi\t%0,%2,%v3"
@@ -5425,7 +5425,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
  "@
   vms%B1.vv\t%0,%2,%3
   vms%B1.vi\t%0,%2,%v3"
@@ -5445,7 +5445,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
   if (ltge_operator (operands[1], <VCMPEQUIV>mode)
       && !ltge_vector_arith_operand(operands[3], <MODE>mode))
@@ -5464,7 +5464,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
  "@
   vms%B1.vv\t%0,%2,%3,%5.t
   vms%B1.vi\t%0,%2,%v3,%5.t"
@@ -5483,7 +5483,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
  "@
   vms%B1.vv\t%0,%2,%3,%5.t
   vms%B1.vi\t%0,%2,%v3,%5.t"
@@ -5500,7 +5500,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
  "vms%B1.vx\t%0,%2,%3"
  [(set_attr "type" "vector")
   (set_attr "mode" "none")])
@@ -5518,7 +5518,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
  "vms%B1.vx\t%0,%2,%3,%5.t"
  [(set_attr "type" "vector")
   (set_attr "mode" "none")])
@@ -5533,7 +5533,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
- "TARGET_VECTOR && TARGET_HARD_FLOAT"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -5546,7 +5546,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
- "TARGET_VECTOR && TARGET_HARD_FLOAT"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
  "vmf%B1.vv\t%0,%2,%3"
  [(set_attr "type" "vector")
   (set_attr "mode" "none")])
@@ -5562,7 +5562,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
- "TARGET_VECTOR && TARGET_HARD_FLOAT"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -5576,7 +5576,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
- "TARGET_VECTOR && TARGET_HARD_FLOAT"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
  "vmf%B1.vf\t%0,%2,%3"
  [(set_attr "type" "vector")
   (set_attr "mode" "none")])
@@ -5594,7 +5594,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
- "TARGET_VECTOR && TARGET_HARD_FLOAT"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -5610,7 +5610,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
- "TARGET_VECTOR && TARGET_HARD_FLOAT"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
  "vmf%B1.vv\t%0,%2,%3,%5.t"
  [(set_attr "type" "vector")
   (set_attr "mode" "none")])
@@ -5629,7 +5629,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
- "TARGET_VECTOR && TARGET_HARD_FLOAT"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -5646,7 +5646,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
- "TARGET_VECTOR && TARGET_HARD_FLOAT"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
  "vmf%B1.vf\t%0,%2,%3,%5.t"
  [(set_attr "type" "vector")
   (set_attr "mode" "none")])
@@ -5662,7 +5662,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -5676,7 +5676,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
  "@
   vmerge.vvm\t%0,%1,%2,%3
   vmerge.vim\t%0,%1,%2,%3"
@@ -5695,7 +5695,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -5710,7 +5710,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
  "vmerge.vxm\t%0,%1,%2,%3"
  [(set_attr "type" "vector")
   (set_attr "mode" "none")])
@@ -5728,7 +5728,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
- "TARGET_VECTOR && TARGET_HARD_FLOAT"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -5742,7 +5742,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
- "TARGET_VECTOR && TARGET_HARD_FLOAT"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
  "vmerge.vvm\t%0,%1,%2,%3"
  [(set_attr "type" "vector")
   (set_attr "mode" "none")])
@@ -5759,7 +5759,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
- "TARGET_VECTOR && TARGET_HARD_FLOAT"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -5774,7 +5774,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
- "TARGET_VECTOR && TARGET_HARD_FLOAT"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
  "vfmerge.vfm\t%0,%1,%2,%3"
  [(set_attr "type" "vector")
   (set_attr "mode" "none")])
@@ -5790,7 +5790,7 @@
 	     (match_operand:VIMODES 5 "register_operand")])
 	  (match_operand:VIMODES 1 "register_operand")
 	  (match_operand:VIMODES 2 "register_operand")))]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
   rtx tmp = gen_reg_rtx (<VCMPEQUIV>mode);
   emit_insn (gen_vec_cmp<mode><vmaskmode> (tmp, operands[3],
@@ -5809,7 +5809,7 @@
 	     (match_operand:VFMODES 5 "register_operand")])
 	  (match_operand:VFMODES 1 "register_operand")
 	  (match_operand:VFMODES 2 "register_operand")))]
- "TARGET_VECTOR && TARGET_HARD_FLOAT"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
   rtx tmp = gen_reg_rtx (<VCMPEQUIV>mode);
   emit_insn (gen_vec_cmp<mode><vmaskmode> (tmp, operands[3],
@@ -5828,7 +5828,7 @@
 	     (match_operand:<VINTEQUIV> 5 "register_operand")])
 	  (match_operand:VFMODES 1 "register_operand")
 	  (match_operand:VFMODES 2 "register_operand")))]
- "TARGET_VECTOR && TARGET_HARD_FLOAT"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
   rtx tmp = gen_reg_rtx (<VCMPEQUIV>mode);
   emit_insn (gen_vec_cmp<vintequiv><vmaskmode> (tmp, operands[3],
@@ -5847,7 +5847,7 @@
 	     (match_operand:VFMODES 5 "register_operand")])
 	  (match_operand:<VINTEQUIV> 1 "register_operand")
 	  (match_operand:<VINTEQUIV> 2 "register_operand")))]
- "TARGET_VECTOR && TARGET_HARD_FLOAT"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
   rtx tmp = gen_reg_rtx (<VCMPEQUIV>mode);
   emit_insn (gen_vec_cmp<mode><vmaskmode> (tmp, operands[3],
@@ -5865,7 +5865,7 @@
 	  [(unspec:VMASKMODES [(match_dup 1)] UNSPEC_VCLR)
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
   /* Using gen function instead of write (const_vector [(const_int 0)]) because,
      emit-rtl.c:gen_rtx_CONST_VECTOR will check the number of elements is same
@@ -5881,7 +5881,7 @@
 	    UNSPEC_VCLR)
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vmclr.m\t%0"
  [(set_attr "type" "vector")
   (set_attr "mode" "none")])
@@ -5892,7 +5892,7 @@
 	  [(unspec:VMASKMODES [(match_dup 1)] UNSPEC_VSET)
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
   /* Using gen function instead of write (const_vector [(const_int 0)]) because,
      emit-rtl.c:gen_rtx_CONST_VECTOR will check the number of elements is same
@@ -5908,7 +5908,7 @@
 	    UNSPEC_VSET)
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vmset.m\t%0"
  [(set_attr "type" "vector")
   (set_attr "mode" "none")])
@@ -5920,7 +5920,7 @@
 	     (match_operand:VMASKMODES 1 "register_operand" "vr"))
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vmnot.m\t%0,%1"
  [(set_attr "type" "vector")
   (set_attr "mode" "none")])
@@ -5935,7 +5935,7 @@
 	    UNSPEC_VLM)
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -5947,7 +5947,7 @@
 	    UNSPEC_VLM)
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vlm.v\t%0,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -5960,7 +5960,7 @@
 	    UNSPEC_VSM)
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -5972,7 +5972,7 @@
 	    UNSPEC_VSM)
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vsm.v\t%1,%0"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -5987,7 +5987,7 @@
 	     (match_operand:VMASKMODES 2 "register_operand" "vr"))
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
  "vm<insn>.mm\t%0,%1,%2"
  [(set_attr "type" "vector")
   (set_attr "mode" "none")])
@@ -6001,7 +6001,7 @@
 	       (match_operand:VMASKMODES 2 "register_operand" "vr")))
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
  "vm<invmaskop>.mm\t%0,%1,%2"
  [(set_attr "type" "vector")
   (set_attr "mode" "none")])
@@ -6015,7 +6015,7 @@
 	       (match_operand:VMASKMODES 2 "register_operand" "vr")))
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
  "vm<insn>not.mm\t%0,%1,%2"
  [(set_attr "type" "vector")
   (set_attr "mode" "none")])
@@ -6029,7 +6029,7 @@
 	     (match_operand:VMASKMODES 2 "register_operand"))
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -6045,7 +6045,7 @@
 	    UNSPEC_VPOPCOUNT)
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
  "vpopc.m\t%0,%1"
  [(set_attr "type" "vector")
   (set_attr "mode" "none")])
@@ -6060,7 +6060,7 @@
 	    UNSPEC_VPOPCOUNT)
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
  "vpopc.m\t%0,%2,%1.t"
  [(set_attr "type" "vector")
   (set_attr "mode" "none")])
@@ -6073,7 +6073,7 @@
 	    UNSPEC_FIRST)
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
  "vfirst.m\t%0,%1"
  [(set_attr "type" "vector")
   (set_attr "mode" "none")])
@@ -6088,7 +6088,7 @@
 	    UNSPEC_FIRST)
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
  "vfirst.m\t%0,%2,%1.t"
  [(set_attr "type" "vector")
   (set_attr "mode" "none")])
@@ -6103,7 +6103,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -6116,7 +6116,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
  "viota.m\t%0,%1"
  [(set_attr "type" "vector")
   (set_attr "mode" "none")])
@@ -6133,7 +6133,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -6148,7 +6148,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
  "viota.m\t%0,%3,%1.t"
  [(set_attr "type" "vector")
   (set_attr "mode" "none")])
@@ -6161,7 +6161,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -6172,7 +6172,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
  "vid.v\t%0"
  [(set_attr "type" "vector")
   (set_attr "mode" "none")])
@@ -6188,7 +6188,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -6202,7 +6202,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
  "vid.v\t%0,%1.t"
  [(set_attr "type" "vector")
   (set_attr "mode" "none")])
@@ -6215,7 +6215,7 @@
 	    MISC_MASK_OP)
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
  "vm<misc_maskop>.m\t%0,%1"
  [(set_attr "type" "vector")
   (set_attr "mode" "none")])
@@ -6231,7 +6231,7 @@
 	     (match_operand:VMASKMODES 2 "register_operand" "0"))
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))]
- "TARGET_VECTOR"
+ "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
  "vm<misc_maskop>.m\t%0,%3,%1.t"
  [(set_attr "type" "vector")
   (set_attr "mode" "none")])
@@ -6250,7 +6250,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -6267,7 +6267,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -6282,7 +6282,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -6304,7 +6304,7 @@
 	  [(not:<VCMPEQUIV> (and:<VCMPEQUIV> (match_dup 0) (match_dup 0)))
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -6324,7 +6324,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -6347,7 +6347,7 @@
 	  [(xor:<VCMPEQUIV> (match_dup 0) (match_dup 1))
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -6363,7 +6363,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -6380,7 +6380,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -6395,7 +6395,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -6413,7 +6413,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -6433,7 +6433,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -6450,7 +6450,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vred<reduc>.vs\t%0,%3,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -6470,7 +6470,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -6488,7 +6488,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vred<reduc>.vs\t%0,%4,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -6507,7 +6507,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -6522,7 +6522,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vwredsum<sumu>.vs\t%0,%3,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -6540,7 +6540,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -6556,7 +6556,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vwredsum<sumu>.vs\t%0,%4,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -6577,7 +6577,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -6594,7 +6594,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vfred<reduc>.vs\t%0,%3,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -6614,7 +6614,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -6632,7 +6632,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vfred<reduc>.vs\t%0,%4,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -6651,7 +6651,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -6668,7 +6668,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vfredosum.vs\t%0,%3,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -6688,7 +6688,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -6706,7 +6706,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vfredosum.vs\t%0,%4,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -6725,7 +6725,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -6740,7 +6740,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vfwred<o>sum.vs\t%0,%3,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -6758,7 +6758,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -6774,7 +6774,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vfwred<o>sum.vs\t%0,%4,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -6782,7 +6782,7 @@
 (define_expand "reinterpret_<mode><vintequiv>"
   [(set (match_operand:VFMODES 0 "register_operand")
 	(subreg:VFMODES (match_operand:<VINTEQUIV> 1 "register_operand") 0))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
   emit_insn (gen_mov<mode> (operands[0],
 	     simplify_gen_subreg (<MODE>mode, operands[1],
@@ -6793,7 +6793,7 @@
 (define_expand "reinterpret_<vintequiv><mode>"
   [(set (match_operand:<VINTEQUIV> 0 "register_operand")
 	(subreg:<VINTEQUIV> (match_operand:VFMODES 1 "register_operand") 0))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
   emit_insn (gen_mov<vintequiv> (operands[0],
 	     simplify_gen_subreg (<VINTEQUIV>mode, operands[1],
@@ -6804,7 +6804,7 @@
 (define_expand "reinterpret_<VIMODES2:mode><VIMODES:mode>"
   [(set (match_operand:VIMODES2 0 "register_operand")
 	(subreg:VIMODES2 (match_operand:VIMODES 1 "register_operand") 0))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
   emit_insn (gen_mov<VIMODES2:mode> (operands[0],
 	     simplify_gen_subreg (<VIMODES2:MODE>mode, operands[1],
@@ -6815,7 +6815,7 @@
 (define_expand "reinterpret_<VFMODES2:mode><VFMODES:mode>"
   [(set (match_operand:VFMODES2 0 "register_operand")
 	(subreg:VFMODES2 (match_operand:VFMODES 1 "register_operand") 0))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
   rtx tmp_src, tmp_dst;
   tmp_src = gen_reg_rtx(<VFMODES:VINTEQUIV>mode);
@@ -6837,7 +6837,7 @@
 
 (define_expand "read_vlenb"
   [(match_operand 0 "register_operand")]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
   rtx imm = gen_int_mode (UNITS_PER_V_REG, Pmode);
   emit_move_insn (operands[0], imm);
@@ -6856,7 +6856,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -6869,7 +6869,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "@
    v<insn>.vv\t%0,%1,%2
    v<insn>.vi\t%0,%1,%v2"
@@ -6887,7 +6887,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -6901,7 +6901,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "v<insn>.vx\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -6919,7 +6919,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -6935,7 +6935,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "@
    v<insn>.vv\t%0,%3,%4,%1.t
    v<insn>.vi\t%0,%3,%v4,%1.t"
@@ -6956,7 +6956,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -6973,7 +6973,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "v<insn>.vx\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -6991,7 +6991,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -7005,7 +7005,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "@
    vn<insn>.wv\t%0,%1,%2
    vn<insn>.wi\t%0,%1,%v2"
@@ -7024,7 +7024,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -7039,7 +7039,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vn<insn>.wx\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -7058,7 +7058,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -7075,7 +7075,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "@
    vn<insn>.wv\t%0,%3,%4,%1.t
    vn<insn>.wi\t%0,%3,%v4,%1.t"
@@ -7097,7 +7097,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -7115,7 +7115,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vn<insn>.wx\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -7129,7 +7129,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -7141,7 +7141,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vncvt.x.x.w\t%0,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -7158,7 +7158,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -7173,7 +7173,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vncvt.x.x.w\t%0,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -7190,7 +7190,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -7203,7 +7203,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "v<insn>.vv\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -7219,7 +7219,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -7233,7 +7233,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "v<insn>.vx\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -7251,7 +7251,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -7267,7 +7267,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "v<insn>.vv\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -7286,7 +7286,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -7303,7 +7303,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "v<insn>.vx\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -7320,7 +7320,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -7333,7 +7333,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "v<insn>.vv\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -7349,7 +7349,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -7366,7 +7366,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "v<insn>.vx\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -7384,7 +7384,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -7400,7 +7400,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "v<insn>.vv\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -7419,7 +7419,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -7436,7 +7436,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "v<insn>.vx\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -7456,7 +7456,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -7471,7 +7471,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vwmul<u>.vv\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -7489,7 +7489,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -7505,7 +7505,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vwmul<u>.vx\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -7525,7 +7525,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -7543,7 +7543,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vwmul<u>.vv\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -7564,7 +7564,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -7583,7 +7583,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vwmul<u>.vx\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -7602,7 +7602,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -7617,7 +7617,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vwmulsu.vv\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -7635,7 +7635,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -7651,7 +7651,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vwmulsu.vx\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -7671,7 +7671,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -7689,7 +7689,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vwmulsu.vv\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -7710,7 +7710,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -7729,7 +7729,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vwmulsu.vx\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -7748,7 +7748,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -7763,7 +7763,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "v<vmadd_sub>.vv\t%0,%2,%3"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -7780,7 +7780,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -7795,7 +7795,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "v<vmac>.vv\t%0,%2,%3"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -7813,7 +7813,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -7829,7 +7829,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "v<vmadd_sub>.vx\t%0,%2,%3"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -7847,7 +7847,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -7863,7 +7863,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "v<vmac>.vx\t%0,%2,%3"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -7881,7 +7881,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -7897,7 +7897,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "<imac>.vv\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -7917,7 +7917,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -7934,7 +7934,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "<imac>.vx\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -7955,7 +7955,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -7972,7 +7972,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vwmacc<u>.vv\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -7991,7 +7991,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -8008,7 +8008,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vwmaccsu.vv\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -8028,7 +8028,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -8046,7 +8046,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vwmacc<u>.vx\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -8066,7 +8066,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -8084,7 +8084,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vwmaccsu.vx\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -8104,7 +8104,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -8122,7 +8122,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vwmaccus.vx\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -8144,7 +8144,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -8164,7 +8164,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vwmacc<u>.vv\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -8186,7 +8186,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -8206,7 +8206,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vwmaccsu.vv\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -8229,7 +8229,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -8250,7 +8250,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vwmacc<u>.vx\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -8273,7 +8273,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -8294,7 +8294,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vwmaccsu.vx\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -8317,7 +8317,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -8338,7 +8338,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vwmaccus.vx\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -8359,7 +8359,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -8376,7 +8376,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vqmacc<u>.vv\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -8395,7 +8395,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -8412,7 +8412,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vqmaccsu.vv\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -8432,7 +8432,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -8450,7 +8450,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vqmacc<u>.vx\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -8470,7 +8470,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -8488,7 +8488,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vqmaccsu.vx\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -8508,7 +8508,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -8526,7 +8526,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vqmaccus.vx\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -8548,7 +8548,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -8568,7 +8568,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vqmacc<u>.vv\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -8590,7 +8590,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -8610,7 +8610,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vqmaccsu.vv\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -8633,7 +8633,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -8654,7 +8654,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vqmacc<u>.vx\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -8677,7 +8677,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -8698,7 +8698,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vqmaccsu.vx\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -8721,7 +8721,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -8742,7 +8742,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vqmaccus.vx\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -8758,7 +8758,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -8770,7 +8770,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfcvt.rtz.x<u>.f.v %0,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -8787,7 +8787,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -8802,7 +8802,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfcvt.rtz.x<u>.f.v %0,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -8817,7 +8817,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -8830,7 +8830,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfcvt.x<fu>.f.v %0,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -8848,7 +8848,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -8864,7 +8864,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfcvt.x<fu>.f.v %0,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -8878,7 +8878,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -8890,7 +8890,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfcvt.f.x<u>.v\t%0,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -8907,7 +8907,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -8922,7 +8922,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfcvt.f.x<u>.v\t%0,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -8938,7 +8938,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -8950,7 +8950,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfwcvt.rtz.x<u>.f.v %0,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -8967,7 +8967,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -8982,7 +8982,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfwcvt.rtz.x<u>.f.v %0,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -8997,7 +8997,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -9010,7 +9010,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfwcvt.x<fu>.f.v %0,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -9028,7 +9028,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -9044,7 +9044,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfwcvt.x<fu>.f.v %0,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -9058,7 +9058,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -9070,7 +9070,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfwcvt.f.x<u>.v\t%0,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -9087,7 +9087,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -9102,7 +9102,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfwcvt.f.x<u>.v\t%0,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -9116,7 +9116,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -9128,7 +9128,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfwcvt.f.f.v\t%0,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -9145,7 +9145,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -9160,7 +9160,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfwcvt.f.f.v\t%0,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -9176,7 +9176,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -9188,7 +9188,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfncvt.rtz.x<u>.f.w %0,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -9205,7 +9205,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -9220,7 +9220,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfncvt.rtz.x<u>.f.w %0,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -9235,7 +9235,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -9248,7 +9248,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfncvt.x<fu>.f.w %0,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -9266,7 +9266,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -9282,7 +9282,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfncvt.x<fu>.f.w %0,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -9296,7 +9296,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -9308,7 +9308,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfncvt.f.x<u>.w\t%0,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -9325,7 +9325,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -9340,7 +9340,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfncvt.f.x<u>.w\t%0,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -9354,7 +9354,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -9366,7 +9366,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfncvt.f.f.w\t%0,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -9383,7 +9383,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -9398,7 +9398,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfncvt.f.f.w\t%0,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -9413,7 +9413,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -9426,7 +9426,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfncvt.rod.f.f.w\t%0,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -9444,7 +9444,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -9460,7 +9460,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfncvt.rod.f.f.w\t%0,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -9477,7 +9477,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -9490,7 +9490,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfclass.v\t%0,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -9508,7 +9508,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -9524,7 +9524,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfclass.v\t%0,%3,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -9543,7 +9543,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -9558,7 +9558,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "@
    vslide<ud>.vx\t%0,%2,%3
    vslide<ud>.vi\t%0,%2,%3"
@@ -9579,7 +9579,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -9596,7 +9596,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "@
    vslide<ud>.vx\t%0,%3,%4,%1.t
    vslide<ud>.vi\t%0,%3,%4,%1.t"
@@ -9614,7 +9614,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -9628,7 +9628,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vslide1<ud>.vx\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -9647,7 +9647,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -9664,7 +9664,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vslide1<ud>.vx\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -9682,7 +9682,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -9696,7 +9696,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfslide1<ud>.vf\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -9715,7 +9715,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
 {
 })
 
@@ -9732,7 +9732,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR && TARGET_HARD_FLOAT"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC) && TARGET_HARD_FLOAT"
   "vfslide1<ud>.vf\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -9750,7 +9750,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -9764,7 +9764,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vrgather.vv\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -9783,7 +9783,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -9800,7 +9800,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vrgather.vv\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -9816,7 +9816,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VMODES:VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -9830,7 +9830,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VMODES:VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
    && known_eq (GET_MODE_NUNITS (<VMODES:MODE>mode),
 		GET_MODE_NUNITS (<VIMODES:MODE>mode))"
   "vrgatherei<VIMODES:sew>.vv\t%0,%1,%2"
@@ -9851,7 +9851,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VMODES:VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
    && known_eq (GET_MODE_NUNITS (<VMODES:MODE>mode),
 		GET_MODE_NUNITS (<VIMODES:MODE>mode))"
 {
@@ -9870,7 +9870,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VMODES:VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
    && known_eq (GET_MODE_NUNITS (<VMODES:MODE>mode),
 		GET_MODE_NUNITS (<VIMODES:MODE>mode))"
   "vrgatherei<VIMODES:sew>.vv\t%0,%3,%4,%1.t"
@@ -9888,7 +9888,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -9902,7 +9902,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "@
    vrgather.vx\t%0,%1,%2
    vrgather.vi\t%0,%1,%2"
@@ -9923,7 +9923,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -9940,7 +9940,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "@
    vrgather.vx\t%0,%3,%4,%1.t
    vrgather.vi\t%0,%3,%4,%1.t"
@@ -9961,7 +9961,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -9976,7 +9976,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vcompress.vm\t%0,%3,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -9994,7 +9994,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -10008,7 +10008,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "@
    vnclip<v_su>.wv\t%0,%1,%2
    vnclip<v_su>.wi\t%0,%1,%v2"
@@ -10027,7 +10027,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -10042,7 +10042,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vnclip<v_su>.wx\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -10061,7 +10061,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -10078,7 +10078,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "@
    vnclip<v_su>.wv\t%0,%3,%4,%1.t
    vnclip<v_su>.wi\t%0,%3,%v4,%1.t"
@@ -10100,7 +10100,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -10118,7 +10118,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vnclip<v_su>.wx\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -10136,7 +10136,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -10150,7 +10150,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "@
    <sshift>.vv\t%0,%1,%2
    <sshift>.vi\t%0,%1,%v2"
@@ -10169,7 +10169,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -10184,7 +10184,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "<sshift>.vx\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -10203,7 +10203,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -10220,7 +10220,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "@
    <sshift>.vv\t%0,%3,%4,%1.t
    <sshift>.vi\t%0,%3,%v4,%1.t"
@@ -10242,7 +10242,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -10260,7 +10260,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "<sshift>.vx\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -10280,7 +10280,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -10294,7 +10294,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "<sat_op>.vv\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -10311,7 +10311,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -10326,7 +10326,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "<sat_op>.vx\t%0,%1,%2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -10345,7 +10345,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -10362,7 +10362,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "<sat_op>.vv\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -10382,7 +10382,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -10400,7 +10400,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "<sat_op>.vx\t%0,%3,%4,%1.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -10417,7 +10417,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -10430,7 +10430,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vle<sew>ff.v\t%0,%1"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -10448,7 +10448,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -10464,7 +10464,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vle<sew>ff.v\t%0,%1,%2.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -10484,7 +10484,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VMODES:VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
    && known_eq (GET_MODE_NUNITS (<VMODES:MODE>mode),
 		GET_MODE_NUNITS (<VIMODES:MODE>mode))"
 {
@@ -10502,7 +10502,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VMODES:VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
    && known_eq (GET_MODE_NUNITS (<VMODES:MODE>mode),
 		GET_MODE_NUNITS (<VIMODES:MODE>mode))"
   "<vamo><VIMODES:sew>.v\t%0,(%1),%2,%0"
@@ -10523,7 +10523,7 @@
 		     (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VMODES:VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
    && known_eq (GET_MODE_NUNITS (<VMODES:MODE>mode),
 		GET_MODE_NUNITS (<VIMODES:MODE>mode))"
 {
@@ -10542,7 +10542,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VMODES:VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
    && known_eq (GET_MODE_NUNITS (<VMODES:MODE>mode),
 		GET_MODE_NUNITS (<VIMODES:MODE>mode))"
   "<vamo><VIMODES:sew>.v\t%0,(%2),%3,%0,%1.t"
@@ -10553,7 +10553,7 @@
 (define_insn "riscv_vreadvl<mode>"
   [(set (match_operand:P 0 "register_operand" "=r")
 	(unspec_volatile:P [(reg:P VL_REGNUM)] UNSPEC_READ_VL))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "csrr\t%0, vl"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -10562,7 +10562,7 @@
 (define_insn "read_vtype<mode>"
   [(set (match_operand:P 0 "register_operand" "=r")
 	(unspec:P [(reg:P VTYPE_REGNUM)] UNSPEC_READ_VTYPE))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "csrr\t%0, vtype"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -10572,7 +10572,7 @@
   [(set (reg:P VTYPE_REGNUM)
 	(unspec:P [(match_operand:P 0 "register_operand" "r")]
 	 UNSPEC_WRITE_VTYPE))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vsetvl\tx0, x0, %0"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -10590,7 +10590,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -10604,7 +10604,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vlseg<NF>e<sew>.v\t%0, (%1)"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -10622,7 +10622,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -10638,7 +10638,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vlseg<NF>e<sew>.v\t%0, (%1), %2.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -10654,7 +10654,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -10668,7 +10668,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vlseg<NF>e<sew>ff.v\t%0, (%1)"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -10686,7 +10686,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -10702,7 +10702,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vlseg<NF>e<sew>ff.v\t%0, (%1), %2.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -10719,7 +10719,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VTMODES:VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -10734,7 +10734,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VTMODES:VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vl<order>xseg<NF>ei<VIMODES:sew>.v\t%0, (%1), %2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -10753,7 +10753,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VTMODES:VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -10770,7 +10770,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VTMODES:VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vl<order>xseg<NF>ei<VIMODES:sew>.v\t%0, (%1), %4, %2.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -10787,7 +10787,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -10802,7 +10802,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vlsseg<NF>e<sew>.v\t%0, (%1), %2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -10821,7 +10821,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -10838,7 +10838,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vlsseg<NF>e<sew>.v\t%0, (%1), %4, %2.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -10854,7 +10854,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -10868,7 +10868,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vsseg<NF>e<sew>.v\t%1, (%0)"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -10885,7 +10885,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -10900,7 +10900,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vsseg<NF>e<sew>.v\t%1, (%0), %2.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -10917,7 +10917,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VTMODES:VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -10932,7 +10932,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VTMODES:VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vs<order>xseg<NF>ei<VIMODES:sew>.v\t%1, (%0), %2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -10950,7 +10950,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VTMODES:VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -10966,7 +10966,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VTMODES:VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vs<order>xseg<NF>ei<VIMODES:sew>.v\t%1, (%0), %3, %2.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -10983,7 +10983,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -10998,7 +10998,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vssseg<NF>e<sew>.v\t%1, (%0), %2"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -11016,7 +11016,7 @@
 		      (reg:SI VL_REGNUM)]
 		    UNSPEC_USEVL))
 	      (use (reg:<VLMODE> VTYPE_REGNUM))])]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -11032,7 +11032,7 @@
 	   (reg:SI VL_REGNUM)]
 	 UNSPEC_USEVL))
    (use (reg:<VLMODE> VTYPE_REGNUM))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "vssseg<NF>e<sew>.v\t%1, (%0), %3, %2.t"
   [(set_attr "type" "vector")
    (set_attr "mode" "none")])
@@ -11042,7 +11042,7 @@
   [(set (match_operand:VTMODES 0 "nonimmediate_operand" "=vr,vr, m,vr")
 		(match_operand:VTMODES 1 "vector_move_operand"  " vr, m,vr,vc"))
    (clobber (match_scratch:<VSUBMODE> 2 "=X,X,X,r"))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
   "#"
   "&& reload_completed"
   [(const_int 0)]
@@ -11103,7 +11103,7 @@
    (match_operand:VTMODES 1 "register_operand")
    (match_operand:<VTSUBMODE> 2 "register_operand")
    (match_operand:SI 3 "const_int_operand" "")]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
   if (INTVAL (operands[3]) < 0
       || (INTVAL (operands[3]) >= riscv_get_nf (<MODE>mode)))
@@ -11123,7 +11123,7 @@
   [(match_operand:<VTSUBMODE> 0 "register_operand")
    (match_operand:VTMODES 1 "register_operand")
    (match_operand:SI 2 "const_int_operand")]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
   if (INTVAL (operands[2]) < 0
       || (INTVAL (operands[2]) >= riscv_get_nf (<MODE>mode)))
@@ -11143,7 +11143,7 @@
   [(match_operand:VTNF2MODES 0 "register_operand")
    (match_operand:<VTSUBMODE> 1 "register_operand")
    (match_operand:<VTSUBMODE> 2 "register_operand")]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
   riscv_expand_vtuple_create (operands);
   DONE;
@@ -11154,7 +11154,7 @@
    (match_operand:<VTSUBMODE> 1 "register_operand")
    (match_operand:<VTSUBMODE> 2 "register_operand")
    (match_operand:<VTSUBMODE> 3 "register_operand")]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
   riscv_expand_vtuple_create (operands);
   DONE;
@@ -11166,7 +11166,7 @@
    (match_operand:<VTSUBMODE> 2 "register_operand")
    (match_operand:<VTSUBMODE> 3 "register_operand")
    (match_operand:<VTSUBMODE> 4 "register_operand")]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
   riscv_expand_vtuple_create (operands);
   DONE;
@@ -11179,7 +11179,7 @@
    (match_operand:<VTSUBMODE> 3 "register_operand")
    (match_operand:<VTSUBMODE> 4 "register_operand")
    (match_operand:<VTSUBMODE> 5 "register_operand")]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
   riscv_expand_vtuple_create (operands);
   DONE;
@@ -11193,7 +11193,7 @@
    (match_operand:<VTSUBMODE> 4 "register_operand")
    (match_operand:<VTSUBMODE> 5 "register_operand")
    (match_operand:<VTSUBMODE> 6 "register_operand")]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
   riscv_expand_vtuple_create (operands);
   DONE;
@@ -11208,7 +11208,7 @@
    (match_operand:<VTSUBMODE> 5 "register_operand")
    (match_operand:<VTSUBMODE> 6 "register_operand")
    (match_operand:<VTSUBMODE> 7 "register_operand")]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
   riscv_expand_vtuple_create (operands);
   DONE;
@@ -11224,7 +11224,7 @@
    (match_operand:<VTSUBMODE> 6 "register_operand")
    (match_operand:<VTSUBMODE> 7 "register_operand")
    (match_operand:<VTSUBMODE> 8 "register_operand")]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
   riscv_expand_vtuple_create (operands);
   DONE;
@@ -11232,13 +11232,13 @@
 
 (define_expand "vundefined_<mode>"
   [(clobber (match_operand:VMODES 0 "register_operand"))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
 (define_expand "vundefined_<mode>"
   [(clobber (match_operand:VTMODES 0 "register_operand"))]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
 })
 
@@ -11247,7 +11247,7 @@
    (match_operand:VMODES 1 "register_operand")
    (match_operand 2 "register_operand")
    (match_operand:SI 3 "const_int_operand" "")]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
   if (INTVAL (operands[3]) < 0)
     {
@@ -11266,7 +11266,7 @@
   [(match_operand 0 "register_operand")
    (match_operand:VMODES 1 "register_operand")
    (match_operand:SI 2 "const_int_operand")]
-  "TARGET_VECTOR"
+  "(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)"
 {
   if (INTVAL (operands[2]) < 0)
     {

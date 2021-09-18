@@ -171,7 +171,7 @@ struct riscv_builtin_description {
 AVAIL (hard_float, TARGET_HARD_FLOAT)
 
 AVAIL (bitmanip64, TARGET_64BIT && TARGET_BITMANIP)
-AVAIL (vector, TARGET_VECTOR)
+AVAIL (vector, (TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC))
 AVAIL (crypto_zknd32, TARGET_ZKND && !TARGET_64BIT)
 AVAIL (crypto_zknd64, TARGET_ZKND && TARGET_64BIT)
 AVAIL (crypto_zkne32, TARGET_ZKNE && !TARGET_64BIT)
@@ -2997,7 +2997,7 @@ riscv_init_builtins (void)
   layout_type (fp16_type_node);
   (*lang_hooks.types.register_builtin_type) (fp16_type_node, "__fp16");
 
-  if (TARGET_VECTOR)
+  if (TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
     {
       /* These types exist only for the ld/st intrinsics.  */
       const_float_ptr_type_node

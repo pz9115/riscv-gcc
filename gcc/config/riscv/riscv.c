@@ -816,7 +816,8 @@ riscv_valid_offset_p (rtx x, machine_mode mode)
     return false;
 
   /* Vector load/store disallow any offset.  */
-  if (TARGET_VECTOR && VECTOR_MODE_P (mode))
+  if ((TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
+		  && VECTOR_MODE_P (mode))
     return false;
 
   /* We may need to split multiword moves, so make sure that every word
@@ -924,7 +925,8 @@ riscv_classify_address (struct riscv_address_info *info, rtx x,
 
     case LO_SUM:
       /* Vector load/store disallow LO_SUM.  */
-      if (TARGET_VECTOR && VECTOR_MODE_P (mode))
+      if ((TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
+		      && VECTOR_MODE_P (mode))
 	      return false;
       info->type = ADDRESS_LO_SUM;
       info->reg = XEXP (x, 0);
@@ -3644,6 +3646,34 @@ riscv_print_operand (FILE *file, rtx op, int letter)
 	break;
       }
 
+    case 'v':
+      {
+        rtx elt;
+        if (!const_vec_duplicate_p (op, &elt))
+          output_operand_lossage ("invalid vector constant");
+        else if (GET_MODE_CLASS (GET_MODE (op)) == MODE_VECTOR_INT)
+          asm_fprintf (file, "%wd", INTVAL (elt));
+        else
+          output_operand_lossage ("invalid vector constant");
+      }
+    break;
+
+    case 'V':
+      {
+        rtx elt;
+        if (!const_vec_duplicate_p (op, &elt))
+          output_operand_lossage ("invalid vector constant");
+        else if (GET_MODE_CLASS (GET_MODE (op)) == MODE_VECTOR_INT)
+          asm_fprintf (file, "%wd", -INTVAL (elt));
+        else
+          output_operand_lossage ("invalid vector constant");
+      }
+    break;
+
+    case 'B':
+      fputs (GET_RTX_NAME (code), file);
+      break;
+
     default:
       switch (code)
 	{
@@ -3659,34 +3689,6 @@ riscv_print_operand (FILE *file, rtx op, int letter)
 	  else
 	    output_address (mode, XEXP (op, 0));
 	  break;
-
-  case 'v':
-    {
-	  rtx elt;
-	  if (!const_vec_duplicate_p (op, &elt))
-	    output_operand_lossage ("invalid vector constant");
-	  else if (GET_MODE_CLASS (GET_MODE (op)) == MODE_VECTOR_INT)
-	    asm_fprintf (file, "%wd", INTVAL (elt));
-	  else
-	    output_operand_lossage ("invalid vector constant");
-    }
-    break;
-
-  case 'V':
-    {
-	  rtx elt;
-	  if (!const_vec_duplicate_p (op, &elt))
-	    output_operand_lossage ("invalid vector constant");
-	  else if (GET_MODE_CLASS (GET_MODE (op)) == MODE_VECTOR_INT)
-	    asm_fprintf (file, "%wd", -INTVAL (elt));
-	  else
-	    output_operand_lossage ("invalid vector constant");
-    }
-    break;
-
-  case 'B':
-    fputs (GET_RTX_NAME (code), file);
-    break;
 
 	default:
 	  if (letter == 'z' && op == CONST0_RTX (GET_MODE (op)))
@@ -5369,7 +5371,7 @@ riscv_conditional_register_usage (void)
 	      call_used_regs[regno] = 1;
     }
 
-  if (!TARGET_VECTOR)
+  if (!(TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC))
     {
       for (int regno = VECT_REG_FIRST; regno <= VECT_REG_LAST; regno++)
 	      fixed_regs[regno] = call_used_regs[regno] = 1;
@@ -5727,7 +5729,8 @@ riscv_hard_regno_rename_ok (unsigned from_regno ATTRIBUTE_UNUSED,
 bool
 riscv_vector_mode_supported_p (enum machine_mode mode)
 {
-  if (TARGET_VECTOR && riscv_vector_mode (mode))
+  if ((TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
+		  && riscv_vector_mode (mode))
     return true;
 
   return false;
@@ -5831,7 +5834,8 @@ riscv_mangle_type (const_tree type)
 
   /* Mangle all vector type for vector extension.  */
   /* XXX: Revise this later, we don't write down this into spec yet.  */
-  if (TARGET_VECTOR && VECTOR_MODE_P (TYPE_MODE (type)))
+  if ((TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
+		 && VECTOR_MODE_P (TYPE_MODE (type)))
     return riscv_mangle_builtin_type(type);
 
   /* Use the default mangling.  */
@@ -5911,7 +5915,7 @@ riscv_preferred_simd_mode (scalar_mode mode)
 #if 0
   /* Disable auto vectorization since it's broken for V extension,
      but we'll fix and enable that later.  */
-  if (TARGET_VECTOR)
+  if (TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
     switch (mode)
       {
       case E_DFmode:
@@ -5977,7 +5981,8 @@ riscv_dwarf_poly_indeterminate_value (unsigned int i, unsigned int *factor,
 poly_uint64
 riscv_regmode_natural_size (machine_mode mode)
 {
-  if (TARGET_VECTOR && VECTOR_MODE_P (mode))
+  if ((TARGET_VECTOR || TARGET_ZVAMO || TARGET_ZVLSSEG || TARGET_ZVQMAC)
+		  && VECTOR_MODE_P (mode))
     return BYTES_PER_RVV_VECTOR;
   return UNITS_PER_WORD;
 }
