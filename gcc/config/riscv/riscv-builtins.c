@@ -241,14 +241,14 @@ DECL_CHECKER(vector_tuple_extract)
    are as for RISCV_BUILTIN.  */
 #define DIRECT_BUILTIN_NO_PREFIX(INSN, NAME, FUNCTION_TYPE, AVAIL)			\
   { CODE_FOR_ ## INSN, "__builtin_riscv_" # NAME,			\
-    RISCV_BUILTIN_DIRECT, FUNCTION_TYPE, riscv_builtin_avail_ ## AVAIL }
+    RISCV_BUILTIN_DIRECT, FUNCTION_TYPE, riscv_builtin_avail_ ## AVAIL, NULL}
 
 /* Define __builtin_riscv_<NAME>, which is a RISCV_BUILTIN_DIRECT_NO_TARGET function
    mapped to instruction CODE_FOR_<INSN>,  FUNCTION_TYPE and AVAIL
    are as for RISCV_BUILTIN.  */
 #define DIRECT_NO_TARGET_BUILTIN_NO_PREFIX(INSN, NAME, FUNCTION_TYPE, AVAIL)			\
   { CODE_FOR_ ## INSN, "__builtin_riscv_" # NAME,			\
-    RISCV_BUILTIN_DIRECT_NO_TARGET, FUNCTION_TYPE, riscv_builtin_avail_ ## AVAIL }
+    RISCV_BUILTIN_DIRECT_NO_TARGET, FUNCTION_TYPE, riscv_builtin_avail_ ## AVAIL, NULL }
 
 #define DIRECT_NO_TARGET_BUILTIN_WITH_CHECKER(INSN, FUNCTION_TYPE, AVAIL, CHECKER) \
   RISCV_BUILTIN_WITH_CHECKER (INSN, #INSN, RISCV_BUILTIN_DIRECT_NO_TARGET,		\
