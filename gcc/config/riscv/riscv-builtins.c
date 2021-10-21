@@ -3248,8 +3248,11 @@ riscv_prepare_builtin_arg (struct expand_operand *op, tree exp, unsigned argno,
 {
   rtx arg_rtx = expand_normal (CALL_EXPR_ARG (exp, argno));
   enum machine_mode mode = insn_data[icode].operand[argno + has_target_p].mode;
+  bool flag = (riscv_rvp_support_vector_mode_p (mode)
+	| riscv_rvp_support_vector_mode_p (GET_MODE (arg_rtx)))
+	& TARGET_ZPN;
 
-  if (TARGET_ZPN &&
+  if (flag &&
       !(*insn_data[icode].operand[argno + has_target_p].predicate) (arg_rtx, mode))
     {
       rtx tmp_rtx = gen_reg_rtx (mode);
