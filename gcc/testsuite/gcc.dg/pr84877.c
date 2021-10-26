@@ -1,5 +1,7 @@
 /* { dg-do run } */
 /* { dg-options "-O2" } */
+/* {dg-xfail-run-if "-O2 -march=rv32emaczfinx" { riscv32-*-* } } */
+/* {dg-xfail-run-if "-O2 -march=rv32emaczdinx" { riscv32-*-* } } */
 
 #include <inttypes.h>
 
