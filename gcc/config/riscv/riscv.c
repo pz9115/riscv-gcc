@@ -4995,12 +4995,12 @@ riscv_rvp_support_vector_mode_p (machine_mode mode)
 {
   /* a few instructions(e.g. kdmabb, smulx) in RV64P also support V2HI, V4QI */
   if (mode == V2HImode
-	|| mode == V4QImode
-	|| mode == V2SImode)
+	  || mode == V4QImode)
 	  return true;
 
   if (TARGET_64BIT && (mode == V8QImode
-	  || mode == V4HImode))
+	  || mode == V4HImode
+	  || mode == V2SImode))
 	  return true;
 
   return false;
