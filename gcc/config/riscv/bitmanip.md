@@ -21,6 +21,10 @@
 
 (define_code_iterator any_minmax [smin smax umin umax])
 
+(define_code_iterator uminmax [umin umax])
+
+(define_code_iterator sminmax [smin smax])
+
 (define_code_iterator clz_ctz_pcnt [clz ctz popcount])
 
 (define_code_attr bitmanip_optab [(smin "smin")
@@ -41,11 +45,25 @@
 
 (define_mode_attr shiftm1 [(SI "const31_operand") (DI "const63_operand")])
 
-(define_insn "<bitmanip_optab>si2"
+(define_insn "ctzsi2"
   [(set (match_operand:SI 0 "register_operand" "=r")
-	(clz_ctz_pcnt:SI (match_operand:SI 1 "register_operand" "r")))]
+	(ctz:SI (match_operand:SI 1 "register_operand" "r")))]
   "TARGET_ZBB"
-  { return TARGET_64BIT ? "<bitmanip_insn>w\t%0,%1" : "<bitmanip_insn>\t%0,%1"; }
+  { return TARGET_64BIT ? "ctzw\t%0,%1" : "ctz\t%0,%1"; }
+  [(set_attr "type" "bitmanip")])
+
+(define_insn "popcountsi2"
+  [(set (match_operand:SI 0 "register_operand" "=r")
+	(popcount:SI (match_operand:SI 1 "register_operand" "r")))]
+  "TARGET_ZBB"
+  { return TARGET_64BIT ? "cpopw\t%0,%1" : "cpop\t%0,%1"; }
+  [(set_attr "type" "bitmanip")])
+
+(define_insn "*clzsi2_zbb"
+  [(set (match_operand:SI 0 "register_operand" "=r")
+	(clz:SI (match_operand:SI 1 "register_operand" "r")))]
+  "TARGET_ZBB"
+  { return TARGET_64BIT ? "clzw\t%0,%1" : "clz\t%0,%1"; }
   [(set_attr "type" "bitmanip")])
 
 (define_insn "*<bitmanip_optab>disi2"
@@ -101,8 +119,29 @@
 
 (define_insn "<bitmanip_optab><mode>3"
   [(set (match_operand:X 0 "register_operand" "=r")
-	(any_minmax:X (match_operand:X 1 "register_operand" "r")
+	(uminmax:X (match_operand:X 1 "register_operand" "r")
 		      (match_operand:X 2 "register_operand" "r")))]
+  "TARGET_ZBB"
+  "<bitmanip_insn>\t%0,%1,%2"
+  [(set_attr "type" "bitmanip")])
+
+(define_insn "<bitmanip_optab>di3"
+  [(set (match_operand:DI 0 "register_operand" "=r")
+	(sminmax:DI (match_operand:DI 1 "register_operand" "r")
+		      (match_operand:DI 2 "register_operand" "r")))]
+  "TARGET_ZBB && TARGET_64BIT"
+  "<bitmanip_insn>\t%0,%1,%2"
+  [(set_attr "type" "bitmanip")])
+
+(define_expand "<bitmanip_optab>si3"
+  [(set (match_operand:SI 0 "register_operand" "=r")
+	(sminmax:SI (match_operand:SI 1 "register_operand" "r")
+		      (match_operand:SI 2 "register_operand" "r")))])
+
+(define_insn "*<bitmanip_optab>si3_zbb"
+  [(set (match_operand:SI 0 "register_operand" "=r")
+	(sminmax:SI (match_operand:SI 1 "register_operand" "r")
+		      (match_operand:SI 2 "register_operand" "r")))]
   "TARGET_ZBB"
   "<bitmanip_insn>\t%0,%1,%2"
   [(set_attr "type" "bitmanip")])
