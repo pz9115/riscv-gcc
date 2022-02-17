@@ -1,6 +1,6 @@
 /* This is a test program for sra.u instruction.  */
 /* { dg-do compile { target riscv64*-*-* } } */
-/* { dg-options "-march=rv64gc_zpn_zpsf -mabi=lp64d -O0" } */
+/* { dg-options "-march=rv64gc_zpn -mabi=lp64d -O0" } */
 
 
 #include <rvp_intrinsic.h>
@@ -8,7 +8,7 @@
 #include <stdint.h>
 
 static __attribute__ ((noinline))
-int64_t uars (int64_t ra, uint32_t rb)
+int64_t uars (int ra, uint32_t rb)
 {
   return __rv_sra_u (ra, rb);
 }
