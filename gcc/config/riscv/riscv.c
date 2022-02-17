@@ -5006,7 +5006,8 @@ riscv_rvp_support_vector_mode_p (machine_mode mode)
 	  || mode == V4QImode)
 	  return true;
 
-  if (TARGET_64BIT && (mode == V8QImode
+  if ((TARGET_64BIT || TARGET_VECTOR)
+	  && (mode == V8QImode
 	  || mode == V4HImode
 	  || mode == V2SImode))
 	  return true;
@@ -5948,17 +5949,18 @@ riscv_floatn_mode (int n, bool extended)
 bool
 riscv_vector_mode_supported_p (enum machine_mode mode)
 {
-  if (TARGET_ZPN && riscv_rvp_support_vector_mode_p (mode))
+  if (TARGET_ZPN && !TARGET_VECTOR 
+		 && riscv_rvp_support_vector_mode_p (mode))
     return true;
 
-  if ((mode == V16QImode
+  if (mode == V16QImode
       || mode == V8HImode
       || mode == V4SImode
       || mode == V2DImode)
-      && TARGET_64BIT)
     return false;
 
-  if (TARGET_VECTOR && riscv_rvv_support_vector_mode_p (mode))
+  if (TARGET_VECTOR && !TARGET_ZPN 
+		    && riscv_rvv_support_vector_mode_p (mode))
     return true;
 
   return false;
