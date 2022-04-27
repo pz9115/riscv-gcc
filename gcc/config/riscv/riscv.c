@@ -4941,7 +4941,7 @@ riscv_register_move_cost (machine_mode mode,
 
 /* Implement TARGET_HARD_REGNO_NREGS.  */
 
-static bool
+bool
 riscv_rvv_support_vector_mode_p (machine_mode mode)
 {
   scalar_mode inner = GET_MODE_INNER (mode);

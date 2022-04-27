@@ -3246,11 +3246,12 @@ riscv_prepare_builtin_arg (struct expand_operand *op, tree exp, unsigned argno,
 {
   rtx arg_rtx = expand_normal (CALL_EXPR_ARG (exp, argno));
   enum machine_mode mode = insn_data[icode].operand[argno + has_target_p].mode;
-  bool flag = (riscv_rvp_support_vector_mode_p (mode)
-	| riscv_rvp_support_vector_mode_p (GET_MODE (arg_rtx)))
-	& TARGET_ZPN;
+  bool flag = ((riscv_rvv_support_vector_mode_p (mode)
+		    || riscv_rvv_support_vector_mode_p (GET_MODE (arg_rtx)))
+		&& TARGET_VECTOR)
+	  || !TARGET_ZPN;
 
-  if (!flag)
+  if (flag)
     {
       create_input_operand (op, arg_rtx, TYPE_MODE (TREE_TYPE (CALL_EXPR_ARG (exp, argno))));
       return;
@@ -3352,9 +3353,9 @@ riscv_expand_builtin_direct (enum insn_code icode, rtx target, tree exp,
     {
       /* p extension vector and scalar mode convension */
       if (flag &&
-          (!target
-          || GET_MODE (target) != insn_return_mode
-          || ! (*insn_data[icode].operand[opno].predicate) (target, insn_return_mode)))
+	    (!target
+	      || GET_MODE (target) != insn_return_mode
+	      || ! (*insn_data[icode].operand[opno].predicate) (target, insn_return_mode)))
 	{
 	  mode = insn_return_mode;
 	  target = gen_reg_rtx (mode);
