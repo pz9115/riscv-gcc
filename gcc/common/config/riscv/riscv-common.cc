@@ -163,6 +163,15 @@ static const struct riscv_ext_version riscv_ext_version_table[] =
   {"zifencei", ISA_SPEC_CLASS_20191213, 2, 0},
   {"zifencei", ISA_SPEC_CLASS_20190608, 2, 0},
 
+  {"ziccamoa", ISA_SPEC_CLASS_NONE, 0, 1},
+  {"ziccif", ISA_SPEC_CLASS_NONE, 0, 1},
+  {"zicclsm", ISA_SPEC_CLASS_NONE, 0, 1},
+  {"ziccrse", ISA_SPEC_CLASS_NONE, 0, 1},
+  {"zicntr", ISA_SPEC_CLASS_NONE, 0, 1},
+
+  {"zihintpause", ISA_SPEC_CLASS_NONE, 0, 1},
+  {"zihpm", ISA_SPEC_CLASS_NONE, 0, 1},
+
   {"zba", ISA_SPEC_CLASS_NONE, 1, 0},
   {"zbb", ISA_SPEC_CLASS_NONE, 1, 0},
   {"zbc", ISA_SPEC_CLASS_NONE, 1, 0},
@@ -219,6 +228,7 @@ static const struct riscv_ext_version riscv_ext_version_table[] =
 
   {"svinval", ISA_SPEC_CLASS_NONE, 1, 0},
   {"svnapot", ISA_SPEC_CLASS_NONE, 1, 0},
+  {"svpbmt", ISA_SPEC_CLASS_NONE, 0, 1},
 
   /* Terminate the list.  */
   {NULL, ISA_SPEC_CLASS_NONE, 0, 0}
@@ -1179,6 +1189,14 @@ static const riscv_ext_flag_table_t riscv_ext_flag_table[] =
 
   {"zicsr",    &gcc_options::x_riscv_zi_subext, MASK_ZICSR},
   {"zifencei", &gcc_options::x_riscv_zi_subext, MASK_ZIFENCEI},
+  {"ziccamoa", &gcc_options::x_riscv_zi_subext, MASK_ZICCAMOA},
+  {"ziccif", &gcc_options::x_riscv_zi_subext, MASK_ZICCIF},
+  {"zicclsm", &gcc_options::x_riscv_zi_subext, MASK_ZICCLSM},
+  {"ziccrse", &gcc_options::x_riscv_zi_subext, MASK_ZICCRSE},
+  {"zicntr", &gcc_options::x_riscv_zi_subext, MASK_ZICNTR},
+
+  {"zihintpause", &gcc_options::x_riscv_zi_subext, MASK_ZIHINTPAUSE},
+  {"zihpm", &gcc_options::x_riscv_zi_subext, MASK_ZIHPM},
 
   {"zba",    &gcc_options::x_riscv_zb_subext, MASK_ZBA},
   {"zbb",    &gcc_options::x_riscv_zb_subext, MASK_ZBB},
@@ -1230,6 +1248,7 @@ static const riscv_ext_flag_table_t riscv_ext_flag_table[] =
   {"zvl1024b",  &gcc_options::x_riscv_zvl_flags, MASK_ZVL1024B},
   {"zvl2048b",  &gcc_options::x_riscv_zvl_flags, MASK_ZVL2048B},
   {"zvl4096b",  &gcc_options::x_riscv_zvl_flags, MASK_ZVL4096B},
+
   {"zvl8192b",  &gcc_options::x_riscv_zvl_flags, MASK_ZVL8192B},
   {"zvl16384b", &gcc_options::x_riscv_zvl_flags, MASK_ZVL16384B},
   {"zvl32768b", &gcc_options::x_riscv_zvl_flags, MASK_ZVL32768B},
@@ -1242,6 +1261,7 @@ static const riscv_ext_flag_table_t riscv_ext_flag_table[] =
 
   {"svinval", &gcc_options::x_riscv_sv_subext, MASK_SVINVAL},
   {"svnapot", &gcc_options::x_riscv_sv_subext, MASK_SVNAPOT},
+  {"svpbmt", &gcc_options::x_riscv_sv_subext, MASK_SVPBMT},
 
   {NULL, NULL, 0}
 };

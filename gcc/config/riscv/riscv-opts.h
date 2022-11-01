@@ -69,9 +69,23 @@ enum stack_protector_guard {
 
 #define MASK_ZICSR    (1 << 0)
 #define MASK_ZIFENCEI (1 << 1)
+#define MASK_ZICCAMOA (1 << 2)
+#define MASK_ZICCIF   (1 << 3)
+#define MASK_ZICCLSM  (1 << 4)
+#define MASK_ZICCRSE  (1 << 5)
+#define MASK_ZICNTR   (1 << 6)
+#define MASK_ZIHINTPAUSE (1 << 7)
+#define MASK_ZIHPM    (1 << 8)
 
 #define TARGET_ZICSR    ((riscv_zi_subext & MASK_ZICSR) != 0)
 #define TARGET_ZIFENCEI ((riscv_zi_subext & MASK_ZIFENCEI) != 0)
+#define TARGET_ZICCAMOA ((riscv_zi_subext & MASK_ZICCAMOA) != 0)
+#define TARGET_ZICCIF   ((riscv_zi_subext & MASK_ZICCIF) != 0)
+#define TARGET_ZICCLSM  ((riscv_zi_subext & MASK_ZICCLSM) != 0)
+#define TARGET_ZICCRSE  ((riscv_zi_subext & MASK_ZICCRSE) != 0)
+#define TARGET_ZICNTR   ((riscv_zi_subext & MASK_ZICNTR) != 0)
+#define TARGET_ZIHINTPAUSE ((riscv_zi_subext & MASK_ZIHINTPAUSE) != 0)
+#define TARGET_ZIHPM    ((riscv_zi_subext & MASK_ZIHPM) != 0)
 
 #define MASK_ZBA      (1 << 0)
 #define MASK_ZBB      (1 << 1)
@@ -174,6 +188,7 @@ enum stack_protector_guard {
 
 #define MASK_SVINVAL (1 << 0)
 #define MASK_SVNAPOT (1 << 1)
+#define MASK_SVPBMT   (1 << 2)
 
 #define TARGET_SVINVAL ((riscv_sv_subext & MASK_SVINVAL) != 0)
 #define TARGET_SVNAPOT ((riscv_sv_subext & MASK_SVNAPOT) != 0)
