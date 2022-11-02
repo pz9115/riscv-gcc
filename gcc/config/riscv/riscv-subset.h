@@ -62,13 +62,16 @@ private:
   const char *parsing_subset_version (const char *, const char *, unsigned *,
 				      unsigned *, bool, bool *);
 
-  const char *parse_std_ext (const char *);
+  const char *parse_profile (const char *);
+
+  const char *parse_std_ext (const char *, bool);
 
   const char *parse_multiletter_ext (const char *, const char *,
 				     const char *);
 
   void handle_implied_ext (riscv_subset_t *);
   void handle_combine_ext ();
+  void handle_profile(const char *, const char *, const char *);
 
 public:
   ~riscv_subset_list ();

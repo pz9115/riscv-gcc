@@ -777,6 +777,35 @@ riscv_subset_list::parsing_subset_version (const char *ext,
   return p;
 }
 
+/* Parsing function for profile.
+
+   Return Value:
+     Points to the end of profile.
+
+   Arguments:
+     `p`: Current parsing position.  */
+
+const char *
+riscv_subset_list::parse_profile (const char *p)
+{
+  if(*p == 'I' || *p == 'M' || *p == 'A'){
+    p++;
+    if(startswith (p, "20") || startswith (p, "22"))
+      p += 2;
+    if (*p == 'U' || *p == 'S' || *p == 'M')
+      p++;
+    if(startswith (p, "64") || startswith (p, "32")){
+	p += 2;
+	riscv_subset_list::handle_profile(p-6, p-4, p-3);
+	return p;
+    }
+  }
+  else
+    error_at (m_loc, "%<-march=%s%>: Invalid profile.", m_arch);
+  return NULL;
+}
+
+
 /* Parsing function for standard extensions.
 
    Return Value:
@@ -786,7 +815,7 @@ riscv_subset_list::parsing_subset_version (const char *ext,
      `p`: Current parsing position.  */
 
 const char *
-riscv_subset_list::parse_std_ext (const char *p)
+riscv_subset_list::parse_std_ext (const char *p, bool isprofile)
 {
   const char *all_std_exts = riscv_supported_std_ext ();
   const char *std_exts = all_std_exts;
@@ -795,8 +824,8 @@ riscv_subset_list::parse_std_ext (const char *p)
   unsigned minor_version = 0;
   char std_ext = '\0';
   bool explicit_version_p = false;
-
-  /* First letter must start with i, e or g.  */
+  if (!isprofile){
+    /* First letter must start with i, e or g.  */
   switch (*p)
     {
     case 'i':
@@ -850,6 +879,7 @@ riscv_subset_list::parse_std_ext (const char *p)
 		"%<i%> or %<g%>", m_arch);
       return NULL;
     }
+}
 
   while (p != NULL && *p)
     {
@@ -1093,6 +1123,7 @@ riscv_subset_list::parse (const char *arch, location_t loc)
   riscv_subset_list *subset_list = new riscv_subset_list (arch, loc);
   riscv_subset_t *itr;
   const char *p = arch;
+  bool isprofile = false;
   if (startswith (p, "rv32"))
     {
       subset_list->m_xlen = 32;
@@ -1103,15 +1134,26 @@ riscv_subset_list::parse (const char *arch, location_t loc)
       subset_list->m_xlen = 64;
       p += 4;
     }
+  else if (startswith (p, "RV"))
+    {
+      if (startswith (p+6, "64"))
+	subset_list->m_xlen = 64;
+      else
+	subset_list->m_xlen = 32;
+      p += 2;
+      /* Parsing profile name.  */
+      p = subset_list->parse_profile (p);
+      isprofile = true;
+    }
   else
     {
-      error_at (loc, "%<-march=%s%>: ISA string must begin with rv32 or rv64",
+      error_at (loc, "%<-march=%s%>: ISA string must begin with rv32 , rv64 or a profile",
 		arch);
       goto fail;
     }
 
   /* Parsing standard extension.  */
-  p = subset_list->parse_std_ext (p);
+  p = subset_list->parse_std_ext (p,isprofile);
 
   if (p == NULL)
     goto fail;
@@ -1347,6 +1389,49 @@ riscv_handle_option (struct gcc_options *opts,
     default:
       return true;
     }
+}
+
+/* Expand profile with defined mandatory extensions,
+   M-type/mode is emtpy and set as base right now.  */
+void riscv_subset_list::handle_profile(const char *profile_type,
+			const char *profile_year,
+			const char *profile_mode)
+{
+  add ("i", false);
+  if(*profile_type == 'A'){
+    add ("m", false);
+    add ("a", false);
+    add ("f", false);
+    add ("d", false);
+    add ("c", false);
+    add ("ziccamoa", false);
+    add ("ziccif", false);
+    add ("zicclsm", false);
+    add ("ziccrse", false);
+    add ("zicntr", false);
+    add ("zicsr", false);
+
+    if(*profile_mode == 'S')
+      add ("zifencei", false);
+  
+    if(*profile_year == '2')
+    {
+      add ("zihintpause", false);
+      add ("zihpm", false);
+      add ("zba", false);
+      add ("zbb", false);
+      add ("zbs", false);
+      add ("zicbom", false);
+      add ("zicbop", false);
+      add ("zicboz", false);
+      add ("zfhmin", false);
+      add ("zkt", false);
+      if(*profile_mode == 'S'){
+	add ("svpbmt", false);
+	add ("svinval", false);
+      }
+    }
+  }
 }
 
 /* Expand arch string with implied extensions.  */
